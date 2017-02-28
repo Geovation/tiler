@@ -119,7 +119,7 @@ OPTIONS:
 Example usage:
 
 ```
-./run-postgis-docker.sh -v /tmp/foo/ -n postgis -u foo -p bar
+./postgis/run-postgis-docker.sh -v /tmp/foo/ -n postgis -u foo -p bar
 
 ```
 

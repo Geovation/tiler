@@ -16,6 +16,10 @@ Just replace `/Users/username/Documents/Code/tiler/tiler-data:/tiler-data` to th
 
 `docker stop tiler`
 
+### Remove Container 
+
+ `docker rm tiler`
+
 ### Usage
 
 To get into shell:

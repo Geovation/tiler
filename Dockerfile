@@ -5,6 +5,7 @@ MAINTAINER James Milner<james.milner@geovation.uk>
 RUN  export DEBIAN_FRONTEND=noninteractive
 ENV  DEBIAN_FRONTEND noninteractive
 RUN  dpkg-divert --local --rename --add /sbin/initctl
+# USER root
 #RUN  ln -s /bin/true /sbin/initctl
 
 # Use local cached debs from host (saves your bandwidth!)
@@ -31,9 +32,6 @@ RUN apt-get -y install ca-certificates rpl pwgen
 #                              Recommends: postgis but it is not going to be installed
 RUN apt-get install -y postgresql-9.5-postgis-2.2 netcat
 
-# Open port 5432 so linked containers can see them
-EXPOSE 5432
-
 # Run any additional tasks here that are too tedious to put in
 # this dockerfile directly.
 ADD postgis/setup.sh /postgis/setup.sh
@@ -46,30 +44,25 @@ RUN chmod 0755 /postgis/start-postgis.sh
 
 CMD /postgis/start-postgis.sh
 
-### Tiler specific Code
-ADD ./tiler/tiler-scripts /tiler-scripts
-RUN chmod +x -R /tiler-scripts
-RUN export DB_PORT=5432
-RUN export DB_USER=docker
-RUN export DB_DATABASE=data 
-RUN export DB_PASSWORD=docker
-
 ### GDAL Specific Code
 RUN apt-get install gdal-bin
 
+### Python
+RUN apt-get install -y python-pip libpq-dev python-dev
+RUN pip install psycopg2
 
-# ADD . /usr/local/src/gdal-docker/
-# RUN apt-get update -y && \
-#     apt-get install -y make && \
-#     make -C /usr/local/src/gdal-docker install clean && \
-#     apt-get purge -y make
+### Tiler specific Code
+ADD ./tiler/tiler-scripts /tiler-scripts
+# USER root
+RUN chmod +x -R /tiler-scripts
+# USER appuser
 
-# # Externally accessible data is by default put in /data
-# WORKDIR /data
-# VOLUME ["/data"]
+### Config
+ENV DB_HOST localhost
+ENV DB_PORT 5432
+ENV DB_USER docker
+ENV DB_NAME gis 
+ENV DB_PASSWORD docker
 
-# # Execute the gdal utilities as nobody, not root
-# USER nobody
-
-# # Output version and capabilities by default.
-# CMD gdalinfo --version && gdalinfo --formats && ogrinfo --formats
+# Open port 5432 so linked containers can see them
+EXPOSE 5432

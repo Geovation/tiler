@@ -10,7 +10,7 @@ RUN  dpkg-divert --local --rename --add /sbin/initctl
 # Use local cached debs from host (saves your bandwidth!)
 # Change ip below to that of your apt-cacher-ng host
 # Or comment this line out if you do not with to use caching
-ADD 71-apt-cacher-ng /etc/apt/apt.conf.d/71-apt-cacher-ng
+# ADD 71-apt-cacher-ng /etc/apt/apt.conf.d/71-apt-cacher-ng
 
 #RUN echo "deb http://archive.ubuntu.com/ubuntu trusty main universe" > /etc/apt/sources.list
 # Add the PostgreSQL PGP key to verify their Debian packages.
@@ -36,15 +36,15 @@ EXPOSE 5432
 
 # Run any additional tasks here that are too tedious to put in
 # this dockerfile directly.
-ADD setup.sh /setup.sh
-RUN chmod 0755 /setup.sh
-RUN /setup.sh
+ADD postgis/setup.sh /postgis/setup.sh
+RUN chmod 0755 postgis/setup.sh
+RUN postgis/setup.sh
 
 # We will run any commands in this when the container starts
-ADD start-postgis.sh /start-postgis.sh
-RUN chmod 0755 /start-postgis.sh
+ADD postgis/start-postgis.sh /postgis/start-postgis.sh
+RUN chmod 0755 /postgis/start-postgis.sh
 
-CMD /start-postgis.sh
+CMD /postgis/start-postgis.sh
 
 ### Tiler specific Code
 ADD ./tiler/tiler-scripts /tiler-scripts

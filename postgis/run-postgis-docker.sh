@@ -72,7 +72,7 @@ CMD="docker run --name="${CONTAINER_NAME}" \
 	-e POSTGRES_PASS=${PGPASSWORD} \
 	-d -t \
         ${VOLUME_OPTION} \
-	kartoza/postgis /start-postgis.sh"
+	kartoza/postgis /postgis/start-postgis.sh"
 
 echo 'Running\n'
 echo $CMD

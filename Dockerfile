@@ -1,6 +1,6 @@
 #--------- Generic stuff all our Dockerfiles should start with so we get caching ------------
 FROM debian:stable
-MAINTAINER Tim Sutton<tim@kartoza.com>
+MAINTAINER James Milner<james.milner@geovation.uk>
 
 RUN  export DEBIAN_FRONTEND=noninteractive
 ENV  DEBIAN_FRONTEND noninteractive
@@ -48,10 +48,11 @@ CMD /start-postgis.sh
 
 ### Tiler specific Code
 ADD ./tiler/tiler-scripts /tiler-scripts
-ENV DB_PORT 5432
-ENV DB_USER docker
-ENV DB_DATABASE data 
-ENV DB_PASSWORD docker
+RUN chmod +x -R /tiler-scripts
+RUN export DB_PORT=5432
+RUN export DB_USER=docker
+RUN export DB_DATABASE=data 
+RUN export DB_PASSWORD=docker
 
 ### GDAL Specific Code
 RUN apt-get install gdal-bin

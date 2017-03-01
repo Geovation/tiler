@@ -50,11 +50,30 @@ RUN apt-get install gdal-bin
 ### Python
 RUN apt-get install -y python-pip libpq-dev python-dev
 RUN pip install psycopg2
+RUN pip install geojson 
+
+### Tippecanoe! 
+RUN apt-get -y install sudo git build-essential libsqlite3-dev zlib1g-dev \
+    && cd / \
+    && git clone https://github.com/mapbox/tippecanoe.git tippecanoe \
+    && cd tippecanoe \
+    #  && git checkout tags/$TIPPECANOE_RELEASE \
+    && cd /tippecanoe \
+    && make \
+    && make install \
+    && cd / \
+ #   && rm -rf tippecanoe \
+
+## MBUtil
+RUN cd / \
+    && git clone git://github.com/mapbox/mbutil.git \
+    && cd mbutil \
+    && python setup.py install
 
 ### Tiler specific Code
-ADD ./tiler/tiler-scripts /tiler-scripts
+#ADD ./tiler/tiler-scripts /tiler-scripts
 # USER root
-RUN chmod +x -R /tiler-scripts
+# RUN chmod +x -R /tiler-scripts
 # USER appuser
 
 ### Config

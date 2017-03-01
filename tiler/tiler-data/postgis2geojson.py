@@ -1,4 +1,4 @@
-#!/usr/bin/python2.4
+#!/usr/bin/python2.7
 import psycopg2
 import sys
 import os
@@ -15,54 +15,12 @@ for env_var in env_vars:
     if env_var not in os.environ:
         print env_var, "environment variable not set not"
 
-## Connect to database using environment variable credentials
-# try:
-#     connection_string = "dbname='{}' user='{}' host='{}' password='{}'".format(
-#         os.environ['DB_NAME'], 
-#         os.environ['DB_USER'],
-#         os.environ['DB_HOST'],
-#         os.environ['DB_PASSWORD']
-#     )
-#     conn = psycopg2.connect(connection_string)
-    
-# except:
-#     print "Unable to connect to the database, please check credentials and connection"
-#     raise
 
-# try:
-#     cur = conn.cursor()
-#     print "\n Creating if not created", TABLE_NAME, "in database"
-#     cur.execute("""CREATE TABLE IF NOT EXISTS public.{} (id integer); select count(*) from {};""".format(TABLE_NAME, TABLE_NAME))
-#     print "\n Table", TABLE_NAME, "sucessfully created (if it didn't exist already)"
-
-# except:
-#     print "\n Can't create table ", TABLE_NAME
-#     raise
-
-
-  # postgres = 'PG:"host={} port={} user={} dbname={} password={}" '.format(
-  #     os.environ['DB_HOST'],
-  #     os.environ['DB_PORT'],
-  #     os.environ['DB_USER'],
-  #     os.environ['DB_NAME'], 
-  #     os.environ['DB_PASSWORD']
-  # )
-
-  # forloop = """for layer in "$(ogrinfo -ro -so -q {} | cut -d ' ' -f 2)" """.format(postgres)
-
-  # connect_command = forloop + """
-  #                             do 
-  #                               ogr2ogr -f "GeoJSON" /tiler-data/geojson/${layer}.geojson 
-  #                             done
-  #                             """
-
-OUTPUT = "/tiler-data/tiles/{}.geojson".format(TABLE_NAME)
-
+OUTPUT = "/tiler-data/geojson/{}.geojson".format(TABLE_NAME)
 try:
     os.remove(OUTPUT)
 except OSError:
     pass
-
 
 try:
     connect_command = """ogr2ogr -f GeoJSON {} PG:"host={} port={} user={} dbname={} password={}" -sql "select * from {}" """.format(

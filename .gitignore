@@ -1,5 +1,5 @@
 tiler/tiler-data/input
 tiler/tiler-data/geojson
 tiler/tiler-data/tiles
-DS_Store
+.DS_Store
 load.sh

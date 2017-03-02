@@ -1,6 +1,6 @@
 /* eslint-disable openlayers-internal/no-unused-requires */
 
-var extent =  [-178.217598, 18.921786, -66.969271, 71.406235] //geojsonSource.getExtent();
+// var extent =  [-178.217598, 18.921786, -66.969271, 71.406235] //geojsonSource.getExtent();
 
 var proj = new ol.proj.Projection({
     code: 'EPSG:4326',
@@ -16,24 +16,24 @@ var map = new ol.Map({
                 renderMode: 'vector',
                 format: new ol.format.MVT(),
                 tileGrid: ol.tilegrid.createXYZ({
-                    maxZoom: 10,
-                    extent: extent
+                    maxZoom: 9,
+                    // extent: extent
                 }),
-                extent: extent,
-                //   tilePixelRatio: 16,
-                url: '/tiler/tiler-data/tiles/states/{z}/{x}/{y}.pbf'
-                }),
-                style: createStyle()
+                // extent: extent,
+                // tilePixelRatio: 16,
+                url: '/tiler/tiler-data/tiles/uk/{z}/{x}/{y}.pbf'
+            }),
+            style: createStyle()
         }),
         new ol.layer.Tile({
             source: new ol.source.OSM(),
             opacity: 0.3
         })
     ],
-    extent: extent,
+    // extent: extent,
     target: 'map',
     view: new ol.View({
-        center: [-104.646299, 37.2588581],
+        center: [-1.0, 51.0],
         projection: proj,
         zoom: 6,
         minZoom: 1
@@ -42,20 +42,19 @@ var map = new ol.Map({
 
 
 function createStyle () {
+    var color = 'rgba(255,0,0,0.5)';
+    var fill = new ol.style.Fill({color: color});
+    var stroke = new ol.style.Stroke({color: color, width: 1});
 
-var color = 'rgba(255,0,0,0.5)';
-var fill = new ol.style.Fill({color: color});
-var stroke = new ol.style.Stroke({color: color, width: 1});
+    var polygon = new ol.style.Style({fill: fill});
+    var strokedPolygon = new ol.style.Style({fill: fill, stroke: stroke});
+    var line = new ol.style.Style({stroke: stroke});
+    var text = new ol.style.Style({text: new ol.style.Text({
+        text: 'Hello', fill: fill, stroke: stroke
+    })});
 
-var polygon = new ol.style.Style({fill: fill});
-var strokedPolygon = new ol.style.Style({fill: fill, stroke: stroke});
-var line = new ol.style.Style({stroke: stroke});
-var text = new ol.style.Style({text: new ol.style.Text({
-text: 'Hello', fill: fill, stroke: stroke
-})});
-
-var styles = [polygon, strokedPolygon, line];
-return polygon;
+    var styles = [polygon, strokedPolygon, line];
+    return styles;
 }
 
 // ol.style.Fill, ol.style.Icon, ol.style.Stroke, ol.style.Style and

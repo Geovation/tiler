@@ -1,4 +1,8 @@
-# Tiler: A Vector Tile Pipeline
+<link href="https://fonts.googleapis.com/css?family=Bungee+Shade" rel="stylesheet">
+<style> h1 { font-family: 'Bungee Shade', cursive; } </style>
+
+<h1>Tiler</h1>
+A Vector Tile Pipeline
 
 ### Build Docker Image
 
@@ -10,7 +14,7 @@ You need to specify the location of your data folder so tiler knows where to loa
 
 `docker run --name "tiler" -v /Users/username/Documents/Code/tiler/tiler-data:/tiler-data -p 25432:5432 tiler`
 
-Just replace `/Users/username/Documents/Code/tiler/tiler-data:/tiler-data` to the path of your data folder.
+Just replace `/Users/username/Documents/Code/tiler/tiler-data` to the path of your data folder.
 
 ### End Container
 

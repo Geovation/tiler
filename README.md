@@ -1,4 +1,4 @@
-<img src="tiler.png">
+<img src="tiler.png"><br>
 A Vector Tile Pipeline
 
 ### Build Docker Image

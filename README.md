@@ -2,35 +2,44 @@
 <br>
 A Vector Tile Pipeline
 
-### Build Docker Image
+The purpose of Tiler is to create an easy to use, command line orientied pipeline for taking vector data in formats such as Shapefiles, and transform them into raw Vector Tiles and MBTiles files (if required).
+
+Tiler exists as a Docker container that unifies several technologies to streamline the creation of vector tiles.
+
+## Setup 
+
+Tiler is designed to be easy to use. You create a Docker image and then use commands within the container to convert data to Vector Tiles.
+
+#### Build Docker Image
 
 `docker build -t tiler .`
 
-### Start Docker Container
+#### Start Docker Container
 
-You need to specify the location of your data folder so tiler knows where to load data from. We do this using volumes as such:
+You need to specify the location of your data folder so tiler knows where to load data from. We do this using volumes (-v) as such:
 
 `docker run --name "tiler" -v /Users/username/Documents/Code/tiler/tiler-data:/tiler-data -p 25432:5432 tiler`
 
 Just replace `/Users/username/Documents/Code/tiler/tiler-data` to the path of your data folder.
 
-### End Container
+#### End Container
 
 `docker stop tiler`
 
-### Remove Container 
+#### Remove Container 
 
  `docker rm tiler`
 
-### Usage
+## Usage
 
-To get into shell:
+To get into the shell of the tiler container:
 
 `docker exec -it tiler /bin/bash`
 
-To connect via psql:
+Optionally if you want to connect via psql:
 
 `psql -h localhost -U docker -p 25432 -l`
 
-### Credits
-Based on Tim Sutton's PostGIS dockerfile.
+## License
+
+MIT Licensed - see LICENSE.txt

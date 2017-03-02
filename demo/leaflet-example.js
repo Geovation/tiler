@@ -34,4 +34,4 @@ var VectorTileOptions = {
 var PbfLayer = L.vectorGrid.protobuf(Url, VectorTileOptions).addTo(map);
 
 
-map.setView({ lat: 37.2588581, lng:-104.646299 }, 1);
+map.setView({ lat: 51.0, lng:0.1 }, 6);

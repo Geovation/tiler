@@ -1,7 +1,4 @@
-<link href="https://fonts.googleapis.com/css?family=Bungee+Shade" rel="stylesheet">
-<style> h1 { font-family: 'Bungee Shade', cursive; } </style>
-
-<h1>Tiler</h1>
+<img src="tiler.png">
 A Vector Tile Pipeline
 
 ### Build Docker Image

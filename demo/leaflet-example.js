@@ -2,27 +2,29 @@ var map = L.map('map');
 
 L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
     attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
-    maxZoom: 8,
+    maxZoom: 15,
     minZoom: 3,
     noWrap: true  
 }).addTo(this.map)
 
-var vectortiles = "UK"
+var vectortiles = "buildings_wgs84"
 var Url = "/tiler/tiler-data/tiles/" + vectortiles + "/{z}/{x}/{y}.pbf";
+var type = vectortiles + "geojson";
 
-var vectorTileStyling = {
-    "UKgeojson": function(properties, zoom) {
-        console.log("Styling", properties, zoom)
-        return  {
-            fill: true,
-            weight: 1,
-            fillColor: '#06cccc',
-            color: '#06cccc',
-            fillOpacity: 0.2,
-            opacity: 0.4,
-        }
+
+var vectorTileStyling = { };
+vectorTileStyling[type] = function(properties, zoom) {
+    //console.log("Styling", properties, zoom)
+    return {
+        fill: true,
+        weight: 1,
+        fillColor: '#111111',
+        color: '#111111',
+        fillOpacity: 0.1,
+        opacity: 0.05,
     }
 }
+
 
 var VectorTileOptions = {
     rendererFactory: L.canvas.tile,

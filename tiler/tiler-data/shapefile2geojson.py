@@ -28,9 +28,9 @@ try:
     
     stdout, stderr = process.communicate()
     # print stdout, stderr
-    "Exit code: ", process.wait()
+    "\n Exit code: ", process.wait()
     
-    print "\n Shapefile", INPUT_PATH, "converted to", OUTPUT_NAME + ".geojson"
+    print "\n Shapefile", INPUT_PATH, "converted to", OUTPUT_NAME + ".geojson \n"
 
 except Exception as err:
     print "Failed to convert to GeoJSON from Shapefile for ", INPUT_PATH

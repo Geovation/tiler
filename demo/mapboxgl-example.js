@@ -1,5 +1,6 @@
 
-var vectortiles = "UK";
+var vectortiles = "buildings_wgs84";
+var layername = vectortiles + "geojson";
 var PORT = "8080";
 var HOST = "http://127.0.0.1";
 var url = HOST + ":"+ PORT + "/tiler/tiler-data/tiles/" + vectortiles + "/{z}/{x}/{y}.pbf";
@@ -13,15 +14,16 @@ var simple = {
         "uk": {
             "type": "vector",
             "tiles": [url],
-            "maxzoom": 9
+            "maxzoom": 11,
+            "minzoom": 8
         }
     },
     "layers": [
         {
-            "id": "UKgeojson",
+            "id": layername,
             "type": "fill",
             "source": "uk",
-            "source-layer": "UKgeojson",
+            "source-layer": layername,
             "filter": ["==", "$type", "Polygon"],
             "paint": {
                 "fill-color": "rgba(0,255,210, 0.5)",
@@ -34,7 +36,7 @@ var simple = {
 var map = new mapboxgl.Map({
     container: 'map',
     style: simple,
-    zoom: 5,
+    zoom: 8,
     center: [-0.5, 51.0]
 });
 

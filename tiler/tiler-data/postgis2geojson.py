@@ -39,7 +39,7 @@ try:
     print stdout, stderr
     "Exit code: ", process.wait()
     
-    print "\n Database table", TABLE_NAME, "converted to", TABLE_NAME + ".geojson"
+    print "\n Database table", TABLE_NAME, "converted to", TABLE_NAME + ".geojson \n"
 
 except Exception as err:
     print "Failed to convert to GeoJSON for table ", TABLE_NAME

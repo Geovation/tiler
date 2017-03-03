@@ -2,7 +2,7 @@
 <br>
 A Vector Tile Pipeline
 
-The purpose of Tiler is to create an easy to use, command line orientied pipeline for taking vector data in formats such as Shapefiles, and transform them into raw Vector Tiles and MBTiles files (if required).
+The purpose of Tiler is to create an easy to use, command line orientied pipeline for taking vector data in formats such as Shapefiles, and transforming them into raw Vector Tiles and MBTiles files (if required).
 
 Tiler exists as a Docker container that unifies several technologies to streamline the creation of vector tiles.
 
@@ -30,13 +30,19 @@ Just replace `/Users/username/Documents/Code/tiler/tiler-data` to the path of yo
 
  `docker rm tiler`
 
-## Usage
+## Accessing and Using Tiler
 
-To get into the shell of the tiler container:
+To get into the shell of the Tiler container:
 
 `docker exec -it tiler /bin/bash`
+ 
+Alternatively a convience script can be run:
 
-Optionally if you want to connect via psql:
+ `./shell.sh`
+
+## Accessing the Postgres Database
+
+If you want to connect via psql from the host you can use:
 
 `psql -h localhost -U docker -p 25432 -l`
 

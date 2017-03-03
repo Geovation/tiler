@@ -7,8 +7,8 @@ L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Li
     noWrap: true  
 }).addTo(this.map)
 
-var vectortiles = "buildings_wgs84"
-var Url = "/tiler/tiler-data/tiles/" + vectortiles + "/{z}/{x}/{y}.pbf";
+
+var url = "/tiler/tiler-data/tiles/" + vectortiles + "/{z}/{x}/{y}.pbf";
 var type = vectortiles + "geojson";
 
 
@@ -33,7 +33,7 @@ var VectorTileOptions = {
 };
 
 
-var PbfLayer = L.vectorGrid.protobuf(Url, VectorTileOptions).addTo(map);
+var PbfLayer = L.vectorGrid.protobuf(url, VectorTileOptions).addTo(map);
 
 
 map.setView({ lat: 51.0, lng:0.1 }, 6);

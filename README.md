@@ -10,6 +10,8 @@ Tiler exists as a Docker container that unifies several technologies to streamli
 
 Tiler is designed to be easy to use. You create a Docker image and then use commands within the container to convert data to Vector Tiles.
 
+You will require Docker to use Tiler. If you are new to Docker, check this overview [here](https://www.docker.com/what-docker) and see [this link to get hold of it](https://docs.docker.com/engine/getstarted/step_one/#docker-for-mac).
+
 #### Build Docker Image
 
 `docker build -t tiler .`
@@ -40,6 +42,21 @@ Alternatively a convience script can be run:
 
  `./shell.sh`
 
+#### Using Tiler
+
+WARNING: Work in Progress! Eventually these commands will be bundled together to make an even smoother transition from geo formats to Vector Tiles.
+
+Current scripts:
+
+python geojson2tiles.py 
+python postgis2geojson.py
+python shapefile2postgis.py
+python geojson2tiles.py  
+
+#### Demo Vector Tile 
+
+Demos are provided using [Leaflet.VectorGrid](http://leaflet.github.io/Leaflet.VectorGrid/vectorgrid-api-docs.html) and also [Mapbox GL](https://www.mapbox.com/mapbox-gl-js/api/) for you to display your tiles when you're done.
+
 ## Accessing the Postgres Database
 
 If you want to connect via psql from the host you can use:
@@ -48,4 +65,4 @@ If you want to connect via psql from the host you can use:
 
 ## License
 
-MIT Licensed - see LICENSE.txt
+MIT License

@@ -5,17 +5,17 @@ import os
 import subprocess
 import tiler_helpers
 
-def postgis2geojson(TABLE_NAME, DATABASE_VARS)
+def postgis2geojson(TABLE_NAME, DATABASE_VARS, LAYER_CONFIG=False)
 
-    OUTPUT = "/tiler-data/geojson/{}.geojson".format(TABLE_NAME)
+    OUTPUT_PATH = "/tiler-data/geojson/{}.geojson".format(TABLE_NAME)
     try:
-        os.remove(OUTPUT)
+        os.remove(OUTPUT_PATH)
     except OSError:
         pass
 
     try:
         connect_command = """ogr2ogr -f GeoJSON {} PG:"host={} port={} user={} dbname={} password={}" -sql "select * from {}" """.format(
-            OUTPUT,
+            OUTPUT_PATH,
             DATABASE_VARS['DB_HOST'],
             DATABASE_VARS['DB_PORT'],
             DATABASE_VARS['DB_USER'],
@@ -32,10 +32,12 @@ def postgis2geojson(TABLE_NAME, DATABASE_VARS)
         
         print "\n Database table", TABLE_NAME, "converted to", TABLE_NAME + ".geojson \n"
 
+    if LAYER_CONFIG:
+        add_tippecanoe_config(OUTPUT_PATH, LAYER_CONFIG)
+
     except Exception as err:
         print "Failed to convert to GeoJSON for table ", TABLE_NAME
         raise
-
 
 
 

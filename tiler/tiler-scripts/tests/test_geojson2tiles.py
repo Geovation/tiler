@@ -5,7 +5,7 @@ import shutil
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) # Insanity for getting parent folder in path
 from geojson2tiles import *
 
-MBTILES_NAME = "test-states"
+MBTILES_NAME = "states"
 MBTILES_DIR = "/tiler-data/tiles/" + MBTILES_NAME
 MBTILES_FILE = "/tiler-data/tiles/" + MBTILES_NAME + ".mbtiles"
 

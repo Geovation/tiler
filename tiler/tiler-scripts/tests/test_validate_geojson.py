@@ -8,7 +8,7 @@ from validate_geojson import *
 class TestValidateGeojson(unittest.TestCase):
 
     def test_create_mbtiles(self):
-        GEOJSON_FILE = "/tiler-data/test-data/test-states.geojson"
+        GEOJSON_FILE = "/tiler-data/test-data/states.geojson"
         is_valid = validate_geojson(GEOJSON_FILE)
 
         self.assertTrue(is_valid)

@@ -1,4 +1,5 @@
 import os
+import json
 
 def check_environ_vars():
     ## Check all environment variables are defined
@@ -11,3 +12,21 @@ def check_environ_vars():
 def check_file(FILE_NAME):
     if not os.path.isfile(FILE_NAME):
         raise IOError(FILE_NAME + " does not exist")
+
+
+def add_tippecanoe_config(OUTPUT_PATH, LAYER_CONFIG):
+    print "\n Rewriting GeoJSON to add tippecanoe options"
+    with open(OUTPUT_PATH, 'r+') as geojson_file:
+            geojson = json.load(geojson_file)
+            for feature in geojson["features"]:
+                feature["tippecanoe"] = {}
+                if "layer" in LAYER_CONFIG:
+                    feature["tippecanoe"]["layer"] = str(LAYER_CONFIG["layer"])
+                if "maxzoom" in LAYER_CONFIG:
+                    feature["tippecanoe"]["maxzoom"] = int(LAYER_CONFIG["maxzoom"])
+                if "minzoom" in LAYER_CONFIG:
+                    feature["tippecanoe"]["minzoom"] = int(LAYER_CONFIG["minzoom"])
+            
+            geojson_file.seek(0)
+            geojson_file.write(json.dumps(geojson, indent=4))
+            geojson_file.truncate()

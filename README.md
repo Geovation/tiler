@@ -20,8 +20,8 @@ You will require Docker to use Tiler. If you are new to Docker, check this overv
 
 You need to specify the location of your data folder so tiler knows where to load data from. We do this using volumes (-v) as such:
 
-`export TILER_DATA_DIR=/Users/username/Documents/Code/tiler/tiler-data`
-`export TILER_SCRIPTS_DIR=/Users/username/Documents/Code/tiler/tiler-scripts`
+`export TILER_DATA_DIR=/Users/username/Documents/Code/tiler/tiler-data` <br>
+`export TILER_SCRIPTS_DIR=/Users/username/Documents/Code/tiler/tiler-scripts` <br>
 
 `docker run --name "tiler" \
             -v $TILER_DATA_DIR:/tiler-data \
@@ -59,10 +59,9 @@ Current scripts:
 `python shapefile2postgis.py` <br>
 `python geojson2tiles.py` <br>
 
-
 ### Tests
 
-`cd tiler-scripts`
+`cd tiler-scripts` <br>
 `nosetests`
 
 #### Demo Vector Tile 

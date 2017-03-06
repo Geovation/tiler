@@ -3,18 +3,20 @@ import psycopg2
 import sys
 import os
 import subprocess
+import json
+import tiler_helpers
 
 
-def shapefile2geojson(INPUT_PATH, OUTPUT_NAME):
+def shapefile2geojson(INPUT_PATH, OUTPUT_NAME, LAYER_CONFIG=False):
 
-    OUTPUT = "/tiler-data/geojson/{}.geojson".format(OUTPUT_NAME)
+    OUTPUT_PATH = "/tiler-data/geojson/{}.geojson".format(OUTPUT_NAME)
     try:
-        os.remove(OUTPUT)
+        os.remove(OUTPUT_PATH)
     except OSError:
         pass
 
     try:
-        connect_command = """ogr2ogr -f GeoJSON {} {}""".format(OUTPUT, INPUT_PATH)
+        connect_command = """ogr2ogr -f GeoJSON {} {}""".format(OUTPUT_PATH, INPUT_PATH)
         print "\n Executing: ", connect_command
         process = subprocess.Popen(connect_command, shell=True)
         
@@ -23,6 +25,9 @@ def shapefile2geojson(INPUT_PATH, OUTPUT_NAME):
         "\n Exit code: ", process.wait()
         
         print "\n Shapefile", INPUT_PATH, "converted to", OUTPUT_NAME + ".geojson \n"
+
+        if LAYER_CONFIG:
+            tiler_helpers.add_tippecanoe_config(OUTPUT_PATH, LAYER_CONFIG)
 
     except Exception as err:
         print "Failed to convert to GeoJSON from Shapefile for ", INPUT_PATH

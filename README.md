@@ -54,10 +54,10 @@ WARNING: Work in Progress! Eventually these commands will be bundled together to
 
 Current scripts:
 
-python geojson2tiles.py 
-python postgis2geojson.py
-python shapefile2postgis.py
-python geojson2tiles.py  
+`python geojson2tiles.py` <br>
+`python postgis2geojson.py` <br>
+`python shapefile2postgis.py` <br>
+`python geojson2tiles.py` <br>
 
 
 ### Tests

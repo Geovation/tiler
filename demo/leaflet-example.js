@@ -7,10 +7,8 @@ L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Li
     noWrap: true  
 }).addTo(this.map)
 
-
 var url = "/tiler/tiler-data/tiles/" + vectortiles + "/{z}/{x}/{y}.pbf";
 var type = vectortiles + "geojson";
-
 
 var vectorTileStyling = { };
 vectorTileStyling[type] = function(properties, zoom) {
@@ -18,13 +16,12 @@ vectorTileStyling[type] = function(properties, zoom) {
     return {
         fill: true,
         weight: 1,
-        fillColor: '#111111',
-        color: '#111111',
+        fillColor: "rgba(255,11,11, 0.5)",
+        color: "rgba(255,11,11, 0.5)",
         fillOpacity: 0.1,
         opacity: 0.05,
     }
 }
-
 
 var VectorTileOptions = {
     rendererFactory: L.canvas.tile,

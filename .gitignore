@@ -3,3 +3,5 @@ tiler/tiler-data/geojson
 tiler/tiler-data/tiles
 .DS_Store
 load.sh
+export
+*.pyc

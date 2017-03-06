@@ -34,9 +34,10 @@ def create_mbtiles(GEOJSON_FILE, MBTILES_NAME, MAX_ZOOM, MIN_ZOOM, SIMPLIFICATIO
     command = "tippecanoe -o {} {} --maximum-zoom={} --minimum-zoom={} --read-parallel --no-polygon-splitting --simplification={} --drop-smallest-as-needed --coalesce".format(OUTPUT_PATH, GEOJSON_FILE, MAX_ZOOM, MIN_ZOOM, SIMPLIFICATION)
     print "\n Running: ", command
     tippecanoe_process = subprocess.Popen(command, shell=True)
-    stdout, stderr = tippecanoe_process.communicate()
-    # print stdout, stderr
-    print "\n Exit code: ", tippecanoe_process.wait()
+    #stdout, stderr = tippecanoe_process.communicate()
+    # print stdout, stderr  
+    exit_code = tippecanoe_process.wait()
+    print "\n Tippecanoe exit code: ", exit_code
 
     print "\n Created mbtiles file from " + GEOJSON_FILE
 
@@ -64,9 +65,14 @@ def extract_pbf(MBTILES_NAME):
     command = "mb-util --image_format=pbf /tiler-data/tiles/{}.mbtiles /tiler-data/tiles/{}".format(MBTILES_NAME, MBTILES_NAME, MBTILES_NAME)
     print "\n Running: ", command
     mbutil_process = subprocess.Popen(command, shell=True)
+    exit_code = mbutil_process.wait()
     stdout, stderr = mbutil_process.communicate()
+    if exit_code != 0:
+        raise IOError(stderr)
+    else:
+        "mb-util exit code :", exit_code
     # print stdout, stderr
-    print "\n Exit code: ", mbutil_process.wait()
+    print "\n Decompress exit code: ", exit_code
 
 
 def decompress_pbf(MBTILES_NAME):
@@ -76,11 +82,13 @@ def decompress_pbf(MBTILES_NAME):
     extension = ".pbf"
     length = len(extension)
     counter = 0
-    for filename in absoluteFilePaths("tiles/" + MBTILES_NAME):
+    files = absoluteFilePaths("/tiler-data/tiles/" + MBTILES_NAME)
+    
+    for filename in files:
 
         if counter % 50 == 0:
-            print "\n 10 more tiles decompressed..."
-            
+-            print "\n 10 more tiles decompressed..."
+
         if filename.endswith(".pbf"):
             old_name = os.path.abspath(filename)
             new_name = old_name[:-length] + '.pbf.gz'
@@ -100,6 +108,24 @@ def decompress_pbf(MBTILES_NAME):
     print "\n Vector Tiles decompressed!"
 
     print "\n Finished! See tiles/" + MBTILES_NAME, " for the resulting files \n"
+
+
+def create_demo_config(MBTILES_NAME):
+    demo_config = "/tiler-data/demo/config.js"
+    with open(demo_config, 'r+') as f:
+        config = "var vectortiles = " + MBTILES_NAME
+        f.seek(0)
+        f.write(config)
+        f.truncate()
+
+def geojson_to_tiles(GEOJSON_FILE, MAX_ZOOM, MIN_ZOOM, SIMPLIFCATION):
+
+    print "\n Running geojson2tiles..."
+    MBTILES_NAME = os.path.basename(os.path.splitext(GEOJSON_FILE)[0])
+    create_mbtiles(GEOJSON_FILE, MBTILES_NAME, MAX_ZOOM, MIN_ZOOM, SIMPLIFICATION)
+    extract_pbf(MBTILES_NAME)
+    decompress_pbf(MBTILES_NAME)
+    create_demo_config(MBTILES_NAME)
 
 
 if __name__ == '__main__':
@@ -131,8 +157,4 @@ if __name__ == '__main__':
 
     print "\n Input variables are valid!"
 
-    MBTILES_NAME = os.path.basename(os.path.splitext(GEOJSON_FILE)[0])
-
-    create_mbtiles(GEOJSON_FILE, MBTILES_NAME, MAX_ZOOM, MIN_ZOOM, SIMPLIFICATION)
-    extract_pbf(MBTILES_NAME)
-    decompress_pbf(MBTILES_NAME)
+    geojson_to_tiles(GEOJSON_FILE, MAX_ZOOM, MIN_ZOOM, SIMPLIFCATION)

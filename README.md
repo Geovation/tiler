@@ -1,6 +1,6 @@
 <img src="tiler.png"><br>
 <br>
-A Vector Tile Pipeline
+A no nonsense Vector Tile pipeline
 
 The purpose of Tiler is to create an easy to use, command line orientied pipeline for taking vector data in formats such as Shapefiles, and transforming them into raw Vector Tiles and MBTiles files (if required).
 
@@ -20,9 +20,15 @@ You will require Docker to use Tiler. If you are new to Docker, check this overv
 
 You need to specify the location of your data folder so tiler knows where to load data from. We do this using volumes (-v) as such:
 
-`docker run --name "tiler" -v /Users/username/Documents/Code/tiler/tiler-data:/tiler-data -p 25432:5432 tiler`
+`export TILER_DATA_DIR=/Users/username/Documents/Code/tiler/tiler-data`
+`export TILER_SCRIPTS_DIR=/Users/username/Documents/Code/tiler/tiler-scripts`
 
-Just replace `/Users/username/Documents/Code/tiler/tiler-data` to the path of your data folder.
+`docker run --name "tiler" \
+            -v $TILER_DATA_DIR:/tiler-data \
+            -v $TILER_SCRIPTS_DIR:/tiler-scripts \
+            -p 25432:5432 tiler`
+
+Just replace the paths as appropriate for your scripts and data forlders.
 
 #### End Container
 
@@ -52,6 +58,12 @@ python geojson2tiles.py
 python postgis2geojson.py
 python shapefile2postgis.py
 python geojson2tiles.py  
+
+
+### Tests
+
+`cd tiler-scripts`
+`nosetests`
 
 #### Demo Vector Tile 
 

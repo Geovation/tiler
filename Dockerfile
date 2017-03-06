@@ -51,6 +51,7 @@ RUN apt-get install gdal-bin
 RUN apt-get install -y python-pip libpq-dev python-dev
 RUN pip install psycopg2
 RUN pip install geojson 
+RUN pip install nose
 
 ### Tippecanoe! 
 RUN apt-get -y install sudo git build-essential libsqlite3-dev zlib1g-dev \

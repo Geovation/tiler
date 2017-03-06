@@ -15,7 +15,7 @@ var tiles = {
     "source-layer": layername,
     "filter": ["==", "$type", "Polygon"],
     "paint": {
-        "fill-color": "rgba(11,11,11, 0.5)",
+        "fill-color": "rgba(255,11,11, 0.5)",
         // "line-color": "rgba(0,0,0, 0.1)"
     }
 }
@@ -28,11 +28,12 @@ var map = new mapboxgl.Map({
 });
 
 map.on('load', function () {
+    console.log("Map ready to add vector tiles")
     map.addSource(vectortiles, {
         "type": "vector",
         "tiles": [url],
-        "maxzoom": 11,
-        "minzoom": 8
+        // "maxzoom": 11,
+        // "minzoom": 8
     });
     map.addLayer(tiles);
 });

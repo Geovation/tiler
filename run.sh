@@ -1,2 +1,9 @@
 docker rm tiler
-docker run --name "tiler" -v /Users/jmilner/Documents/Code/tiler/tiler/tiler-data:/tiler-data -p 25432:5432 tiler
+. export 
+echo "Using the following directories: "
+echo $TILER_DATA_DIR
+echo $TILER_SCRIPTS_DIR
+docker run --name "tiler" \
+            -v $TILER_DATA_DIR:/tiler-data \
+            -v $TILER_SCRIPTS_DIR:/tiler-scripts \
+            -p 25432:5432 tiler

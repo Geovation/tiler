@@ -13,6 +13,7 @@ def validate_geojson(geojson_path):
         if validation["message"]:
             print "Info: ", validation["message"]
 
+        return validation["valid"]
 
 if __name__ == '__main__':
 

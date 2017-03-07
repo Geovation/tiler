@@ -38,7 +38,7 @@ def create_mbtiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM,  SIMPLIFICAT
     for geojson_file in GEOJSON_FILES:
         GEOJSON_FILES_STR += geojson_file + " "
 
-    if MIN_ZOOM and MAX_ZOOM:
+    if MIN_ZOOM != None and MAX_ZOOM != None:
         command = "tippecanoe -o {} {} --minimum-zoom={}  --maximum-zoom={} --read-parallel --no-polygon-splitting --simplification={} --drop-smallest-as-needed --coalesce".format(OUTPUT_PATH, GEOJSON_FILES_STR, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION)
     else:
         command = "tippecanoe -o {} {} --read-parallel --no-polygon-splitting --simplification={} --drop-smallest-as-needed --coalesce".format(OUTPUT_PATH, GEOJSON_FILES_STR, SIMPLIFICATION)
@@ -76,7 +76,7 @@ def extract_pbf(MBTILES_NAME):
         print "\n Vector Tiles folder removed!"
     
     print "\n Commencing extraction from mbtiles to", MBTILES_DIR
-    command = "mb-util --image_format=pbf /tiler-data/tiles/{}.mbtiles /tiler-data/tiles/{}".format(MBTILES_NAME, MBTILES_NAME, MBTILES_NAME)
+    command = "mb-util --image_format=pbf --silent /tiler-data/tiles/{}.mbtiles /tiler-data/tiles/{}".format(MBTILES_NAME, MBTILES_NAME, MBTILES_NAME)
     print "\n Running: ", command
     mbutil_process = subprocess.Popen(command, shell=True)
     exit_code = mbutil_process.wait()

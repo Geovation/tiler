@@ -2,9 +2,7 @@ import json
 import sys
 import os
 
-def validate_config(name):
-
-    config_path = "/tiler-data/configs/" + name + ".tiler.json"
+def validate_config(config_path):
 
     with open(config_path, 'r') as config_file:
         config_dump = config_file.read()
@@ -17,11 +15,11 @@ def validate_config(name):
 
                 if layer["type"] == "shapefile" and not path.endswith(".shp"):
                     raise OSError("File does not have shapefile extension but was marked as shapefile")
-                    
+
                 else:
                     print path, "is a valid file"
     
-    print "Config", name, "is valid! :)"
+    print "Config", config_path, "is valid! :)"
     return True
 
 if __name__ == '__main__':

@@ -35,7 +35,7 @@
 
         "surfacewater" : {
             "type" : "shapefile",
-            "paths" : ["/tiler-data/input/os/TL_SurfaceWater_WGS84.shp"],
+            "paths" : ["/tiler-data/input/os/TL_SurfaceWater_Area_WGS84.shp"],
             "minzoom" : 0,
             "maxzoom" : 14
         },

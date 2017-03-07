@@ -1,0 +1,24 @@
+{
+
+    "outdir" : "/tiler-data/tiles/",
+    "tileset" : "example",
+    "simplification" : 5,
+    "data" : {
+
+        "buildings" : {
+            "type" : "shapefile",
+            "paths" : ["/tiler-data/input/buildings/example_roads.shp"],
+            "minzoom" : 5,
+            "maxzoom" : 14
+        },
+
+        "roads" : {
+            "type" : "shapefile",
+            "paths" : ["/tiler-data/input/roads/example_roads.shp"],
+            "minzoom" : 3,
+            "maxzoom" : 14
+        }
+
+    }
+
+}

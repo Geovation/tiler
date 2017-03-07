@@ -7,11 +7,7 @@ import glob
 import gzip
 import shutil
 from validate_geojson import validate_geojson
-
-def absoluteFilePaths(directory):
-   for dirpath,_,filenames in os.walk(directory):
-       for f in filenames:
-           yield os.path.abspath(os.path.join(dirpath, f))
+from tiler_helpers import absolute_file_paths
 
 def create_mbtiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM,  SIMPLIFICATION):
 
@@ -101,7 +97,7 @@ def decompress_pbf(MBTILES_NAME):
     extension = ".pbf"
     length = len(extension)
     counter = 0
-    files = absoluteFilePaths("/tiler-data/tiles/" + MBTILES_NAME)
+    files = absolute_file_paths("/tiler-data/tiles/" + MBTILES_NAME)
     
     for filename in files:
 

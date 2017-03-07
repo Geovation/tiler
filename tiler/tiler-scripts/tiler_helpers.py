@@ -30,3 +30,9 @@ def add_tippecanoe_config(OUTPUT_PATH, LAYER_CONFIG):
             geojson_file.seek(0)
             geojson_file.write(json.dumps(geojson))
             geojson_file.truncate()
+
+
+def absolute_file_paths(directory):
+   for dirpath,_,filenames in os.walk(directory):
+       for f in filenames:
+           yield os.path.abspath(os.path.join(dirpath, f))

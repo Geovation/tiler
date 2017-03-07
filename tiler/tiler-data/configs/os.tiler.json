@@ -7,15 +7,120 @@
 
         "buildings" : {
             "type" : "shapefile",
-            "paths" : ["/tiler-data/input/buildings/TL_Buildings_WGS84.shp"],
-            "minzoom" : 5,
+            "paths" : ["/tiler-data/input/os/TL_Building_WGS84.shp"],
+            "minzoom" : 7,
             "maxzoom" : 14
         },
 
         "roads" : {
             "type" : "shapefile",
-            "paths" : ["/tiler-data/input/roads/TL_Road_WGS84.shp"],
-            "minzoom" : 5,
+            "paths" : ["/tiler-data/input/os/TL_Road_WGS84.shp"],
+            "minzoom" : 7,
+            "maxzoom" : 14
+        },
+
+        "roadtunnel" : {
+            "type" : "shapefile",
+            "paths" : ["/tiler-data/input/os/TL_RoadTunnel_WGS84.shp"],
+            "minzoom" : 8,
+            "maxzoom" : 14
+        },
+
+        "roundabout" : {
+            "type" : "shapefile",
+            "paths" : ["/tiler-data/input/os/TL_Roundabout_WGS84.shp"],
+            "minzoom" : 8,
+            "maxzoom" : 14
+        },
+
+        "surfacewater" : {
+            "type" : "shapefile",
+            "paths" : ["/tiler-data/input/os/TL_SurfaceWater_WGS84.shp"],
+            "minzoom" : 0,
+            "maxzoom" : 14
+        },
+
+        "tidalboundary" : {
+            "type" : "shapefile",
+            "paths" : ["/tiler-data/input/os/TL_TidalBoundary_WGS84.shp"],
+            "minzoom" : 0,
+            "maxzoom" : 14
+        },
+
+        "tidalwater" : {
+            "type" : "shapefile",
+            "paths" : ["/tiler-data/input/os/TL_TidalWater_WGS84.shp"],
+            "minzoom" : 0,
+            "maxzoom" : 14
+        },
+
+        "woodland" : {
+            "type" : "shapefile",
+            "paths" : ["/tiler-data/input/os/TL_Woodland_WGS84.shp"],
+            "minzoom" : 4,
+            "maxzoom" : 14
+        },
+
+        "carcharging" : {
+            "type" : "shapefile",
+            "paths" : ["/tiler-data/input/os/TL_CarChargingPoint_WGS84.shp"],
+            "minzoom" : 10,
+            "maxzoom" : 14
+        },
+
+        "electricitylines" : {
+            "type" : "shapefile",
+            "paths" : ["/tiler-data/input/os/TL_ElectricityTransmissionLine_WGS84.shp"],
+            "minzoom" : 8,
+            "maxzoom" : 14
+        },
+
+        "functionalsite" : {
+            "type" : "shapefile",
+            "paths" : ["/tiler-data/input/os/TL_FunctionalSite_WGS84.shp"],
+            "minzoom" : 8,
+            "maxzoom" : 14
+        },
+
+        "glasshouse" : {
+            "type" : "shapefile",
+            "paths" : ["/tiler-data/input/os/TL_Glasshouse_WGS84.shp"],
+            "minzoom" : 10,
+            "maxzoom" : 14
+        },
+
+        "importantbuilding" : {
+            "type" : "shapefile",
+            "paths" : ["/tiler-data/input/os/TL_ImportantBuilding_WGS84.shp"],
+            "minzoom" : 10,
+            "maxzoom" : 14
+        },
+
+        "motorway" : {
+            "type" : "shapefile",
+            "paths" : ["/tiler-data/input/os/TL_MotorwayJunction_WGS84.shp"],
+            "minzoom" : 6,
+            "maxzoom" : 14
+        },
+
+        "railwaytrack" : {
+            "type" : "shapefile",
+            "paths" : ["/tiler-data/input/os/TL_RailwayTrack_WGS84.shp"],
+            "minzoom" : 8,
+            "maxzoom" : 14
+        },
+
+        "railwaytunnel" : {
+            "type" : "shapefile",
+            "paths" : ["/tiler-data/input/os/TL_RailwayTunnel_WGS84.shp"],
+            "minzoom" : 8,
+            "maxzoom" : 14
+        },
+
+        "railwaystation" : {
+            "type" : "shapefile",
+            "paths" : ["/tiler-data/input/os/TL_RailwayStation_WGS84.shp"],
+            "minzoom" : 9,
             "maxzoom" : 14
         }
 

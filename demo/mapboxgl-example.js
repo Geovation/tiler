@@ -8,17 +8,16 @@ console.log(url);
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiamFtZXNtaWxuZXIiLCJhIjoiY2lsMm96djd1MDBjYndnbTVmajAxeHByaiJ9.mw4lltZ8qZjJHaJwbnN5Yw';
 
-var tiles = {
+var tilelayers = [{
     "id": layername,
     "type": "fill",
     "source": vectortiles,
     "source-layer": layername,
     "filter": ["==", "$type", "Polygon"],
     "paint": {
-        "fill-color": "rgba(255,11,11, 0.5)",
-        // "line-color": "rgba(0,0,0, 0.1)"
+        "fill-color": "rgba(255,11,11, 0.5)"
     }
-}
+}]
 
 var map = new mapboxgl.Map({
     container: 'map',
@@ -35,7 +34,10 @@ map.on('load', function () {
         // "maxzoom": 11,
         // "minzoom": 8
     });
-    map.addLayer(tiles);
+    tilelayers.forEach(function(tiles){
+        map.addLayer(tiles);
+    })
+
 });
 
 map.addControl(new mapboxgl.NavigationControl());

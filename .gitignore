@@ -1,6 +1,7 @@
 tiler/tiler-data/input
 tiler/tiler-data/geojson
 tiler/tiler-data/tiles
+tiler/tiler/tiler-data/configs/os.tiler.json
 .DS_Store
 load.sh
 export

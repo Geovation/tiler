@@ -28,5 +28,5 @@ def add_tippecanoe_config(OUTPUT_PATH, LAYER_CONFIG):
                     feature["tippecanoe"]["minzoom"] = int(LAYER_CONFIG["minzoom"])
             
             geojson_file.seek(0)
-            geojson_file.write(json.dumps(geojson, indent=4))
+            geojson_file.write(json.dumps(geojson))
             geojson_file.truncate()

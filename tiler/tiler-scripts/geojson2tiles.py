@@ -13,11 +13,14 @@ def absoluteFilePaths(directory):
        for f in filenames:
            yield os.path.abspath(os.path.join(dirpath, f))
 
-def create_mbtiles(GEOJSON_FILE, MBTILES_NAME, MAX_ZOOM, MIN_ZOOM, SIMPLIFICATION):
+def create_mbtiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM,  SIMPLIFICATION):
 
     # Validate GeoJSON 
     print "\n Validating GeoJSON"
-    validate_geojson(GEOJSON_FILE)
+    if type(GEOJSON_FILES) != list:
+        raise TypeError("GEOJSON_FILES is not a list")
+    for geojson in GEOJSON_FILES:
+        validate_geojson(geojson)
     print "\n GeoJSON is valid!"
 
     # Create .mbtiles file
@@ -33,17 +36,28 @@ def create_mbtiles(GEOJSON_FILE, MBTILES_NAME, MAX_ZOOM, MIN_ZOOM, SIMPLIFICATIO
     if not os.path.exists("/tiler-data/tiles/"):
         os.makedirs("/tiler-data/tiles/")
 
-    print "Commencing running creation of mbiles from GeoJSON file", GEOJSON_FILE
-    command = "tippecanoe -o {} {} --maximum-zoom={} --minimum-zoom={} --read-parallel --no-polygon-splitting --simplification={} --drop-smallest-as-needed --coalesce".format(OUTPUT_PATH, GEOJSON_FILE, MAX_ZOOM, MIN_ZOOM, SIMPLIFICATION)
+    print "Commencing running creation of mbiles from GeoJSON files : ", str(GEOJSON_FILES)
+
+    GEOJSON_FILES_STR = ""
+    for geojson_file in GEOJSON_FILES:
+        GEOJSON_FILES_STR += geojson_file + " "
+
+    if MIN_ZOOM and MAX_ZOOM:
+        command = "tippecanoe -o {} {} --minimum-zoom={}  --maximum-zoom={} --read-parallel --no-polygon-splitting --simplification={} --drop-smallest-as-needed --coalesce".format(OUTPUT_PATH, GEOJSON_FILES_STR, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION)
+    else:
+        command = "tippecanoe -o {} {} --read-parallel --no-polygon-splitting --simplification={} --drop-smallest-as-needed --coalesce".format(OUTPUT_PATH, GEOJSON_FILES_STR, SIMPLIFICATION)
+
     print "\n Running: ", command
     tippecanoe_process = subprocess.Popen(command, shell=True)
     stdout, stderr = tippecanoe_process.communicate()
     if stderr:
-        raise sterr  
+        raise IOError(sterr)  
     exit_code = tippecanoe_process.wait()
     print "\n Tippecanoe exit code: ", exit_code
+    if exit_code != 0:
+        raise IOError("Exit code was not 0 for tippecanoe process")
 
-    print "\n Created mbtiles file from " + GEOJSON_FILE
+    print "\n Created mbtiles file from " + str(GEOJSON_FILES)
 
 
 def extract_pbf(MBTILES_NAME):
@@ -71,10 +85,11 @@ def extract_pbf(MBTILES_NAME):
     mbutil_process = subprocess.Popen(command, shell=True)
     exit_code = mbutil_process.wait()
     stdout, stderr = mbutil_process.communicate()
+    if stderr:
+        raise IOError(sterr)
     if exit_code != 0:
-        raise IOError(stderr)
-    else:
-        "mb-util exit code :", exit_code
+        raise IOError("Exit code was not 0 for mbutil process")
+
     # print stdout, stderr
     print "\n Decompress exit code: ", exit_code
 
@@ -115,18 +130,18 @@ def decompress_pbf(MBTILES_NAME):
 
 
 def create_demo_config(MBTILES_NAME):
-    demo_config = "/tiler-data/demo-config/config.js"
+    demo_config = "/tiler-data/configs/web-demo-config.js"
     with open(demo_config, 'w+') as f:
-        config = "var vectortiles = " + MBTILES_NAME
+        config = "var vectortiles = '" + MBTILES_NAME + "';"
         f.seek(0)
         f.write(config)
         f.truncate()
 
-def geojson_to_tiles(GEOJSON_FILE, MAX_ZOOM, MIN_ZOOM, SIMPLIFICATION):
+def geojson2tiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION):
 
     print "\n Running geojson2tiles..."
-    MBTILES_NAME = os.path.basename(os.path.splitext(GEOJSON_FILE)[0])
-    create_mbtiles(GEOJSON_FILE, MBTILES_NAME, MAX_ZOOM, MIN_ZOOM, SIMPLIFICATION)
+    
+    create_mbtiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION)
     extract_pbf(MBTILES_NAME)
     decompress_pbf(MBTILES_NAME)
     create_demo_config(MBTILES_NAME)
@@ -161,4 +176,5 @@ if __name__ == '__main__':
 
     print "\n Input variables are valid!"
 
-    geojson_to_tiles(GEOJSON_FILE, MAX_ZOOM, MIN_ZOOM, SIMPLIFICATION)
+    MBTILES_NAME = os.path.basename(os.path.splitext(GEOJSON_FILE)[0])
+    geojson2tiles([GEOJSON_FILE], MBTILES_NAME, MIN_ZOOM, MAX_ZOOM,  SIMPLIFICATION)

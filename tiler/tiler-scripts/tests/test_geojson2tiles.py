@@ -12,14 +12,14 @@ MBTILES_FILE = "/tiler-data/tiles/" + MBTILES_NAME + ".mbtiles"
 class TestGeojson2Tiles(unittest.TestCase):
 
     def test_create_mbtiles(self):
-        GEOJSON_FILE = "/tiler-data/test-data/"+ MBTILES_NAME +".geojson"
+        GEOJSON_FILES = ["/tiler-data/test-data/"+ MBTILES_NAME +".geojson"]
         MIN_ZOOM = 0
         MAX_ZOOM = 4
         SIMPLIFICATION = 1
 
-        self.assertTrue(os.path.isfile(GEOJSON_FILE))
+        self.assertTrue(os.path.isfile(GEOJSON_FILES[0]))
 
-        create_mbtiles(GEOJSON_FILE, MBTILES_NAME, MAX_ZOOM, MIN_ZOOM, SIMPLIFICATION)
+        create_mbtiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION)
         self.assertTrue(os.path.isfile(MBTILES_FILE))
 
     def test_extract_pbf(self):

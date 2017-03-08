@@ -9,7 +9,7 @@ import shutil
 from validate_geojson import validate_geojson
 from tiler_helpers import absolute_file_paths
 
-def create_mbtiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM,  SIMPLIFICATION):
+def create_mbtiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION):
 
     # Validate GeoJSON 
     print "\n Validating GeoJSON"
@@ -39,6 +39,8 @@ def create_mbtiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM,  SIMPLIFICAT
         GEOJSON_FILES_STR += geojson_file + " "
 
     if MIN_ZOOM != None and MAX_ZOOM != None:
+        print "\n Min Zoom: ", MIN_ZOOM
+        print "\n Max Zoom: ", MAX_ZOOM
         command = "tippecanoe -o {} {} --minimum-zoom={}  --maximum-zoom={} --read-parallel --no-polygon-splitting --simplification={} --drop-smallest-as-needed --coalesce".format(OUTPUT_PATH, GEOJSON_FILES_STR, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION)
     else:
         command = "tippecanoe -o {} {} --read-parallel --no-polygon-splitting --simplification={} --drop-smallest-as-needed --coalesce".format(OUTPUT_PATH, GEOJSON_FILES_STR, SIMPLIFICATION)
@@ -133,9 +135,16 @@ def create_demo_config(MBTILES_NAME):
         f.write(config)
         f.truncate()
 
-def geojson2tiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION):
+def geojson2tiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION=0):
 
     print "\n Running geojson2tiles..."
+
+    assert type(SIMPLIFICATION) == int 
+
+    if MIN_ZOOM != None and MAX_ZOOM != None:
+        assert type(MIN_ZOOM) == int
+        assert type(MAX_ZOOM) == int
+        assert MAX_ZOOM > MIN_ZOOM
     
     create_mbtiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION)
     extract_pbf(MBTILES_NAME)

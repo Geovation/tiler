@@ -1,1 +1,1 @@
-var vectortiles = 'os';
+var vectortiles = 'states';

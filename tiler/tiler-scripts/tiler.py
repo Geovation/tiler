@@ -11,42 +11,56 @@ from shapefile2geojson import *
 from geojson2tiles import *
 from validate_geojson import validate_geojson
 
+def get_config(CONFIG_PATH):
+    with open(CONFIG_PATH) as config_json:
+            config_dict = json.load(config_json)
+            return config_dict
 
 def handle_config(CONFIG_FILE):
 
     geojson_file_paths = []
+    config_dict = get_config(CONFIG_FILE)
 
-    with open(CONFIG_FILE) as config_json:
-        config_dict = json.load(config_json)
-        if "outdir" not in config_dict:
-            raise "No outdir property in json. The outbound directory should be of format 'outdir : path/to/dir'"
-        else:
-            OUTDIR = config_dict["outdir"]
+    if "outdir" not in config_dict:
+        raise "No outdir property in json. The outbound directory should be of format 'outdir : path/to/dir'"
+    else:
+        OUTDIR = config_dict["outdir"]
 
-        if "data" not in config_dict:
-            raise "No data property in json. "
-        else: 
-            DATA = config_dict["data"]
-        
-        if "tileset" not in config_dict:
-            raise "No tileset property in json. "
-        else: 
-            TILESET_NAME = config_dict["tileset"]
+    if "data" not in config_dict:
+        raise "No data property in json. "
+    else: 
+        DATA = config_dict["data"]
+    
+    if "tileset" not in config_dict:
+        raise "No tileset property in json. "
+    else: 
+        TILESET_NAME = config_dict["tileset"]
 
-        if "simplification" not in config_dict:
-            raise "No simplification property in json. "
-        else: 
-            SIMPLIFICATION = config_dict["simplification"]
+    if "simplification" not in config_dict:
+        raise "No simplification property in json. "
+    else: 
+        SIMPLIFICATION = config_dict["simplification"]
 
-        for layer_name in DATA:
-            layer_config = DATA[layer_name]
-            print "\n Layer config : ", layer_config
-            if layer_config["type"] == "shapefile":
-                for path in layer_config["paths"]:
-                    geojson_path = handle_shapefile(path, layer_name, layer_config)
-                    geojson_file_paths.append(geojson_path)
-        
-        geojson2tiles(geojson_file_paths, TILESET_NAME, MIN_ZOOM=None, MAX_ZOOM=None, SIMPLIFICATION=SIMPLIFICATION)
+    MIN_ZOOM = None
+    MAX_ZOOM = None
+
+    for layer_name in DATA:
+        layer_config = DATA[layer_name]
+        print "\n Layer config : ", layer_config
+        if layer_config["type"] == "shapefile":
+            for path in layer_config["paths"]:
+                geojson_path = handle_shapefile(path, layer_name, layer_config)
+                geojson_file_paths.append(geojson_path)
+
+        if "minzoom" in layer_config:
+            if MIN_ZOOM == None or layer_config["minzoom"] < MIN_ZOOM:
+                MIN_ZOOM = layer_config["minzoom"]
+
+        if "maxzoom" in layer_config:
+            if MAX_ZOOM == None or layer_config["maxzoom"] > MAX_ZOOM:
+                MAX_ZOOM = layer_config["maxzoom"]
+    
+    geojson2tiles(geojson_file_paths, TILESET_NAME, MIN_ZOOM=MIN_ZOOM, MAX_ZOOM=MAX_ZOOM, SIMPLIFICATION=SIMPLIFICATION)
 
 
 def handle_shapefile(path, layer_name, layer_config):

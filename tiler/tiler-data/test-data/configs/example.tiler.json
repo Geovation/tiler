@@ -5,11 +5,11 @@
     "simplification" : 5,
     "data" : {
 
-        "buildings" : {
+        "states" : {
             "type" : "shapefile",
             "paths" : ["/tiler-data/test-data/states/states.shp"],
-            "minzoom" : 5,
-            "maxzoom" : 14
+            "minzoom" : 0,
+            "maxzoom" : 4
         }
 
     }

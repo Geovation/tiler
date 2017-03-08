@@ -37,9 +37,9 @@ Tiler provides a selection of scripts for converting between various formats and
 
 This would be saved as `tiler-data/configs/states.tiler.json`. The file provides the location of the files you wish to translate, along with the output directory and if you want any simplification to occur. "data" is an object full of layers you wish to be ingested into the tiles. Each data layer can have multiple files that they use to generate that layer ("paths"). You can also provide a minimum zoom ("minzoom") and a maximum zoom ("maxzoom") for each layer.
 
-You can then use 
+You can then from the root of the docker container you can run:
 
-`python /tiler-scripts/tiler.py states`
+`tiler states`
 
 To generate the set of uncompressed vector tiles and an .mbtiles file.
 

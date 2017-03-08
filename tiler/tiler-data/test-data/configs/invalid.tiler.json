@@ -1,0 +1,16 @@
+{
+
+    "outdir" : "/tiler-data/tiles/",
+    "tileset" : "states",
+    "simplification" : 5,
+    "data" : {
+
+        "states" : {
+            "type" : "some_random_type",
+            "paths" : ["/tiler-data/test-data/states/states.shp"],
+            "minzoom" : 0,
+            "maxzoom" : 4
+        }
+    }
+
+}

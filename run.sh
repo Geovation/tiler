@@ -1,3 +1,5 @@
+echo "Stopping tiler container if it's still running..."
+docker stop tiler
 docker rm tiler
 . export 
 echo "Using the following directories: "

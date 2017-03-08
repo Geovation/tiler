@@ -71,11 +71,9 @@ RUN cd / \
     && cd mbutil \
     && python setup.py install
 
-### Tiler specific Code
-#ADD ./tiler/tiler-scripts /tiler-scripts
-# USER root
-# RUN chmod +x -R /tiler-scripts
-# USER appuser
+### Tiler 
+ADD tiler.sh /bin/tiler 
+RUN chmod 755 /bin/tiler
 
 ### Config
 ENV DB_HOST localhost

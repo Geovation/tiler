@@ -13,5 +13,12 @@ class TestValidateConfig(unittest.TestCase):
         is_valid = validate_config(config_path)
         self.assertTrue(is_valid)
 
+    def test_invalid_config(self):
+        config_path = "/tiler-data/test-data/configs/invalid.tiler.json"
+        self.assertTrue(os.path.isfile(config_path))
+
+        with self.assertRaises(TypeError):
+            validate_config(config_path)
+
 if __name__ == '__main__':
     unittest.main()

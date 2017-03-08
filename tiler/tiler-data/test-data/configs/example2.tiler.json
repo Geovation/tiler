@@ -9,8 +9,16 @@
             "type" : "shapefile",
             "paths" : ["/tiler-data/test-data/states/states.shp"],
             "minzoom" : 0,
-            "maxzoom" : 4
+            "maxzoom" : 5
+        },
+
+        "cupcakes" : {
+            "type" : "geojson",
+            "paths" : ["/tiler-data/test-data/cupcakes.geojson"],
+            "minzoom" : 1,
+            "maxzoom" : 7
         }
+
     }
 
 }

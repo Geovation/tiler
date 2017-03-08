@@ -1,9 +1,10 @@
 import unittest
 import sys, os
 import shutil
+import time
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) # Insanity for getting parent folder in path
-from tiler import *
+from tiler import get_config, handle_config
 
 MBTILES_NAME = "states"
 MBTILES_DIR = "/tiler-data/tiles/" + MBTILES_NAME
@@ -27,11 +28,21 @@ class TestTiler(unittest.TestCase):
     def test_tiler(self):
         config_path = "/tiler-data/test-data/configs/example.tiler.json"
         self.assertTrue(os.path.isfile(config_path))
-        
+
         handle_config(config_path)
         self.assertTrue(os.path.isdir(MBTILES_DIR))
         self.assertTrue(os.path.isfile(MBTILES_DIR + "/0/0/0.pbf"))
         self.assertFalse(os.path.isfile(MBTILES_DIR + "/5/0/0.pbf"))
+        self.assertFalse(os.path.isfile(MBTILES_DIR + "/8/0/0.pbf"))
+
+    def test_tiler_geojson(self):
+        config_path = "/tiler-data/test-data/configs/example2.tiler.json"
+        self.assertTrue(os.path.isfile(config_path))
+
+        handle_config(config_path)
+        self.assertTrue(os.path.isdir(MBTILES_DIR))
+        self.assertTrue(os.path.isfile(MBTILES_DIR + "/0/0/0.pbf"))
+        self.assertTrue(os.path.isfile(MBTILES_DIR + "/7/20/45.pbf"))
 
     @classmethod
     def tearDown(cls):

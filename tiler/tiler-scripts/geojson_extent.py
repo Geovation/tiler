@@ -6,7 +6,7 @@ def geojson_extent():
     # TODO: Make grep Python level for interop
     process = subprocess.Popen('ogrinfo -ro -so -al {} | grep "Extent:"'.format(FILE_NAME), shell=True, stdout=subprocess.PIPE)
     for line in iter(process.stdout.readline,''):
-    extent = line.rstrip()
+        extent = line.rstrip()
 
     extent = extent.replace("Extent: ", "")
     extent = extent.replace("(", "").replace(")", "").replace(" - ", ", ")

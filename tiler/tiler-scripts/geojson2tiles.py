@@ -2,8 +2,6 @@
 import sys
 import os
 import subprocess
-import fnmatch
-import glob
 import gzip
 import shutil
 from validate_geojson import validate_geojson
@@ -49,7 +47,7 @@ def create_mbtiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATI
     tippecanoe_process = subprocess.Popen(command, shell=True)
     stdout, stderr = tippecanoe_process.communicate()
     if stderr:
-        raise IOError(sterr)  
+        raise IOError(stderr)  
     exit_code = tippecanoe_process.wait()
     print "\n Tippecanoe exit code: ", exit_code
     if exit_code != 0:
@@ -78,13 +76,13 @@ def extract_pbf(MBTILES_NAME):
         print "\n Vector Tiles folder removed!"
     
     print "\n Commencing extraction from mbtiles to", MBTILES_DIR
-    command = "mb-util --image_format=pbf --silent /tiler-data/tiles/{}.mbtiles /tiler-data/tiles/{}".format(MBTILES_NAME, MBTILES_NAME, MBTILES_NAME)
+    command = "mb-util --image_format=pbf --silent /tiler-data/tiles/{}.mbtiles /tiler-data/tiles/{}".format(MBTILES_NAME, MBTILES_NAME)
     print "\n Running: ", command
     mbutil_process = subprocess.Popen(command, shell=True)
     exit_code = mbutil_process.wait()
     stdout, stderr = mbutil_process.communicate()
     if stderr:
-        raise IOError(sterr)
+        raise IOError(stderr)
     if exit_code != 0:
         raise IOError("Exit code was not 0 for mbutil process")
 

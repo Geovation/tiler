@@ -3,9 +3,9 @@ import psycopg2
 import sys
 import os
 import subprocess
-import tiler_helpers
+from tiler_helpers import add_tippecanoe_config, check_environ_vars
 
-def postgis2geojson(TABLE_NAME, DATABASE_VARS, LAYER_CONFIG=False)
+def postgis2geojson(TABLE_NAME, DATABASE_VARS, LAYER_CONFIG=False):
 
     OUTPUT_PATH = "/tiler-data/geojson/{}.geojson".format(TABLE_NAME)
     try:
@@ -19,21 +19,21 @@ def postgis2geojson(TABLE_NAME, DATABASE_VARS, LAYER_CONFIG=False)
             DATABASE_VARS['DB_HOST'],
             DATABASE_VARS['DB_PORT'],
             DATABASE_VARS['DB_USER'],
-            DATABASE_VARS['DB_NAME'], 
+            DATABASE_VARS['DB_NAME'],
             DATABASE_VARS['DB_PASSWORD'],
             TABLE_NAME
         )
         print "\n Executing: ", connect_command
         process = subprocess.Popen(connect_command, shell=True)
-        
+
         stdout, stderr = process.communicate()
         print stdout, stderr
         "Exit code: ", process.wait()
-        
+
         print "\n Database table", TABLE_NAME, "converted to", TABLE_NAME + ".geojson \n"
 
-    if LAYER_CONFIG:
-        add_tippecanoe_config(OUTPUT_PATH, LAYER_CONFIG)
+        if LAYER_CONFIG != False:
+            add_tippecanoe_config(OUTPUT_PATH, LAYER_CONFIG)
 
     except Exception as err:
         print "Failed to convert to GeoJSON for table ", TABLE_NAME
@@ -48,7 +48,7 @@ if __name__ == '__main__':
     else:
         raise  ValueError("TABLE_NAME not defined" )
 
-    tiler_helpers.check_environ_vars()
+    check_environ_vars()
     DATABASE_VARS = os.environ
     postgis2geojson(TABLE_NAME, DATABASE_VARS)
 

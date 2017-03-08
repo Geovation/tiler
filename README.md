@@ -12,7 +12,7 @@ Setup requires installation of Docker and a few Docker commands to get started. 
 
 #### Using Tiler
 
-Tiler provides a selection of scripts for converting between various formats and validating them (see the tiler-scripts folder). The primary and simplest way to use Tiler however is to use a config file place in `tiler-data/configs`:
+Tiler provides a selection of scripts for converting between various formats and validating them (see the tiler-scripts folder). The primary and simplest way to use Tiler however is to use a config file placed in `tiler-data/configs`:
 
 
 ```javascript
@@ -59,6 +59,15 @@ Demos are provided using [Leaflet.VectorGrid](http://leaflet.github.io/Leaflet.V
 If you want to connect via psql from the host you can use:
 
 `psql -h localhost -U docker -p 25432 -l`
+
+## Credits
+
+This project was made possible thanks to building on a fantastic set of previous previous software:
+
+[mbutil](https://github.com/mapbox/mbutil) - Mapbox 
+[tippecanoe](https://github.com/mapbox/tippecanoe) - Mapbox
+[ogr2ogr](http://www.gdal.org/ogr2ogr.html) - OSGeo 
+[PostGIS Docker Container](https://github.com/kartoza/docker-postgis) - Tim Sutton
 
 ## License
 

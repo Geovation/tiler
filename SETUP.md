@@ -40,3 +40,9 @@ To get into the shell of the Tiler container:
 Alternatively a convience script can be run:
 
  `./shell.sh`
+
+## Accessing the Postgres Database
+
+If you want to connect via psql from the host you can use:
+
+`psql -h localhost -U docker -p 25432 -l`

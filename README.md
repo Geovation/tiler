@@ -64,10 +64,10 @@ If you want to connect via psql from the host you can use:
 
 This project was made possible thanks to building on a fantastic set of previous previous software:
 
-[mbutil](https://github.com/mapbox/mbutil) - Mapbox 
-[tippecanoe](https://github.com/mapbox/tippecanoe) - Mapbox
-[ogr2ogr](http://www.gdal.org/ogr2ogr.html) - OSGeo 
-[PostGIS Docker Container](https://github.com/kartoza/docker-postgis) - Tim Sutton
+* [mbutil](https://github.com/mapbox/mbutil) - Mapbox 
+* [tippecanoe](https://github.com/mapbox/tippecanoe) - Mapbox 
+* [ogr2ogr](http://www.gdal.org/ogr2ogr.html) - OSGeo 
+* [PostGIS Docker Container](https://github.com/kartoza/docker-postgis) - Tim Sutton
 
 ## License
 

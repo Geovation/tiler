@@ -6,67 +6,53 @@ The purpose of Tiler is to create an easy to use, command line orientied pipelin
 
 Tiler exists as a Docker container that unifies several technologies to streamline the creation of vector tiles.
 
-## Setup 
+#### Setup
 
-Tiler is designed to be easy to use. You create a Docker image and then use commands within the container to convert data to Vector Tiles.
-
-You will require Docker to use Tiler. If you are new to Docker, check this overview [here](https://www.docker.com/what-docker) and see [this link to get hold of it](https://docs.docker.com/engine/getstarted/step_one/#docker-for-mac).
-
-#### Build Docker Image
-
-`docker build -t tiler .`
-
-#### Start Docker Container
-
-You need to specify the location of your data folder so tiler knows where to load data from. We do this using volumes (-v) as such:
-
-`export TILER_DATA_DIR=/Users/username/Documents/Code/tiler/tiler-data` <br>
-`export TILER_SCRIPTS_DIR=/Users/username/Documents/Code/tiler/tiler-scripts` <br>
-
-`docker run --name "tiler" \` <br>
-            `-v $TILER_DATA_DIR:/tiler-data \ ` <br>
-            `-v $TILER_SCRIPTS_DIR:/tiler-scripts \ ` <br>
-            `-p 25432:5432 tiler`
-
-Just replace the paths as appropriate for your scripts and data forlders.
-
-#### End Container
-
-`docker stop tiler`
-
-#### Remove Container 
-
- `docker rm tiler`
-
-## Accessing and Using Tiler
-
-To get into the shell of the Tiler container:
-
-`docker exec -it tiler /bin/bash`
- 
-Alternatively a convience script can be run:
-
- `./shell.sh`
+Setup requires installation of Docker and a few Docker commands to get started. We've provided a nice little set of instructions in the [SETUP](https://github.com/Geovation/tiler/blob/master/SETUP.md) file.
 
 #### Using Tiler
 
-WARNING: Work in Progress! Eventually these commands will be bundled together to make an even smoother transition from geo formats to Vector Tiles.
+Tiler provides a selection of scripts for converting between various formats and validating them (see the tiler-scripts folder). The primary and simplest way to use Tiler however is to use a config file:
 
-Current scripts:
 
-`python geojson2tiles.py` <br>
-`python postgis2geojson.py` <br>
-`python shapefile2postgis.py` <br>
-`python geojson2tiles.py` <br>
+```javascript
+{
+
+    "outdir" : "/tiler-data/tiles/",
+    "tileset" : "states",
+    "simplification" : 5,
+    "data" : {
+
+        "states" : {
+            "type" : "shapefile",
+            "paths" : ["/tiler-data/test-data/states/states.shp"],
+            "minzoom" : 0,
+            "maxzoom" : 4
+        }
+
+    }
+
+}
+```
+
+This provides the location of the files you wish to translate, along with the output directory and if you want any simplification to occur. "data" is an object full of layers you wish to be ingested into the tiles. Each data layer can have multiple files that they use to generate that layer ("paths"). You can also provide a minimum zoom ("minzoom") and a maximum zoom ("maxzoom") for each layer.
+
+You can then use 
+
+`python /tiler-scripts/tiler.py states`
+
+To generate the set of uncompressed vector tiles and an .mbtiles file.
 
 ### Tests
 
+A set of tests are provided that can be run using [nosetest](http://nose.readthedocs.io/en/latest/):
+
 `cd tiler-scripts` <br>
-`nosetests`
+`nosetests -v`
 
 #### Demo Vector Tile 
 
-Demos are provided using [Leaflet.VectorGrid](http://leaflet.github.io/Leaflet.VectorGrid/vectorgrid-api-docs.html) and also [Mapbox GL](https://www.mapbox.com/mapbox-gl-js/api/) for you to display your tiles when you're done.
+Demos are provided using [Leaflet.VectorGrid](http://leaflet.github.io/Leaflet.VectorGrid/vectorgrid-api-docs.html) and also [Mapbox GL](https://www.mapbox.com/mapbox-gl-js/api/) for you to display your tiles when you're done. You will need to specify your own styling in these examples.
 
 ## Accessing the Postgres Database
 

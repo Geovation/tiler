@@ -1,10 +1,12 @@
 #!/usr/bin/python2.7
 import sys
 import json
+import os
 from shapefile2geojson import shapefile2geojson
 from geojson2tiles import *
 from validate_geojson import validate_geojson
 from tiler_helpers import add_tippecanoe_config
+from postgis2geojson import postgis2geojson
 
 def get_config(CONFIG_PATH):
     with open(CONFIG_PATH) as config_json:
@@ -15,6 +17,8 @@ def handle_config(CONFIG_FILE):
 
     geojson_file_paths = []
     config_dict = get_config(CONFIG_FILE)
+
+    # TODO: This should probably be in config validation!
 
     if "outdir" not in config_dict:
         raise "No outdir property in json. The outbound \
@@ -56,6 +60,14 @@ def handle_config(CONFIG_FILE):
                 geojson_path = handle_geojson(path, layer_name, layer_config)
                 geojson_file_paths.append(geojson_path)
 
+        # POSTGIS
+        if layer_config["type"] == "postgis":
+            if "table" not in layer_config:
+                raise TypeError("Database variables not set in configuration file: ", CONFIG_FILE)
+            table = layer_config["table"] # Table name translates to the layer name!
+            geojson_path = handle_postgis(table, layer_config)
+            geojson_file_paths.append(geojson_path)
+
         if "minzoom" in layer_config:
             if MIN_ZOOM is None or layer_config["minzoom"] < MIN_ZOOM:
                 MIN_ZOOM = layer_config["minzoom"]
@@ -73,7 +85,28 @@ def handle_config(CONFIG_FILE):
     )
 
 
-def handle_geojson(path, layer_name, layer_config):
+def handle_postgis(layer_name, layer_config):
+    db_vars = os.environ
+    postgis2geojson(layer_name, db_vars, LAYER_CONFIG=False) # Layer Config we do it ourself manaully
+    geojson_path = "/tiler-data/geojson/{}.geojson".format(layer_name)
+    add_config(geojson_path, layer_name,  layer_config)
+    return geojson_path
+
+
+def handle_geojson(geojson_path, layer_name, layer_config):
+    add_config(geojson_path, layer_config, layer_name)
+    return geojson_path 
+
+
+def handle_shapefile(shp_path, layer_name, layer_config):
+    minzoom = layer_config["minzoom"]
+    maxzoom = layer_config["maxzoom"]
+    LAYER_CONFIG = {"minzoom" : minzoom, "maxzoom" : maxzoom, "layer": layer_name}
+    shapefile2geojson(shp_path, layer_name, LAYER_CONFIG=LAYER_CONFIG)
+    return "/tiler-data/geojson/{}.geojson".format(layer_name)
+
+
+def add_config(path, layer_name, layer_config):
     if "minzoom" in layer_config or "maxzoom" in layer_config or layer_name:
         TIPPECANOE_CONFIG = {}
         if "minzoom" in layer_config:
@@ -83,16 +116,6 @@ def handle_geojson(path, layer_name, layer_config):
         if layer_name:
             TIPPECANOE_CONFIG["layer"] = layer_name
         add_tippecanoe_config(path, TIPPECANOE_CONFIG)
-
-    return path 
-
-def handle_shapefile(path, layer_name, layer_config):
-
-    minzoom = layer_config["minzoom"]
-    maxzoom = layer_config["maxzoom"]
-    LAYER_CONFIG = {"minzoom" : minzoom, "maxzoom" : maxzoom, "layer": layer_name}
-    shapefile2geojson(path, layer_name, LAYER_CONFIG=LAYER_CONFIG)
-    return "/tiler-data/geojson/{}.geojson".format(layer_name)
 
 
 if __name__ == '__main__':

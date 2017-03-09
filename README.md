@@ -27,7 +27,14 @@ Tiler provides a selection of scripts for converting between various formats and
             "type" : "shapefile",
             "paths" : ["/tiler-data/test-data/states/states.shp"],
             "minzoom" : 0,
-            "maxzoom" : 4
+            "maxzoom" : 5
+        },
+
+        "capitals" : {
+            "type" : "postgis",
+            "table" : "capitals",
+            "minzoom" : 2,
+            "maxzoom" : 10
         }
 
     }
@@ -37,7 +44,7 @@ Tiler provides a selection of scripts for converting between various formats and
 
 This would be saved as `tiler-data/configs/states.tiler.json`. The file provides the location of the files you wish to translate, along with the output directory and if you want any simplification to occur. "data" is an object full of layers you wish to be ingested into the tiles. In this case the layer has multiple files that they use to generate that layer ("paths"). You can also provide a minimum zoom ("minzoom") and a maximum zoom ("maxzoom") for each layer.
 
-At the moment "type" can be `shapefile` or `geojson` but currently we're working towards `postgis` intergration and potentially `gml` in the future.
+At the moment "type" can be `shapefile` or `geojson` and `postgis`. Future intergrations will potentially include `gml` and other common standards.
 
 Once your config file is setup from the root of the docker container you can run:
 

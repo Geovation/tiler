@@ -13,32 +13,29 @@ def postgis2geojson(TABLE_NAME, DATABASE_VARS, LAYER_CONFIG=False):
     except OSError:
         pass
 
-    try:
-        connect_command = """ogr2ogr -f GeoJSON {} PG:"host={} port={} user={} dbname={} password={}" -sql "select * from {}" """.format(
-            OUTPUT_PATH,
-            DATABASE_VARS['DB_HOST'],
-            DATABASE_VARS['DB_PORT'],
-            DATABASE_VARS['DB_USER'],
-            DATABASE_VARS['DB_NAME'],
-            DATABASE_VARS['DB_PASSWORD'],
-            TABLE_NAME
-        )
-        print "\n Executing: ", connect_command
-        process = subprocess.Popen(connect_command, shell=True)
+    connect_command = """ogr2ogr -f GeoJSON {} PG:"host={} port={} user={} dbname={} password={}" -sql "select * from {}" """.format(
+        OUTPUT_PATH,
+        DATABASE_VARS['DB_HOST'],
+        DATABASE_VARS['DB_PORT'],
+        DATABASE_VARS['DB_USER'],
+        DATABASE_VARS['DB_NAME'],
+        DATABASE_VARS['DB_PASSWORD'],
+        TABLE_NAME
+    )
+    print "\n Executing: ", connect_command
+    process = subprocess.Popen(connect_command, shell=True)
 
-        stdout, stderr = process.communicate()
-        print stdout, stderr
-        "Exit code: ", process.wait()
+    stdout, stderr = process.communicate()
+    print stdout, stderr
+    exit_code = process.wait()
+    print "\n Exit code: ", exit_code
+    if exit_code != 0:
+        raise OSError("Failed to execute the SQL query correctly")
 
-        print "\n Database table", TABLE_NAME, "converted to", TABLE_NAME + ".geojson \n"
+    print "\n Database table", TABLE_NAME, "converted to", TABLE_NAME + ".geojson \n"
 
-        if LAYER_CONFIG != False:
-            add_tippecanoe_config(OUTPUT_PATH, LAYER_CONFIG)
-
-    except Exception as err:
-        print "Failed to convert to GeoJSON for table ", TABLE_NAME
-        raise
-
+    if LAYER_CONFIG != False:
+        add_tippecanoe_config(OUTPUT_PATH, LAYER_CONFIG)
 
 
 if __name__ == '__main__':
@@ -46,7 +43,7 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         TABLE_NAME = sys.argv[1]
     else:
-        raise  ValueError("TABLE_NAME not defined" )
+        raise  ValueError("TABLE_NAME not defined")
 
     check_environ_vars()
     DATABASE_VARS = os.environ

@@ -6,8 +6,8 @@ import subprocess
 import tiler_helpers
 
 
-def shapefile2postgis():
-    
+def shapefile2postgis(FILE_NAME, TABLE_NAME):
+
     tiler_helpers.check_file(FILE_NAME)
 
     try:
@@ -15,9 +15,9 @@ def shapefile2postgis():
             os.environ['DB_HOST'],
             os.environ['DB_PORT'],
             os.environ['DB_USER'],
-            os.environ['DB_NAME'], 
+            os.environ['DB_NAME'],
             os.environ['DB_PASSWORD'],
-            FILE_NAME, 
+            FILE_NAME,
             TABLE_NAME
         )
         print "\n Executing: ", connect_command
@@ -46,7 +46,7 @@ if __name__ == '__main__':
     if len(sys.argv) > 2:
         TABLE_NAME = sys.argv[2]
     else:
-        raise  ValueError("TABLE_NAME not defined" )
+        raise  ValueError("TABLE_NAME not defined")
 
     ## Check all PostgreSQL environment variables are defined
     tiler_helpers.check_environ_vars()

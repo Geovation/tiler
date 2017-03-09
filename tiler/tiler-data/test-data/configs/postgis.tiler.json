@@ -1,0 +1,17 @@
+{
+
+    "outdir" : "/tiler-data/tiles/",
+    "tileset" : "states",
+    "simplification" : 5,
+    "data" : {
+
+        "states" : {
+            "type" : "postgis",
+            "table" : "states",
+            "minzoom" : 0,
+            "maxzoom" : 5
+        }
+
+    }
+
+}

@@ -9,8 +9,7 @@ import tiler_helpers
 
 def shapefile2geojson(INPUT_PATH, OUTPUT_NAME, LAYER_CONFIG=False):
 
-    if not os.path.isfile(INPUT_PATH):
-        raise OSError("Input shapefile does not exist : " + INPUT_PATH)
+    tiler_helpers.check_file(INPUT_PATH)
 
     OUTPUT_PATH = "/tiler-data/geojson/{}.geojson".format(OUTPUT_NAME)
     try:
@@ -22,11 +21,11 @@ def shapefile2geojson(INPUT_PATH, OUTPUT_NAME, LAYER_CONFIG=False):
         connect_command = """ogr2ogr -f GeoJSON {} {}""".format(OUTPUT_PATH, INPUT_PATH)
         print "\n Executing: ", connect_command
         process = subprocess.Popen(connect_command, shell=True)
-        
+
         stdout, stderr = process.communicate()
         # print stdout, stderr
         "\n Exit code: ", process.wait()
-        
+
         print "\n Shapefile", INPUT_PATH, "converted to", OUTPUT_NAME + ".geojson \n"
 
         if LAYER_CONFIG:

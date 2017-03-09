@@ -11,7 +11,7 @@ def check_environ_vars():
 
 def check_file(FILE_NAME):
     if not os.path.isfile(FILE_NAME):
-        raise IOError(FILE_NAME + " does not exist")
+        raise OSError(FILE_NAME + " does not exist")
 
 
 def add_tippecanoe_config(OUTPUT_PATH, LAYER_CONFIG):

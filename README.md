@@ -54,12 +54,17 @@ To generate the set of uncompressed vector tiles and an .mbtiles file.
 
 ### Tests
 
+#### Running Tests
+
 A set of tests are provided that can be run using [nosetest](http://nose.readthedocs.io/en/latest/):
 
-`cd tiler-scripts` <br>
-`nosetests -v`
+`nosetests /tiler-scripts -v`
 
-#### Demo Vector Tile 
+With coverage:
+
+`nosetests /tiler-scripts --with-coverage`
+
+#### Vector Tile Demo
 
 Demos are provided using [Leaflet.VectorGrid](http://leaflet.github.io/Leaflet.VectorGrid/vectorgrid-api-docs.html) and also [Mapbox GL](https://www.mapbox.com/mapbox-gl-js/api/) for you to display your tiles when you're done. You will need to specify your own styling in these examples.
 

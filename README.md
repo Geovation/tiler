@@ -2,7 +2,7 @@
 <br>
 A no nonsense Vector Tile pipeline
 
-The purpose of Tiler is to create an easy to use, command line orientied pipeline for taking vector data in formats such as Shapefiles, and transforming them into raw Vector Tiles and MBTiles files (if required).
+The purpose of Tiler is to create an easy to use, command line orientied pipeline for taking vector data in formats such as Shapefiles, and transforming them into raw [Vector Tiles](https://www.mapbox.com/vector-tiles/) and [MBTiles](https://www.mapbox.com/help/an-open-platform/#mbtiles) files (if required).
 
 Tiler exists as a Docker container that unifies several technologies to streamline the creation of vector tiles.
 

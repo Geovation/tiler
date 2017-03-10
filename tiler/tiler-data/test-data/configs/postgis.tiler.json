@@ -7,7 +7,7 @@
 
         "states" : {
             "type" : "postgis",
-            "table" : "states",
+            "query" : "select * from states",
             "minzoom" : 0,
             "maxzoom" : 5
         }

@@ -5,7 +5,16 @@ import os
 import subprocess
 from tiler_helpers import add_tippecanoe_config, check_environ_vars
 
-def postgis2geojson(TABLE_NAME, DATABASE_VARS, LAYER_CONFIG=False):
+def postgis2geojson(TABLE_NAME, DATABASE_VARS, LAYER_CONFIG=False, QUERY=False):
+
+    if not TABLE_NAME and not QUERY:
+        raise ValueError("No parameters passed for a valid SQL query")
+
+    if QUERY:
+        query = QUERY
+
+    if not QUERY and TABLE_NAME:
+        query = "select * from {}".format(TABLE_NAME)
 
     OUTPUT_PATH = "/tiler-data/geojson/{}.geojson".format(TABLE_NAME)
     try:
@@ -13,14 +22,14 @@ def postgis2geojson(TABLE_NAME, DATABASE_VARS, LAYER_CONFIG=False):
     except OSError:
         pass
 
-    connect_command = """ogr2ogr -f GeoJSON {} PG:"host={} port={} user={} dbname={} password={}" -sql "select * from {}" """.format(
+    connect_command = """ogr2ogr -f GeoJSON {} PG:"host={} port={} user={} dbname={} password={}" -sql "{}" """.format(
         OUTPUT_PATH,
         DATABASE_VARS['DB_HOST'],
         DATABASE_VARS['DB_PORT'],
         DATABASE_VARS['DB_USER'],
         DATABASE_VARS['DB_NAME'],
         DATABASE_VARS['DB_PASSWORD'],
-        TABLE_NAME
+        query
     )
     print "\n Executing: ", connect_command
     process = subprocess.Popen(connect_command, shell=True)
@@ -32,7 +41,7 @@ def postgis2geojson(TABLE_NAME, DATABASE_VARS, LAYER_CONFIG=False):
     if exit_code != 0:
         raise OSError("Failed to execute the SQL query correctly")
 
-    print "\n Database table", TABLE_NAME, "converted to", TABLE_NAME + ".geojson \n"
+    print "\n GeoJSON created"
 
     if LAYER_CONFIG != False:
         add_tippecanoe_config(OUTPUT_PATH, LAYER_CONFIG)

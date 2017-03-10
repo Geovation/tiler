@@ -32,7 +32,7 @@ Tiler provides a selection of scripts for converting between various formats and
 
         "capitals" : {
             "type" : "postgis",
-            "table" : "capitals",
+            "query" : "select * from capitals"
             "minzoom" : 2,
             "maxzoom" : 10
         }

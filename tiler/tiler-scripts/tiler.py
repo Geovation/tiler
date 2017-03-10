@@ -62,10 +62,10 @@ def handle_config(CONFIG_FILE):
 
         # POSTGIS
         if layer_config["type"] == "postgis":
-            if "table" not in layer_config:
-                raise TypeError("Database variables not set in configuration file: ", CONFIG_FILE)
-            table = layer_config["table"] # Table name translates to the layer name!
-            geojson_path = handle_postgis(table, layer_config)
+            if "query" not in layer_config:
+                raise TypeError("Query string not set in configuration file: ", CONFIG_FILE)
+            query = layer_config["query"] # Table name translates to the layer name!
+            geojson_path = handle_postgis(query, layer_name, layer_config)
             geojson_file_paths.append(geojson_path)
 
         if "minzoom" in layer_config:
@@ -85,9 +85,9 @@ def handle_config(CONFIG_FILE):
     )
 
 
-def handle_postgis(layer_name, layer_config):
+def handle_postgis(query, layer_name, layer_config):
     db_vars = os.environ
-    postgis2geojson(layer_name, db_vars, LAYER_CONFIG=False) # Layer Config we do it ourself manaully
+    postgis2geojson(None, db_vars, LAYER_CONFIG=layer_config, QUERY=query) # Layer Config we do it ourself manaully
     geojson_path = "/tiler-data/geojson/{}.geojson".format(layer_name)
     add_config(geojson_path, layer_name,  layer_config)
     return geojson_path

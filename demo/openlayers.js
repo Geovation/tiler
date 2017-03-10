@@ -1,13 +1,5 @@
 /* eslint-disable openlayers-internal/no-unused-requires */
 
-// var extent =  [-178.217598, 18.921786, -66.969271, 71.406235] //geojsonSource.getExtent();
-
-var proj = new ol.proj.Projection({
-    code: 'EPSG:4326',
-    units: 'm',
-    extent: [-180.0000, -90.0000, 180.0000, 90.0000]
-});
-
 var map = new ol.Map({
     layers: [
         new ol.layer.VectorTile({
@@ -20,8 +12,8 @@ var map = new ol.Map({
                     // extent: extent
                 }),
                 // extent: extent,
-                // tilePixelRatio: 16,
-                url: '/tiler/tiler-data/tiles/uk/{z}/{x}/{y}.pbf'
+                tilePixelRatio: 16,
+                url: '/tiler/tiler-data/tiles/'+vectortiles+'/{z}/{x}/{y}.pbf'
             }),
             style: createStyle()
         }),
@@ -30,12 +22,10 @@ var map = new ol.Map({
             opacity: 0.3
         })
     ],
-    // extent: extent,
     target: 'map',
     view: new ol.View({
-        center: [-1.0, 51.0],
-        projection: proj,
-        zoom: 6,
+        center: ol.proj.transform([0, 0], 'EPSG:4326','EPSG:3857'),
+        zoom: 3,
         minZoom: 1
     })
 });

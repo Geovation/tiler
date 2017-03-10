@@ -8,17 +8,17 @@ L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Li
 }).addTo(this.map)
 
 var url = "/tiler/tiler-data/tiles/" + vectortiles + "/{z}/{x}/{y}.pbf";
-var type = vectortiles + "geojson";
+var type = vectortiles;
 
 var vectorTileStyling = { };
 vectorTileStyling[type] = function(properties, zoom) {
-    //console.log("Styling", properties, zoom)
+    console.log("Styling", properties, zoom)
     return {
         fill: true,
         weight: 1,
-        fillColor: "rgba(255,11,11, 0.5)",
-        color: "rgba(255,11,11, 0.5)",
-        fillOpacity: 0.1,
+        fillColor: "rgba(255,11,11,1)",
+        color: "rgba(11,11,11,1)",
+        fillOpacity: 0.3,
         opacity: 0.05,
     }
 }
@@ -33,4 +33,4 @@ var VectorTileOptions = {
 var PbfLayer = L.vectorGrid.protobuf(url, VectorTileOptions).addTo(map);
 
 
-map.setView({ lat: 51.0, lng:0.1 }, 6);
+map.setView({ lat: 0.0, lng:0.0 }, 3);

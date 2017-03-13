@@ -3,6 +3,9 @@ import sys, os
 import shutil
 import time
 import psycopg2
+import SocketServer
+import threading
+from handler import TestHandler
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) # Insanity for getting parent folder in path
 from tiler import get_config, handle_config
@@ -74,12 +77,28 @@ class TestTiler(unittest.TestCase):
         except OSError:
             self.fail("Couldn't tear down PostGIS table states")
 
+    def test_tiler_url(self):
+        config_path = "/tiler-data/test-data/configs/url.tiler.json"
+        self.assertTrue(os.path.isfile(config_path))
+        PORT = 8080
+        SocketServer.TCPServer.allow_reuse_address = True
+        server = SocketServer.TCPServer(("", PORT), TestHandler)
+        thread = threading.Thread(target = server.serve_forever)
+        thread.daemon = True
+        thread.start()
+        handle_config(config_path)
+        server.shutdown()
+        server.socket.close()
+        self.assertTrue(os.path.isfile("/tiler-data/input/stations.zip"))
+        self.assertTrue(os.path.isdir("/tiler-data/input/stations"))
+        self.assertTrue(os.path.isdir(MBTILES_DIR))
 
     @classmethod
     def tearDown(cls):
-
         try:
             print "\n Tearing tests down..."
+            os.remove("/tiler-data/input/stations.zip")
+            shutil.rmtree("/tiler-data/input/stations")
             shutil.rmtree(MBTILES_DIR)
         except OSError as shutil_err:
             print shutil_err

@@ -53,14 +53,19 @@ def handle_config(CONFIG_FILE):
         if layer_config["type"] == "shapefile":
             for path in layer_config["paths"]:
                 if is_url(path):
+                    # raise OSError(path)
                     output_dir = "/tiler-data/input/"
                     downloaded_path = download(path, output_dir)
-                    if is_zip(downloaded_path):
-                        downloaded_path = unzip(downloaded_path)
+                    if is_zipfile(downloaded_path):
                         base = os.path.basename(downloaded_path)
-                        shapefile = downloaded_path + "/" + base + ".shp"
+                        base = os.path.splitext(base)[0]
+                        end_dir = output_dir + "/" + base
+                        unzip(downloaded_path, end_dir)
+
+                        shapefile = end_dir + "/" + base + ".shp"
                         path = shapefile
-                
+                        
+
                 geojson_path = handle_shapefile(path, layer_name, layer_config)
                 geojson_file_paths.append(geojson_path)
 

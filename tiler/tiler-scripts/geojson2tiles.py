@@ -44,13 +44,14 @@ def create_mbtiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATI
         command = "tippecanoe -o {} {} --read-parallel --no-polygon-splitting --simplification={} --drop-smallest-as-needed --coalesce".format(OUTPUT_PATH, GEOJSON_FILES_STR, SIMPLIFICATION)
 
     print "\n Running: ", command
-    tippecanoe_process = subprocess.Popen(command, shell=True)
-    stdout, stderr = tippecanoe_process.communicate()
-    if stderr:
-        raise IOError(stderr)  
-    exit_code = tippecanoe_process.wait()
-    print "\n Tippecanoe exit code: ", exit_code
-    if exit_code != 0:
+    FNULL = open(os.devnull, 'w')
+    tippecanoe_exit_code = subprocess.call(command, shell=True, stdout=FNULL, stderr=subprocess.STDOUT)
+    # stdout, stderr = tippecanoe_process.communicate()
+    # if stderr:
+    #     raise IOError(stderr)  
+    # exit_code = tippecanoe_process.wait()
+    print "\n Tippecanoe exit code: ", tippecanoe_exit_code
+    if tippecanoe_exit_code != 0:
         raise IOError("Exit code was not 0 for tippecanoe process")
 
     print "\n Created mbtiles file from " + str(GEOJSON_FILES)

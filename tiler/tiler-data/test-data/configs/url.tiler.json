@@ -10,6 +10,13 @@
             "paths" : ["http://localhost:8080/tiler-data/test-data/stations.zip"],
             "minzoom" : 0,
             "maxzoom" : 5
+        },
+
+         "states" : {
+            "type" : "geojson",
+            "paths" : ["http://localhost:8080/tiler-data/test-data/states.geojson"],
+            "minzoom" : 0,
+            "maxzoom" : 5
         }
 
     }

@@ -91,12 +91,15 @@ class TestTiler(unittest.TestCase):
         server.socket.close()
         self.assertTrue(os.path.isfile("/tiler-data/input/stations.zip"))
         self.assertTrue(os.path.isdir("/tiler-data/input/stations"))
+        self.assertTrue(os.path.isfile("/tiler-data/input/stations/stations.shp"))
+        self.assertTrue(os.path.isfile("/tiler-data/input/states.geojson"))
         self.assertTrue(os.path.isdir(MBTILES_DIR))
 
     @classmethod
     def tearDown(cls):
         try:
             print "\n Tearing tests down..."
+            os.remove("/tiler-data/input/states.geojson")
             os.remove("/tiler-data/input/stations.zip")
             shutil.rmtree("/tiler-data/input/stations")
             shutil.rmtree(MBTILES_DIR)

@@ -5,7 +5,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) # I
 from remote_file import *
 import SocketServer
 import threading
-import handler
+from handler import TestHandler
 
 
 class TestShapefile2Geojson(unittest.TestCase):

@@ -9,6 +9,10 @@ class TestHandler(BaseHTTPRequestHandler):
         if self.path.endswith(".zip"):
             mimetype = 'application/zip'
             send_reply = True
+
+        if self.path.endswith(".json") or self.path.endswith(".geojson"):
+            mimetype = 'application/json'
+            send_reply = True
             
         if send_reply == True:
             #Open the static file requested and send it

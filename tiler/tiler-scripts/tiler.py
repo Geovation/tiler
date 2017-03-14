@@ -64,7 +64,7 @@ def handle_config(CONFIG_FILE):
 
                         shapefile = end_dir + "/" + base + ".shp"
                         path = shapefile
-                        
+
 
                 geojson_path = handle_shapefile(path, layer_name, layer_config)
                 geojson_file_paths.append(geojson_path)
@@ -72,6 +72,9 @@ def handle_config(CONFIG_FILE):
         # GEOJSON
         if layer_config["type"] == "geojson":
             for path in layer_config["paths"]:
+                if is_url(path):
+                    output_dir = "/tiler-data/input/"
+                    path = download(path, output_dir)
                 geojson_path = handle_geojson(path, layer_name, layer_config)
                 geojson_file_paths.append(geojson_path)
 

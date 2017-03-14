@@ -7,6 +7,7 @@ from geojson2tiles import *
 from validate_geojson import validate_geojson
 from tiler_helpers import add_tippecanoe_config
 from postgis2geojson import postgis2geojson
+from remote_file import *
 
 def get_config(CONFIG_PATH):
     with open(CONFIG_PATH) as config_json:
@@ -51,12 +52,29 @@ def handle_config(CONFIG_FILE):
         # SHAPEFILE
         if layer_config["type"] == "shapefile":
             for path in layer_config["paths"]:
+                if is_url(path):
+                    # raise OSError(path)
+                    output_dir = "/tiler-data/input/"
+                    downloaded_path = download(path, output_dir)
+                    if is_zipfile(downloaded_path):
+                        base = os.path.basename(downloaded_path)
+                        base = os.path.splitext(base)[0]
+                        end_dir = output_dir + "/" + base
+                        unzip(downloaded_path, end_dir)
+
+                        shapefile = end_dir + "/" + base + ".shp"
+                        path = shapefile
+
+
                 geojson_path = handle_shapefile(path, layer_name, layer_config)
                 geojson_file_paths.append(geojson_path)
 
         # GEOJSON
         if layer_config["type"] == "geojson":
             for path in layer_config["paths"]:
+                if is_url(path):
+                    output_dir = "/tiler-data/input/"
+                    path = download(path, output_dir)
                 geojson_path = handle_geojson(path, layer_name, layer_config)
                 geojson_file_paths.append(geojson_path)
 
@@ -83,6 +101,11 @@ def handle_config(CONFIG_FILE):
         MAX_ZOOM=MAX_ZOOM,
         SIMPLIFICATION=SIMPLIFICATION
     )
+
+
+def handle_remote_download(url):
+    output_dir = "/tiler-data/output/"
+    download(url, output_dir)
 
 
 def handle_postgis(query, layer_name, layer_config):

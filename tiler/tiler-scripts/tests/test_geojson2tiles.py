@@ -24,17 +24,17 @@ class TestGeojson2Tiles(unittest.TestCase):
 
     def test_extract_pbf(self):
 
-        extract_pbf(MBTILES_NAME)
+        extract_pbf(MBTILES_NAME, False)
         self.assertTrue(os.path.isdir(MBTILES_DIR))
         self.assertTrue(os.path.isfile(MBTILES_DIR + "/0/0/0.pbf"))
 
     def test_decompress_pbf(self):
  
-        extract_pbf(MBTILES_NAME)
+        extract_pbf(MBTILES_NAME, False)
         self.assertTrue(os.path.isdir(MBTILES_DIR))
         self.assertTrue(os.path.isfile(MBTILES_DIR + "/0/0/0.pbf"))
 
-        decompress_pbf(MBTILES_NAME)
+        decompress_pbf(MBTILES_NAME, False)
         gz_magic = "\x1f\x8b\x08"
         with open(MBTILES_DIR + "/0/0/0.pbf") as f:
             file_start = f.read(len(gz_magic))

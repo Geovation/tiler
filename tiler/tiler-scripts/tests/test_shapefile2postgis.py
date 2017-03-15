@@ -17,25 +17,35 @@ class TestPostgis2Geojson(unittest.TestCase):
         try:
             table = "states"
             shapefile2postgis("/tiler-data/test-data/states/states.shp", "states")
+            cursor = self.get_cursor()
+            cursor.execute("SELECT * FROM states")
+            records = cursor.fetchall()
+            # print records  # See the records if you want to do a sanity check
+            self.assertTrue(len(records) > 0)
         except:
             self.fail("Shapefile not successfully added to table")
 
     def tearDown(self):
 
         try:
-            conn_string = "host='{}' dbname='{}' user='{}' password='{}'".format(
+            print "\n Tearing down database..."
+            cursor = self.get_cursor()
+            cursor.execute("DROP TABLE states")
+            cursor = None
+        except OSError:
+            self.fail("Couldn't tear down PostGIS table states")
+
+    
+    def get_cursor(self):
+        conn_string = "host='{}' dbname='{}' user='{}' password='{}'".format(
                 os.environ["DB_HOST"],
                 os.environ["DB_NAME"],
                 os.environ["DB_USER"],
                 os.environ["DB_PASSWORD"]
             )
-            conn = psycopg2.connect(conn_string)
-            cursor = conn.cursor()
-            cursor.execute("DROP TABLE states")
-            conn = None
-            cursor = None
-        except OSError:
-            self.fail("Couldn't tear down PostGIS table states")
+        conn = psycopg2.connect(conn_string)
+        cursor = conn.cursor()
+        return cursor
 
 
 if __name__ == '__main__':

@@ -32,6 +32,11 @@ def handle_config(CONFIG_FILE):
     else:
         DATA = config_dict["data"]
 
+    if "update" not in config_dict:
+        UPDATE = False
+    else:
+        UPDATE = config_dict["update"]
+
     if "tileset" not in config_dict:
         raise "No tileset property in json. "
     else:
@@ -99,7 +104,8 @@ def handle_config(CONFIG_FILE):
         TILESET_NAME,
         MIN_ZOOM=MIN_ZOOM,
         MAX_ZOOM=MAX_ZOOM,
-        SIMPLIFICATION=SIMPLIFICATION
+        SIMPLIFICATION=SIMPLIFICATION,
+        UPDATE=UPDATE
     )
 
 

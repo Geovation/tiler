@@ -1,4 +1,4 @@
-#!/usr/bin/python2.4
+#!/usr/bin/python2.7
 import sys
 import os
 import subprocess
@@ -57,9 +57,13 @@ def create_mbtiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATI
     print "\n Created mbtiles file from " + str(GEOJSON_FILES)
 
 
-def extract_pbf(MBTILES_NAME):
+def extract_pbf(MBTILES_NAME, UPDATE=False):
     
     MBTILES_DIR = "/tiler-data/tiles/" + MBTILES_NAME
+
+    if UPDATE:
+        MBTILES_DIR = "/tiler-data/updates/" + MBTILES_NAME
+
     # Create unzipped .pbf 
     if os.path.isdir(MBTILES_DIR):
         print "\n Vector Tiles folder (", MBTILES_DIR, ") already exists removing it..."
@@ -77,7 +81,10 @@ def extract_pbf(MBTILES_NAME):
         print "\n Vector Tiles folder removed!"
     
     print "\n Commencing extraction from mbtiles to", MBTILES_DIR
-    command = "mb-util --image_format=pbf --silent /tiler-data/tiles/{}.mbtiles /tiler-data/tiles/{}".format(MBTILES_NAME, MBTILES_NAME)
+    command = "mb-util --image_format=pbf --silent /tiler-data/tiles/{}.mbtiles {}".format(
+        MBTILES_NAME,
+        MBTILES_DIR
+    )
     print "\n Running: ", command
     mbutil_process = subprocess.Popen(command, shell=True)
     exit_code = mbutil_process.wait()
@@ -91,35 +98,53 @@ def extract_pbf(MBTILES_NAME):
     print "\n Decompress exit code: ", exit_code
 
 
-def decompress_pbf(MBTILES_NAME):
+def decompress_pbf(MBTILES_NAME, UPDATE=False):
 
     # We need to rename everything and then unzip it 
     print "\n Decompressing gzipped Vector Tiles"
     extension = ".pbf"
     length = len(extension)
     counter = 0
-    files = absolute_file_paths("/tiler-data/tiles/" + MBTILES_NAME)
-    
+    if UPDATE:
+        files = absolute_file_paths("/tiler-data/updates/" + MBTILES_NAME)
+    else:
+        files = absolute_file_paths("/tiler-data/tiles/" + MBTILES_NAME)
+
+
     for filename in files:
 
         if counter % 100 == 0:
             print "\n 100 more tiles decompressed..."
 
         if filename.endswith(".pbf"):
+
+            # Renaming
             old_name = os.path.abspath(filename)
             new_name = old_name[:-length] + '.pbf.gz'
             os.rename(old_name, new_name)
 
+            file_to_unzip = new_name
+            if UPDATE:
+                path_list = filename.split(os.sep)
+                zxy = os.path.join(path_list[-3:])
+                file_to_overwrite = "/tiler-data/" + MBTILES_NAME + "/" + zxy
+                assert file_to_overwrite == "test"
+            else:
+                file_to_overwrite = old_name
+
+
             # Loop through and unzip everything to actually be a real .pbf file
-            with gzip.open(new_name, 'rb') as infile:
-                with open(old_name, 'wb') as outfile:
+            with gzip.open(file_to_unzip, 'rb') as infile:
+                with open(file_to_overwrite, 'wb') as outfile:
                     for line in infile:
                         outfile.write(line)
 
-            # Get rid of the renamed, unzipped file 
+            # Get rid of the renamed, unzipped file
             os.remove(new_name)
 
         counter += 1
+
+    
 
     print "\n Vector Tiles decompressed!"
 
@@ -134,7 +159,7 @@ def create_demo_config(MBTILES_NAME):
         f.write(config)
         f.truncate()
 
-def geojson2tiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION=0):
+def geojson2tiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION=0, UPDATE=False):
 
     print "\n Running geojson2tiles..."
 
@@ -146,8 +171,8 @@ def geojson2tiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATIO
         assert MAX_ZOOM > MIN_ZOOM
     
     create_mbtiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION)
-    extract_pbf(MBTILES_NAME)
-    decompress_pbf(MBTILES_NAME)
+    extract_pbf(MBTILES_NAME, UPDATE)
+    decompress_pbf(MBTILES_NAME, UPDATE)
     create_demo_config(MBTILES_NAME)
 
 

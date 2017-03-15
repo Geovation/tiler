@@ -2,7 +2,7 @@ import json
 import sys
 import os
 
-TILER_TYPES = ["shapefile", "geojson"] #  "postgis"
+TILER_TYPES = ["shapefile", "geojson", "postgis"] #  "postgis"
 
 def validate_config(config_path):
 
@@ -27,8 +27,8 @@ def validate_config(config_path):
     return True
 
 
-def validate_type(type):
-    if type not in TILER_TYPES:
+def validate_type(data_type):
+    if data_type not in TILER_TYPES:
         return False
     return True
 

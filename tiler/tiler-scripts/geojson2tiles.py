@@ -126,9 +126,10 @@ def decompress_pbf(MBTILES_NAME, UPDATE=False):
             file_to_unzip = new_name
             if UPDATE:
                 path_list = filename.split(os.sep)
-                zxy = os.path.join(path_list[-3:])
-                file_to_overwrite = "/tiler-data/" + MBTILES_NAME + "/" + zxy
-                assert file_to_overwrite == "test"
+               
+                zxy = os.path.join(*path_list[-3:])
+                file_to_overwrite = "/tiler-data/tiles/" + MBTILES_NAME + "/" + zxy
+             
             else:
                 file_to_overwrite = old_name
 
@@ -136,7 +137,9 @@ def decompress_pbf(MBTILES_NAME, UPDATE=False):
             # Loop through and unzip everything to actually be a real .pbf file
             with gzip.open(file_to_unzip, 'rb') as infile:
                 with open(file_to_overwrite, 'wb') as outfile:
+                    if UPDATE: print "\n Overwiting", file_to_overwrite
                     for line in infile:
+                        
                         outfile.write(line)
 
             # Get rid of the renamed, unzipped file

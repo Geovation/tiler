@@ -39,7 +39,7 @@ def postgis2geojson(TABLE_NAME, DATABASE_VARS, LAYER_CONFIG=False, QUERY=False):
     exit_code = process.wait()
     print "\n Exit code: ", exit_code
     if exit_code != 0:
-        raise OSError("Failed to execute the SQL query correctly")
+        raise OSError("Failed to execute the SQL query correctly: " + query)
 
     print "\n GeoJSON created"
 

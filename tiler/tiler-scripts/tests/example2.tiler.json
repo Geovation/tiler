@@ -1,0 +1,24 @@
+{
+
+    "outdir" : "/tiler-data/tiles/",
+    "tileset" : "states",
+    "simplification" : 5,
+    "data" : {
+
+        "states" : {
+            "type" : "shapefile",
+            "paths" : ["/tiler-data/test-data/states/states.shp"],
+            "minzoom" : 0,
+            "maxzoom" : 5
+        },
+
+        "cupcakes" : {
+            "type" : "geojson",
+            "paths" : ["/tiler-data/test-data/cupcakes.geojson"],
+            "minzoom" : 1,
+            "maxzoom" : 7
+        }
+
+    }
+
+}

@@ -1,0 +1,12 @@
+{
+    "name": "/tiler-data/tiles/states.mbtiles", 
+    "format": "pbf", 
+    "description": "/tiler-data/tiles/states.mbtiles", 
+    "json": "{\"vector_layers\": [ { \"id\": \"states\", \"description\": \"\", \"minzoom\": 0, \"maxzoom\": 4, \"fields\": {\"DRAWSEQ\": \"Number\", \"STATE_ABBR\": \"String\", \"STATE_FIPS\": \"String\", \"STATE_NAME\": \"String\", \"SUB_REGION\": \"String\"} }, { \"id\": \"statesgeojson\", \"description\": \"\", \"minzoom\": 0, \"maxzoom\": 4, \"fields\": {} } ] }", 
+    "bounds": "-178.217598,18.921786,-66.969271,71.406235", 
+    "minzoom": "0", 
+    "version": "2", 
+    "maxzoom": "4", 
+    "type": "overlay", 
+    "center": "-78.750000,31.461472,4"
+}

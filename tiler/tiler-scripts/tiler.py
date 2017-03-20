@@ -17,7 +17,10 @@ def get_config(CONFIG_PATH):
 def handle_config(CONFIG_FILE):
 
     geojson_file_paths = []
-    config_dict = get_config(CONFIG_FILE)
+    if (type(CONFIG_FILE) == str):
+        config_dict = get_config(CONFIG_FILE)
+    else:
+        config_dict = CONFIG_FILE
 
     # TODO: This should probably be in config validation!
 

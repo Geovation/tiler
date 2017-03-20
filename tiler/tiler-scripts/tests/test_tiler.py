@@ -95,6 +95,38 @@ class TestTiler(unittest.TestCase):
         self.assertTrue(os.path.isfile("/tiler-data/input/states.geojson"))
         self.assertTrue(os.path.isdir(MBTILES_DIR))
 
+
+    # def test_tiler_update(self):
+    #     config_path = "/tiler-data/test-data/configs/update.tiler.json"
+
+    #     try:
+    #         shapefile2postgis("/tiler-data/test-data/states/states.shp", "states")
+    #         # shapefile2postgis("/tiler-data/test-data/us_stations/us_stations.shp", "us_stations")
+    #     except OSError:
+    #         self.fail("Couldn't setup the PostGIS table necessary for test")
+
+    #     handle_config(config_path)
+    #     self.assertTrue(os.path.isdir(MBTILES_DIR))
+    #     self.assertTrue(os.path.isfile(MBTILES_DIR + "/0/0/0.pbf"))
+
+    #     handle_config()
+
+    #     try:
+    #         conn_string = "host='{}' dbname='{}' user='{}' password='{}'".format(
+    #             os.environ["DB_HOST"],
+    #             os.environ["DB_NAME"],
+    #             os.environ["DB_USER"],
+    #             os.environ["DB_PASSWORD"]
+    #         )
+    #         conn = psycopg2.connect(conn_string)
+    #         cursor = conn.cursor()
+    #         cursor.execute("DROP TABLE states")
+    #         cursor.execute("DROP TABLE us_stations")
+    #         conn = None
+    #         cursor = None
+    #     except OSError:
+    #         self.fail("Couldn't tear down PostGIS table states")
+
     @classmethod
     def tearDown(cls):
         try:

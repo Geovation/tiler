@@ -1,0 +1,17 @@
+{
+
+    "outdir" : "/tiler-data/tiles/",
+    "tileset" : "update",
+    "simplification" : 5,
+    "data" : {
+
+        "missing" : {
+            "type" : "postgis",
+            "query" : "select * from missing",
+            "minzoom" : 5,
+            "maxzoom" : 16
+        }
+
+    }
+
+}

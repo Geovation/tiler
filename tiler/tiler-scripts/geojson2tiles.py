@@ -137,7 +137,7 @@ def decompress_pbf(MBTILES_NAME, UPDATE=False):
             # Loop through and unzip everything to actually be a real .pbf file
             with gzip.open(file_to_unzip, 'rb') as infile:
                 with open(file_to_overwrite, 'wb') as outfile:
-                    if UPDATE: print "\n Overwiting", file_to_overwrite
+                    #if UPDATE: print "\n Overwiting", file_to_overwrite
                     for line in infile:
                         
                         outfile.write(line)

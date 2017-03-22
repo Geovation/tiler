@@ -14,13 +14,15 @@ def get_config(CONFIG_PATH):
             config_dict = json.load(config_json)
             return config_dict
 
-def handle_config(CONFIG_FILE):
+def tiles_from_config(CONFIG_FILE):
 
     geojson_file_paths = []
-    if (type(CONFIG_FILE) == str):
+    if type(CONFIG_FILE) == str:
         config_dict = get_config(CONFIG_FILE)
-    else:
+    elif type(CONFIG_FILE) == dict:
         config_dict = CONFIG_FILE
+    else: 
+        raise TypeError("Must be path to config file or loaded config file as dict")
 
     # TODO: This should probably be in config validation!
 
@@ -119,7 +121,7 @@ def handle_remote_download(url):
 
 def handle_postgis(query, layer_name, layer_config):
     db_vars = os.environ
-    postgis2geojson(None, db_vars, LAYER_CONFIG=layer_config, QUERY=query) # Layer Config we do it ourself manaully
+    postgis2geojson(layer_name, db_vars, LAYER_CONFIG=layer_config, QUERY=query) # Layer Config we do it ourself manaully
     geojson_path = "/tiler-data/geojson/{}.geojson".format(layer_name)
     add_config(geojson_path, layer_name,  layer_config)
     return geojson_path
@@ -160,5 +162,5 @@ if __name__ == '__main__':
         raise ValueError("Config file has not been defined")
 
     CONFIG_FILE = "/tiler-data/configs/" + CONFIG + ".tiler.json"
-    handle_config(CONFIG_FILE)
+    tiles_from_config(CONFIG_FILE)
     

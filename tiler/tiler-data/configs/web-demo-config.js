@@ -1,1 +1,1 @@
-var vectortiles = 'states';
+var vectortiles = 'update_overwrite';

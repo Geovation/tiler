@@ -12,8 +12,7 @@ def postgis2geojson(TABLE_NAME, DATABASE_VARS, LAYER_CONFIG=False, QUERY=False):
 
     if QUERY:
         query = QUERY
-
-    if not QUERY and TABLE_NAME:
+    else:
         query = "select * from {}".format(TABLE_NAME)
 
     OUTPUT_PATH = "/tiler-data/geojson/{}.geojson".format(TABLE_NAME)

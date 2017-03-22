@@ -7,7 +7,7 @@ import shutil
 from validate_geojson import validate_geojson
 from tiler_helpers import absolute_file_paths
 
-def create_mbtiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION):
+def create_mbtiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION, SPLIT=True):
 
     # Validate GeoJSON 
     print "\n Validating GeoJSON"
@@ -36,7 +36,10 @@ def create_mbtiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATI
     for geojson_file in GEOJSON_FILES:
         GEOJSON_FILES_STR += geojson_file + " "
 
-    if MIN_ZOOM != None and MAX_ZOOM != None:
+    if SPLIT == False and MIN_ZOOM != None and MAX_ZOOM != None:
+        command = "tippecanoe -o {} {} --minimum-zoom={}  --maximum-zoom={} --read-parallel --simplification={} --drop-smallest-as-needed --coalesce".format(OUTPUT_PATH, GEOJSON_FILES_STR, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION)
+    
+    elif MIN_ZOOM != None and MAX_ZOOM != None:
         print "\n Min Zoom: ", MIN_ZOOM
         print "\n Max Zoom: ", MAX_ZOOM
         command = "tippecanoe -o {} {} --minimum-zoom={}  --maximum-zoom={} --read-parallel --no-polygon-splitting --simplification={} --drop-smallest-as-needed --coalesce".format(OUTPUT_PATH, GEOJSON_FILES_STR, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION)
@@ -45,7 +48,7 @@ def create_mbtiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATI
 
     print "\n Running: ", command
     FNULL = open(os.devnull, 'w')
-    tippecanoe_exit_code = subprocess.call(command, shell=True, stdout=FNULL, stderr=subprocess.STDOUT)
+    tippecanoe_exit_code = subprocess.call(command, shell=True)# stdout=FNULL, stderr=subprocess.STDOUT)
     # stdout, stderr = tippecanoe_process.communicate()
     # if stderr:
     #     raise IOError(stderr)  
@@ -172,8 +175,8 @@ def geojson2tiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATIO
         assert type(MIN_ZOOM) == int
         assert type(MAX_ZOOM) == int
         assert MAX_ZOOM > MIN_ZOOM
-    
-    create_mbtiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION)
+
+    create_mbtiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION, SPLIT=UPDATE)
     extract_pbf(MBTILES_NAME, UPDATE)
     decompress_pbf(MBTILES_NAME, UPDATE)
     create_demo_config(MBTILES_NAME)

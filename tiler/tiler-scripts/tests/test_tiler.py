@@ -8,7 +8,7 @@ import threading
 from handler import TestHandler
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) # Insanity for getting parent folder in path
-from tiler import get_config, handle_config
+from tiler import get_config, tiles_from_config
 from shapefile2postgis import shapefile2postgis
 
 MBTILES_NAME = "states"
@@ -34,7 +34,7 @@ class TestTiler(unittest.TestCase):
         config_path = "/tiler-data/test-data/configs/example.tiler.json"
         self.assertTrue(os.path.isfile(config_path))
 
-        handle_config(config_path)
+        tiles_from_config(config_path)
         self.assertTrue(os.path.isdir(MBTILES_DIR))
         self.assertTrue(os.path.isfile(MBTILES_DIR + "/0/0/0.pbf"))
         self.assertFalse(os.path.isfile(MBTILES_DIR + "/5/0/0.pbf"))
@@ -44,7 +44,7 @@ class TestTiler(unittest.TestCase):
         config_path = "/tiler-data/test-data/configs/example2.tiler.json"
         self.assertTrue(os.path.isfile(config_path))
 
-        handle_config(config_path)
+        tiles_from_config(config_path)
         self.assertTrue(os.path.isdir(MBTILES_DIR))
         self.assertTrue(os.path.isfile(MBTILES_DIR + "/0/0/0.pbf"))
         self.assertTrue(os.path.isfile(MBTILES_DIR + "/7/20/45.pbf"))
@@ -58,7 +58,7 @@ class TestTiler(unittest.TestCase):
         except OSError:
             self.fail("Couldn't setup the PostGIS table necessary for test")
 
-        handle_config(config_path)
+        tiles_from_config(config_path)
         self.assertTrue(os.path.isdir(MBTILES_DIR))
         self.assertTrue(os.path.isfile(MBTILES_DIR + "/0/0/0.pbf"))
 
@@ -86,7 +86,7 @@ class TestTiler(unittest.TestCase):
         thread = threading.Thread(target = server.serve_forever)
         thread.daemon = True
         thread.start()
-        handle_config(config_path)
+        tiles_from_config(config_path)
         server.shutdown()
         server.socket.close()
         self.assertTrue(os.path.isfile("/tiler-data/input/stations.zip"))
@@ -105,11 +105,11 @@ class TestTiler(unittest.TestCase):
     #     except OSError:
     #         self.fail("Couldn't setup the PostGIS table necessary for test")
 
-    #     handle_config(config_path)
+    #     tiles_from_config(config_path)
     #     self.assertTrue(os.path.isdir(MBTILES_DIR))
     #     self.assertTrue(os.path.isfile(MBTILES_DIR + "/0/0/0.pbf"))
 
-    #     handle_config()
+    #     tiles_from_config()
 
     #     try:
     #         conn_string = "host='{}' dbname='{}' user='{}' password='{}'".format(

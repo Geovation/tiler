@@ -2,7 +2,7 @@
 // var vectortiles = "buildings_wgs84";
 var layername = vectortiles;
 var PORT = "8080";
-var HOST = "http://127.0.0.1";
+var HOST = "http://" + window.location.hostname;
 var url = HOST + ":"+ PORT + "/tiler/tiler-data/tiles/" + vectortiles + "/{z}/{x}/{y}.pbf";
 console.log(url);
 
@@ -10,13 +10,13 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiamFtZXNtaWxuZXIiLCJhIjoiY2lsMm96djd1MDBjYndnb
 
 var tilelayers = [
     {
-        "id": layername,
+        "id": "states",
         "type": "fill",
         "source": vectortiles,
-        "source-layer": layername,
+        "source-layer": "states",
         "filter": ["==", "$type", "Polygon"],
         "paint": {
-            "fill-color": "rgba(255,11,11, 0.5)"
+            "fill-color": "rgba(11,255,11, 0.1)"
         }
     },
     {

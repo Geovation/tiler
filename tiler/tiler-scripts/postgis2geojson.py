@@ -6,6 +6,7 @@ import subprocess
 from tiler_helpers import add_tippecanoe_config, check_environ_vars
 
 def postgis2geojson(TABLE_NAME, DATABASE_VARS, LAYER_CONFIG=False, QUERY=False):
+    """ Take data from tables in PostGIS and export them to GeoJSON """
 
     if not TABLE_NAME and not QUERY:
         raise ValueError("No parameters passed for a valid SQL query")

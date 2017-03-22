@@ -8,8 +8,9 @@ from validate_geojson import validate_geojson
 from tiler_helpers import absolute_file_paths
 
 def create_mbtiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION, SPLIT=True):
+    """Create an .mbtiles file for a set of GeoJSON files"""
 
-    # Validate GeoJSON 
+    # Validate GeoJSON
     print "\n Validating GeoJSON"
     if type(GEOJSON_FILES) != list:
         raise TypeError("GEOJSON_FILES is not a list")
@@ -38,7 +39,7 @@ def create_mbtiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATI
 
     if SPLIT == False and MIN_ZOOM != None and MAX_ZOOM != None:
         command = "tippecanoe -o {} {} --minimum-zoom={}  --maximum-zoom={} --read-parallel --simplification={} --drop-smallest-as-needed --coalesce".format(OUTPUT_PATH, GEOJSON_FILES_STR, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION)
-    
+
     elif MIN_ZOOM != None and MAX_ZOOM != None:
         print "\n Min Zoom: ", MIN_ZOOM
         print "\n Max Zoom: ", MAX_ZOOM
@@ -61,13 +62,14 @@ def create_mbtiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATI
 
 
 def extract_pbf(MBTILES_NAME, UPDATE=False):
-    
+    """Extract a set of protobufs from a .mbtiles file"""
+
     MBTILES_DIR = "/tiler-data/tiles/" + MBTILES_NAME
 
     if UPDATE:
         MBTILES_DIR = "/tiler-data/updates/" + MBTILES_NAME
 
-    # Create unzipped .pbf 
+    # Create unzipped .pbf
     if os.path.isdir(MBTILES_DIR):
         print "\n Vector Tiles folder (", MBTILES_DIR, ") already exists removing it..."
         try:
@@ -82,7 +84,7 @@ def extract_pbf(MBTILES_NAME, UPDATE=False):
                 raise os_err
 
         print "\n Vector Tiles folder removed!"
-    
+
     print "\n Commencing extraction from mbtiles to", MBTILES_DIR
     command = "mb-util --image_format=pbf --silent /tiler-data/tiles/{}.mbtiles {}".format(
         MBTILES_NAME,
@@ -102,8 +104,9 @@ def extract_pbf(MBTILES_NAME, UPDATE=False):
 
 
 def decompress_pbf(MBTILES_NAME, UPDATE=False):
+    """Decompress a set of protobufs"""
 
-    # We need to rename everything and then unzip it 
+    # We need to rename everything and then unzip it
     print "\n Decompressing gzipped Vector Tiles"
     extension = ".pbf"
     length = len(extension)
@@ -113,11 +116,10 @@ def decompress_pbf(MBTILES_NAME, UPDATE=False):
     else:
         files = absolute_file_paths("/tiler-data/tiles/" + MBTILES_NAME)
 
-
     for filename in files:
 
-        if counter % 100 == 0:
-            print "\n 100 more tiles decompressed..."
+        if counter % 500 == 0:
+            print "\n 500 more tiles decompressed..."
 
         if filename.endswith(".pbf"):
 
@@ -129,20 +131,17 @@ def decompress_pbf(MBTILES_NAME, UPDATE=False):
             file_to_unzip = new_name
             if UPDATE:
                 path_list = filename.split(os.sep)
-               
                 zxy = os.path.join(*path_list[-3:])
                 file_to_overwrite = "/tiler-data/tiles/" + MBTILES_NAME + "/" + zxy
-             
+
             else:
                 file_to_overwrite = old_name
-
 
             # Loop through and unzip everything to actually be a real .pbf file
             with gzip.open(file_to_unzip, 'rb') as infile:
                 with open(file_to_overwrite, 'wb') as outfile:
                     #if UPDATE: print "\n Overwiting", file_to_overwrite
                     for line in infile:
-                        
                         outfile.write(line)
 
             # Get rid of the renamed, unzipped file
@@ -150,14 +149,13 @@ def decompress_pbf(MBTILES_NAME, UPDATE=False):
 
         counter += 1
 
-    
-
     print "\n Vector Tiles decompressed!"
-
     print "\n Finished! See tiles/" + MBTILES_NAME, " for the resulting files \n"
 
 
 def create_demo_config(MBTILES_NAME):
+    """ Generate a config for the web demos """
+
     demo_config = "/tiler-data/configs/web-demo-config.js"
     with open(demo_config, 'w+') as f:
         config = "var vectortiles = '" + MBTILES_NAME + "';"
@@ -166,14 +164,15 @@ def create_demo_config(MBTILES_NAME):
         f.truncate()
 
 def geojson2tiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION=0, UPDATE=False):
+    """ From a set of GeoJSON files generate a set of raw protobuf vector tiles """
 
     print "\n Running geojson2tiles..."
 
-    assert type(SIMPLIFICATION) == int 
+    assert isinstance(SIMPLIFICATION, int)
 
     if MIN_ZOOM != None and MAX_ZOOM != None:
-        assert type(MIN_ZOOM) == int
-        assert type(MAX_ZOOM) == int
+        assert isinstance(MIN_ZOOM, int)
+        assert isinstance(MAX_ZOOM, int)
         assert MAX_ZOOM > MIN_ZOOM
 
     create_mbtiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION, SPLIT=UPDATE)
@@ -189,7 +188,7 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         GEOJSON_FILE = sys.argv[1]
     else:
-        raise ValueError("GEOJSON_FILE not defined" )
+        raise ValueError("GEOJSON_FILE not defined")
 
     if len(sys.argv) > 2:
         MIN_ZOOM = int(sys.argv[2])
@@ -212,4 +211,4 @@ if __name__ == '__main__':
     print "\n Input variables are valid!"
 
     MBTILES_NAME = os.path.basename(os.path.splitext(GEOJSON_FILE)[0])
-    geojson2tiles([GEOJSON_FILE], MBTILES_NAME, MIN_ZOOM, MAX_ZOOM,  SIMPLIFICATION)
+    geojson2tiles([GEOJSON_FILE], MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION)

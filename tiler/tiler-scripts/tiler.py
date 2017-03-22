@@ -9,19 +9,23 @@ from tiler_helpers import add_tippecanoe_config
 from postgis2geojson import postgis2geojson
 from remote_file import *
 
-def get_config(CONFIG_PATH):
-    with open(CONFIG_PATH) as config_json:
+def get_config(config_path):
+    """ Open a Tiler config and return it as a dictonary """
+
+    with open(config_path) as config_json:
             config_dict = json.load(config_json)
             return config_dict
 
-def tiles_from_config(CONFIG_FILE):
+
+def tiles_from_config(config_file):
+    """ Create a set of tiles based off the settings in a config file """
 
     geojson_file_paths = []
-    if type(CONFIG_FILE) == str:
-        config_dict = get_config(CONFIG_FILE)
-    elif type(CONFIG_FILE) == dict:
-        config_dict = CONFIG_FILE
-    else: 
+    if type(config_file) == str:
+        config_dict = get_config(config_file)
+    elif type(config_file) == dict:
+        config_dict = config_file
+    else:
         raise TypeError("Must be path to config file or loaded config file as dict")
 
     # TODO: This should probably be in config validation!
@@ -91,7 +95,7 @@ def tiles_from_config(CONFIG_FILE):
         # POSTGIS
         if layer_config["type"] == "postgis":
             if "query" not in layer_config:
-                raise TypeError("Query string not set in configuration file: ", CONFIG_FILE)
+                raise TypeError("Query string not set in configuration file: ", config_file)
             query = layer_config["query"] # Table name translates to the layer name!
             geojson_path = handle_postgis(query, layer_name, layer_config)
             geojson_file_paths.append(geojson_path)
@@ -115,41 +119,52 @@ def tiles_from_config(CONFIG_FILE):
 
 
 def handle_remote_download(url):
+    """ Handle the downloading of a remote file """
+
     output_dir = "/tiler-data/output/"
     download(url, output_dir)
 
 
 def handle_postgis(query, layer_name, layer_config):
+    """ Handle getting data from a PostGIS database """
+
     db_vars = os.environ
-    postgis2geojson(layer_name, db_vars, LAYER_CONFIG=layer_config, QUERY=query) # Layer Config we do it ourself manaully
+    # Layer Config we do it ourself manaully
+    postgis2geojson(layer_name, db_vars, LAYER_CONFIG=layer_config, QUERY=query)
     geojson_path = "/tiler-data/geojson/{}.geojson".format(layer_name)
-    add_config(geojson_path, layer_name,  layer_config)
+    add_config(geojson_path, layer_name, layer_config)
     return geojson_path
 
 
 def handle_geojson(geojson_path, layer_name, layer_config):
+    """ Handle getting data from a GeoJSON file """
+
     add_config(geojson_path, layer_config, layer_name)
-    return geojson_path 
+    return geojson_path
 
 
 def handle_shapefile(shp_path, layer_name, layer_config):
+    """ Handle getting data from a shapefile """
+
     minzoom = layer_config["minzoom"]
     maxzoom = layer_config["maxzoom"]
-    LAYER_CONFIG = {"minzoom" : minzoom, "maxzoom" : maxzoom, "layer": layer_name}
-    shapefile2geojson(shp_path, layer_name, LAYER_CONFIG=LAYER_CONFIG)
+    geojson_layer_config = {"minzoom" : minzoom, "maxzoom" : maxzoom, "layer": layer_name}
+    shapefile2geojson(shp_path, layer_name, LAYER_CONFIG=geojson_layer_config)
     return "/tiler-data/geojson/{}.geojson".format(layer_name)
 
 
 def add_config(path, layer_name, layer_config):
+    """ Setup the tippecanoe config for use with tippecanoe """
+
     if "minzoom" in layer_config or "maxzoom" in layer_config or layer_name:
-        TIPPECANOE_CONFIG = {}
+        tippecanoe_config = {}
         if "minzoom" in layer_config:
-            TIPPECANOE_CONFIG["minzoom"] = layer_config["minzoom"]
+            tippecanoe_config["minzoom"] = layer_config["minzoom"]
         if "maxzoom" in layer_config:
-            TIPPECANOE_CONFIG["maxzoom"] = layer_config["maxzoom"]
+            tippecanoe_config["maxzoom"] = layer_config["maxzoom"]
         if layer_name:
-            TIPPECANOE_CONFIG["layer"] = layer_name
-        add_tippecanoe_config(path, TIPPECANOE_CONFIG)
+            tippecanoe_config["layer"] = layer_name
+        add_tippecanoe_config(path, tippecanoe_config)
 
 
 if __name__ == '__main__':

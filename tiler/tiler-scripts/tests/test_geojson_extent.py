@@ -1,8 +1,8 @@
 import unittest
 from geojson_extent import *
  
-class TestCupcakes(unittest.TestCase):
-    """Tests for `cupcakes.geojson`."""
+class TestGeoJsonExtent(unittest.TestCase):
+    """Tests geojson extent return correct extent for geojson file"""
  
     def test_extent(self):
         """Does geojson_extent return the correct bounding box of cupcakes.geojson?"""

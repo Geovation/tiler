@@ -68,7 +68,7 @@ class TestGeojson2Tiles(unittest.TestCase):
         decompress_pbf(MBTILES_NAME, True)
         
         # Modified times are at most granular in seconds, so we need to wait for changes 
-        time.sleep(1)
+        time.sleep(5)
         modified = os.stat(MBTILES_DIR + "/0/0/0.pbf").st_mtime
         self.assertNotEqual(modified, last_modified)
 

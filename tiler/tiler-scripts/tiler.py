@@ -7,6 +7,7 @@ from geojson2tiles import *
 from validate_geojson import validate_geojson
 from tiler_helpers import add_tippecanoe_config
 from postgis2geojson import postgis2geojson
+from shapefile2postgis import shapefile2postgis
 from remote_file import *
 
 def get_config(config_path):
@@ -55,6 +56,12 @@ def tiles_from_config(config_file):
 
         # SHAPEFILE
         if layer_config["type"] == "shapefile":
+
+            database_insert = False
+
+            if "databaseInsert" in layer_config and layer_config["databaseInsert"] == True:
+                database_insert = True
+
             for path in layer_config["paths"]:
                 if is_url(path):
                     # raise OSError(path)
@@ -69,8 +76,7 @@ def tiles_from_config(config_file):
                         shapefile = end_dir + "/" + base + ".shp"
                         path = shapefile
 
-
-                geojson_path = handle_shapefile(path, layer_name, layer_config)
+                geojson_path = handle_shapefile(path, layer_name, layer_config, database_insert)
                 geojson_file_paths.append(geojson_path)
 
         # GEOJSON
@@ -133,13 +139,21 @@ def handle_geojson(geojson_path, layer_name, layer_config):
     return geojson_path
 
 
-def handle_shapefile(shp_path, layer_name, layer_config):
+def handle_shapefile(shp_path, layer_name, layer_config, database_insert):
     """ Handle getting data from a shapefile """
 
     minzoom = layer_config["minzoom"]
     maxzoom = layer_config["maxzoom"]
     geojson_layer_config = {"minzoom" : minzoom, "maxzoom" : maxzoom, "layer": layer_name}
-    shapefile2geojson(shp_path, layer_name, LAYER_CONFIG=geojson_layer_config)
+
+    if database_insert:
+        shapefile2postgis(shp_path, layer_name)
+        DATABASE_VARS = os.environ
+        postgis2geojson(layer_name, DATABASE_VARS, LAYER_CONFIG=False, QUERY=False)
+
+    else:
+        shapefile2geojson(shp_path, layer_name, LAYER_CONFIG=geojson_layer_config)
+
     return "/tiler-data/geojson/{}.geojson".format(layer_name)
 
 

@@ -11,8 +11,8 @@ MBTILES_NAME = "states"
 MBTILES_DIR = "/tiler-data/tiles/" + MBTILES_NAME
 MBTILES_FILE = "/tiler-data/tiles/" + MBTILES_NAME + ".mbtiles"
 
-UPDATE_MBTILES_DIR = "/tiler-data/updates/" + MBTILES_NAME
-UPDATE_MBTILES_FILE = "/tiler-data/updates/" + MBTILES_FILE + ".mbtiles"
+# UPDATE_MBTILES_DIR = "/tiler-data/updates/" + MBTILES_NAME
+# UPDATE_MBTILES_FILE = "/tiler-data/updates/" + MBTILES_FILE + ".mbtiles"
 
 
 class TestGeojson2Tiles(unittest.TestCase):
@@ -47,36 +47,36 @@ class TestGeojson2Tiles(unittest.TestCase):
             is_gzipped = file_start.startswith(gz_magic)
             self.assertFalse(is_gzipped)
 
-    def test_extract_pbf_update(self):
+    # def test_extract_pbf_update(self):
 
-        extract_pbf(MBTILES_NAME, True)
-        self.assertTrue(os.path.isdir(UPDATE_MBTILES_DIR))
-        self.assertTrue(os.path.isfile(UPDATE_MBTILES_DIR + "/0/0/0.pbf"))
+    #     extract_pbf(MBTILES_NAME, True)
+    #     self.assertTrue(os.path.isdir(UPDATE_MBTILES_DIR))
+    #     self.assertTrue(os.path.isfile(UPDATE_MBTILES_DIR + "/0/0/0.pbf"))
 
-    def test_decompress_pbf_update(self):
+    # def test_decompress_pbf_update(self):
 
-        # Setup the tiles to be overwritten
-        extract_pbf(MBTILES_NAME, False)
-        decompress_pbf(MBTILES_NAME, False)
+    #     # Setup the tiles to be overwritten
+    #     extract_pbf(MBTILES_NAME, False)
+    #     decompress_pbf(MBTILES_NAME, False)
 
-        last_modified = os.stat(MBTILES_DIR + "/0/0/0.pbf").st_mtime
+    #     last_modified = os.stat(MBTILES_DIR + "/0/0/0.pbf").st_mtime
 
-        extract_pbf(MBTILES_NAME, True)
-        self.assertTrue(os.path.isdir(UPDATE_MBTILES_DIR))
-        self.assertTrue(os.path.isfile(UPDATE_MBTILES_DIR + "/0/0/0.pbf"))
+    #     extract_pbf(MBTILES_NAME, True)
+    #     self.assertTrue(os.path.isdir(UPDATE_MBTILES_DIR))
+    #     self.assertTrue(os.path.isfile(UPDATE_MBTILES_DIR + "/0/0/0.pbf"))
 
-        decompress_pbf(MBTILES_NAME, True)
+    #     decompress_pbf(MBTILES_NAME, True)
         
-        # Modified times are at most granular in seconds, so we need to wait for changes 
-        time.sleep(5)
-        modified = os.stat(MBTILES_DIR + "/0/0/0.pbf").st_mtime
-        self.assertNotEqual(modified, last_modified)
+    #     # Modified times are at most granular in seconds, so we need to wait for changes 
+    #     time.sleep(5)
+    #     modified = os.stat(MBTILES_DIR + "/0/0/0.pbf").st_mtime
+    #     self.assertNotEqual(modified, last_modified)
 
-        gz_magic = "\x1f\x8b\x08"
-        with open(MBTILES_DIR + "/0/0/0.pbf") as f:
-            file_start = f.read(len(gz_magic))
-            is_gzipped = file_start.startswith(gz_magic)
-            self.assertFalse(is_gzipped)
+    #     gz_magic = "\x1f\x8b\x08"
+    #     with open(MBTILES_DIR + "/0/0/0.pbf") as f:
+    #         file_start = f.read(len(gz_magic))
+    #         is_gzipped = file_start.startswith(gz_magic)
+    #         self.assertFalse(is_gzipped)
 
 
 
@@ -85,7 +85,7 @@ class TestGeojson2Tiles(unittest.TestCase):
         try:
             print "\n Tearing tests down..."
             shutil.rmtree(MBTILES_DIR)
-            shutil.rmtree(UPDATE_MBTILES_DIR)
+            #shutil.rmtree(UPDATE_MBTILES_DIR)
         except OSError as shutil_err:
             print shutil_err
 

@@ -30,6 +30,7 @@ class TestTiler(unittest.TestCase):
         self.assertTrue(config["data"]["states"]["maxzoom"] == 4)
         self.assertTrue(config["data"]["states"]["maxzoom"] > config["data"]["states"]["minzoom"])
 
+
     def test_tiler(self):
         config_path = "/tiler-data/test-data/configs/example.tiler.json"
         self.assertTrue(os.path.isfile(config_path))
@@ -40,6 +41,7 @@ class TestTiler(unittest.TestCase):
         self.assertFalse(os.path.isfile(MBTILES_DIR + "/5/0/0.pbf"))
         self.assertFalse(os.path.isfile(MBTILES_DIR + "/8/0/0.pbf"))
 
+
     def test_tiler_geojson(self):
         config_path = "/tiler-data/test-data/configs/example2.tiler.json"
         self.assertTrue(os.path.isfile(config_path))
@@ -49,7 +51,7 @@ class TestTiler(unittest.TestCase):
         self.assertTrue(os.path.isfile(MBTILES_DIR + "/0/0/0.pbf"))
         self.assertTrue(os.path.isfile(MBTILES_DIR + "/7/20/45.pbf"))
 
-
+    
     def test_tiler_postgis(self):
         config_path = "/tiler-data/test-data/configs/postgis.tiler.json"
 
@@ -76,6 +78,33 @@ class TestTiler(unittest.TestCase):
             cursor = None
         except OSError:
             self.fail("Couldn't tear down PostGIS table states")
+
+
+    def test_tiler_shapefile_database(self):
+        config_path = "/tiler-data/test-data/configs/example3.tiler.json"
+        self.assertTrue(os.path.isfile(config_path))
+
+        tiles_from_config(config_path)
+        self.assertTrue(os.path.isdir(MBTILES_DIR))
+        self.assertTrue(os.path.isfile(MBTILES_DIR + "/0/0/0.pbf"))
+        self.assertFalse(os.path.isfile(MBTILES_DIR + "/5/0/0.pbf"))
+        self.assertFalse(os.path.isfile(MBTILES_DIR + "/8/0/0.pbf"))
+
+        try:
+            conn_string = "host='{}' dbname='{}' user='{}' password='{}'".format(
+                os.environ["DB_HOST"],
+                os.environ["DB_NAME"],
+                os.environ["DB_USER"],
+                os.environ["DB_PASSWORD"]
+            )
+            conn = psycopg2.connect(conn_string)
+            cursor = conn.cursor()
+            cursor.execute("DROP TABLE states")
+            conn = None
+            cursor = None
+        except OSError:
+            self.fail("Couldn't tear down PostGIS table states")
+
 
     def test_tiler_url(self):
         config_path = "/tiler-data/test-data/configs/url.tiler.json"

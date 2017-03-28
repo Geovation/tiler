@@ -10,6 +10,12 @@ def validate_config(config_path):
     with open(config_path, 'r') as config_file:
         config_dump = config_file.read()
         config = json.loads(config_dump)
+
+        if "outdir" not in config:
+            raise TypeError("No outdir property in json")
+        if "data" not in config:
+            raise TypeError("No data property in json")
+
         for key in config["data"]:
             layer = config["data"][key]
             type_valid = validate_type(config["data"][key]["type"])

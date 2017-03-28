@@ -28,18 +28,8 @@ def tiles_from_config(config_file):
     else:
         raise TypeError("Must be path to config file or loaded config file as dict")
 
-    # TODO: This should probably be in config validation!
-
-    if "outdir" not in config_dict:
-        raise "No outdir property in json. The outbound \
-               directory should be of format 'outdir : path/to/dir'"
-    else:
-        OUTDIR = config_dict["outdir"]
-
-    if "data" not in config_dict:
-        raise "No data property in json. "
-    else:
-        DATA = config_dict["data"]
+    OUTDIR = config_dict["outdir"]
+    DATA = config_dict["data"]
 
     if "update" not in config_dict:
         UPDATE = False

@@ -22,7 +22,7 @@ def postgis2geojson(TABLE_NAME, DATABASE_VARS, LAYER_CONFIG=False, QUERY=False):
     except OSError:
         pass
 
-    connect_command = """ogr2ogr -f GeoJSON {} PG:"host={} port={} user={} dbname={} password={}" -sql "{}" """.format(
+    connect_command = """ogr2ogr -f GeoJSON {} -t_srs EPSG:4326 PG:"host={} port={} user={} dbname={} password={}" -sql "{}" """.format(
         OUTPUT_PATH,
         DATABASE_VARS['DB_HOST'],
         DATABASE_VARS['DB_PORT'],

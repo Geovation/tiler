@@ -1,6 +1,7 @@
 import subprocess
 import sys
 import os
+from itertools import tee
 
 def geojson_extent(FILE_NAME):
     """Get the geographic extent of a GeoJSON file in WGS84"""
@@ -11,7 +12,8 @@ def geojson_extent(FILE_NAME):
     process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
 
     lines = iter(process.stdout.readline, '')
-    if sum(1 for _ in lines) < 1:
+    lines_sum = tee(lines) # We need to copy the iterator!
+    if sum(1 for _ in lines_sum) == 0:
         raise OSError("There was no extent information for this file")
 
     for line in lines:

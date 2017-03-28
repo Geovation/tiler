@@ -12,6 +12,9 @@ def shapefile2geojson(INPUT_PATH, OUTPUT_NAME, LAYER_CONFIG=False):
 
     tiler_helpers.check_file(INPUT_PATH)
 
+    if not os.path.exists("/tiler-data/geojson"):
+        os.makedirs("/tiler-data/geojson")
+
     OUTPUT_PATH = "/tiler-data/geojson/{}.geojson".format(OUTPUT_NAME)
     try:
         os.remove(OUTPUT_PATH)

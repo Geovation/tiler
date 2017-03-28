@@ -6,16 +6,19 @@ import traceback
 
 
 def is_url(url):
+    """ Check if a string is a valid URL """
     if url.startswith("http://") or url.startswith("https://"):
         return True
     return False
 
 def is_zipfile(path):
+    """ Check if a file is a zip file """
     if path.endswith(".zip"):
         return True
     return False
 
 def download(url, output_dir):
+    """ Download a file from a given URL to a specified directory """
 
     print "\n Downloading ", url
     if not is_url(url):

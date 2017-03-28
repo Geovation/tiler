@@ -7,6 +7,7 @@ import tiler_helpers
 
 
 def shapefile2postgis(FILE_NAME, TABLE_NAME):
+    """ Convert a shapefile to a PostGIS table """
 
     tiler_helpers.check_file(FILE_NAME)
 

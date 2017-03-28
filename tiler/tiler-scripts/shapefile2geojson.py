@@ -8,6 +8,7 @@ import tiler_helpers
 
 
 def shapefile2geojson(INPUT_PATH, OUTPUT_NAME, LAYER_CONFIG=False):
+    """ Convert a shapefile to a GeoJSON file """
 
     tiler_helpers.check_file(INPUT_PATH)
 

@@ -2,6 +2,7 @@ import geojson
 import sys
 
 def validate_geojson(geojson_path):
+    """ Validate a GeoJSON file """
 
     ## Validate the GeoJSON file
     with open(geojson_path, 'r') as geojson_file:

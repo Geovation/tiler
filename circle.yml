@@ -5,12 +5,14 @@ machine:
 dependencies:
   override:
     - docker info
-    - docker build --rm=false -t tiler .
+    - if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar; fi
+    - docker build --rm=false -t tiler 
+    - mkdir -p ~/docker; docker save tiler > ~/docker/image.tar
 
 test:
   override:
     - docker run --name "tiler" -d -v tiler-data:/tiler-data  -v tiler-scripts:/tiler-scripts -p 25432:5432 tiler:
         background: true
-    - sleep 10
+    - sleep 5
     - sudo lxc-attach -n "$(docker inspect --format="{{.Id}}" tiler)" -- bash -c nosetests /tiler-scripts/ -xs
     - docker stop tiler

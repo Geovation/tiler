@@ -19,5 +19,5 @@ test:
     - sudo lxc-attach -n "$(docker inspect --format="{{.Id}}" tiler)" -- pwd
     - sudo lxc-attach -n "$(docker inspect --format="{{.Id}}" tiler)" -- ls -la
     - sudo lxc-attach -n "$(docker inspect --format="{{.Id}}" tiler)" -- ls -la ./tiler-scripts/
-    - sudo lxc-attach -n "$(docker inspect --format="{{.Id}}" tiler)" -- export DB_HOST=localhost && export DB_PORT=5432 && export DB_USER=docker && export DB_NAME=gis && export DB_PASSWORD=docker && nosetests /tiler-scripts/ -xs
+    - sudo lxc-attach -n "$(docker inspect --format="{{.Id}}" tiler)" -- nosetests /tiler-scripts/ -xs
     - docker stop tiler

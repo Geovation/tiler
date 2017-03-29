@@ -135,7 +135,8 @@ else
     # It will be owned by the docker db user
     su - postgres -c "createdb -O $POSTGRES_USER -T template_postgis $POSTGRES_DBNAME"
 fi
-# This should show up in docker logs afterwards
+
+#This should show up in docker logs afterwards
 su - postgres -c "psql -l"
 
 PID=`cat /var/run/postgresql/9.5-main.pid`

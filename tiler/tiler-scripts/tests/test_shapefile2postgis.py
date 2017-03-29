@@ -11,12 +11,26 @@ class TestPostgis2Geojson(unittest.TestCase):
 
     def test_shapefile2postgis_nofile(self):
         with self.assertRaises(OSError):
-            shapefile2postgis("some/none/existant.file", "some_table")
+            DB_VARS = {
+                "DB_HOST" : "localhost", # os.environ["DB_HOST"],
+                "DB_NAME" : "gis", # os.environ["DB_NAME"],
+                "DB_PORT" : 5432,
+                "DB_USER" : "docker", # os.environ["DB_USER"],
+                "DB_PASSWORD" : "docker" # os.environ["DB_PASSWORD"]
+            }
+            shapefile2postgis("some/none/existant.file", "some_table", DB_VARS)
 
     def test_shapefile2postgis(self):
         try:
             table = "states"
-            shapefile2postgis("/tiler-data/test-data/states/states.shp", "states")
+            DB_VARS = {
+                "DB_HOST" : "localhost", # os.environ["DB_HOST"],
+                "DB_NAME" : "gis", # os.environ["DB_NAME"],
+                "DB_PORT" : 5432,
+                "DB_USER" : "docker", # os.environ["DB_USER"],
+                "DB_PASSWORD" : "docker" # os.environ["DB_PASSWORD"]
+            }
+            shapefile2postgis("/tiler-data/test-data/states/states.shp", "states", DB_VARS)
             cursor = self.get_cursor()
             cursor.execute("SELECT * FROM states")
             records = cursor.fetchall()
@@ -38,10 +52,10 @@ class TestPostgis2Geojson(unittest.TestCase):
     
     def get_cursor(self):
         conn_string = "host='{}' dbname='{}' user='{}' password='{}'".format(
-                os.environ["DB_HOST"],
-                os.environ["DB_NAME"],
-                os.environ["DB_USER"],
-                os.environ["DB_PASSWORD"]
+                "localhost", # os.environ["DB_HOST"],
+                "gis", # os.environ["DB_NAME"],
+                "docker", # os.environ["DB_USER"],
+                "docker", # os.environ["DB_PASSWORD"]
             )
         conn = psycopg2.connect(conn_string)
         cursor = conn.cursor()

@@ -17,6 +17,7 @@ test:
         background: true
     - sleep 5
     - sudo lxc-attach -n "$(docker inspect --format="{{.Id}}" tiler)" -- bash -c pwd
-    - sudo lxc-attach -n "$(docker inspect --format="{{.Id}}" tiler)" -- bash -c ls -la /tiler-scripts/
+    - sudo lxc-attach -n "$(docker inspect --format="{{.Id}}" tiler)" -- bash -c ls -la
+    - sudo lxc-attach -n "$(docker inspect --format="{{.Id}}" tiler)" -- bash -c ls -la ./tiler-scripts/
     - sudo lxc-attach -n "$(docker inspect --format="{{.Id}}" tiler)" -- bash -c nosetests /tiler-scripts/ -xs
     - docker stop tiler

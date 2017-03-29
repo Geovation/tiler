@@ -1,0 +1,13 @@
+machine:
+  services:
+    - docker
+
+dependencies:
+  override:
+    - docker info
+    - docker build --rm=false -t tiler .
+
+test:
+  override:
+    - docker run --name "tiler" -v $TILER_DATA_DIR:/tiler-data  -v $TILER_SCRIPTS_DIR:/tiler-scripts -p 25432:5432 tiler
+    - sudo lxc-attach -n "$(docker inspect --format "{{.Id}}" tiler)" -- bash -c nosetests /tiler-scripts/ -xs

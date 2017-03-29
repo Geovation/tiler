@@ -13,7 +13,7 @@ dependencies:
 
 test:
   override:
-    - docker run --name "tiler" -d -v /home/ubuntu/tiler/tiler/tiler-data:/tiler-data  -v /home/ubuntu/tiler/tiler/tiler-scripts:/tiler-scripts -p 25432:5432 tiler:
+    - docker run --name "tiler" -d -v /home/ubuntu/tiler/tiler/tiler-data:/tiler-data -v /home/ubuntu/tiler/tiler/tiler-scripts:/tiler-scripts -p 25432:5432 tiler:
         background: true
     - sleep 5
     - sudo lxc-attach -n "$(docker inspect --format="{{.Id}}" tiler)" -- bash -c pwd

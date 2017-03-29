@@ -16,8 +16,8 @@ test:
     - docker run --name "tiler" -d -v /home/ubuntu/tiler/tiler/tiler-data:/tiler-data -v /home/ubuntu/tiler/tiler/tiler-scripts:/tiler-scripts -p 25432:5432 tiler:
         background: true
     - sleep 5
-    - sudo lxc-attach -n "$(docker inspect --format="{{.Id}}" tiler)" -- bash -c pwd
-    - sudo lxc-attach -n "$(docker inspect --format="{{.Id}}" tiler)" -- bash -c ls -la
-    - sudo lxc-attach -n "$(docker inspect --format="{{.Id}}" tiler)" -- bash -c ls -la ./tiler-scripts/
-    - sudo lxc-attach -n "$(docker inspect --format="{{.Id}}" tiler)" -- bash -c nosetests /tiler-scripts/ -xs
+    - sudo lxc-attach -n "$(docker inspect --format="{{.Id}}" tiler)" -- pwd
+    - sudo lxc-attach -n "$(docker inspect --format="{{.Id}}" tiler)" -- ls -la
+    - sudo lxc-attach -n "$(docker inspect --format="{{.Id}}" tiler)" -- ls -la ./tiler-scripts/
+    - sudo lxc-attach -n "$(docker inspect --format="{{.Id}}" tiler)" -- nosetests /tiler-scripts/ -xs
     - docker stop tiler

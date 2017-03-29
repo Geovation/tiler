@@ -9,6 +9,5 @@ dependencies:
 
 test:
   override:
-    - docker run --name "tiler" -d -v tiler-data:/tiler-data  -v tiler-scripts:/tiler-scripts -p 25432:5432 tiler & 
-    - sudo lxc-attach -n "$(docker inspect --format "{{.Id}}" tiler)" -- bash -c nosetests /tiler-scripts/ -xs 
+    - docker run --name "tiler" -d -v tiler-data:/tiler-data  -v tiler-scripts:/tiler-scripts -p 25432:5432 tiler exec nosetests /tiler-scripts/
     - docker stop tiler

@@ -30,7 +30,7 @@ class TestPostgis2Geojson(unittest.TestCase):
                 "DB_USER" : "docker", # os.environ["DB_USER"],
                 "DB_PASSWORD" : "docker" # os.environ["DB_PASSWORD"]
             }
-            shapefile2postgis("/tiler-data/test-data/states/states.shp", "states", DB_VARS)
+            shapefile2postgis("/tiler-data/test-data/states/states.shp", "states", self.DB_VARS)
         except OSError:
             self.fail("Couldn't setup the PostGIS table for conversion")
 

@@ -22,7 +22,8 @@ def shapefile2geojson(INPUT_PATH, OUTPUT_NAME, LAYER_CONFIG=False):
         pass
 
     try:
-        connect_command = """ogr2ogr -f GeoJSON {} {}""".format(OUTPUT_PATH, INPUT_PATH)
+        connect_command = """ogr2ogr -f GeoJSON -t_srs EPSG:4326 {} {}""".format(OUTPUT_PATH,
+                                                                                 INPUT_PATH)
         print "\n Executing: ", connect_command
         process = subprocess.Popen(connect_command, shell=True)
 
@@ -53,4 +54,4 @@ if __name__ == '__main__':
         raise  ValueError("OUTPUT_NAME not defined" )
     
     shapefile2geojson(INPUT_PATH, OUTPUT_NAME)
-    
+

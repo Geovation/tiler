@@ -4,6 +4,8 @@ machine:
 
 dependencies:
   override:
+    - pwd
+    - ls -la
     - docker info
     - if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar; fi
     - docker build --rm=false -t tiler .

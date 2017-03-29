@@ -13,7 +13,7 @@ class TestPostgis2Geojson(unittest.TestCase):
 
     def test_postgis2geojson_notable(self):
         with self.assertRaises(OSError):
-            postgis2geojson("non_existant_table", os.environ, LAYER_CONFIG=False)
+            postgis2geojson("non_existant_table", self.DB_VARS , LAYER_CONFIG=False)
 
     def setUp(self):
 
@@ -22,9 +22,8 @@ class TestPostgis2Geojson(unittest.TestCase):
         except OSError:
             pass
 
-
         try:
-            DB_VARS = {
+            self.DB_VARS = {
                 "DB_HOST" : "localhost", # os.environ["DB_HOST"],
                 "DB_NAME" : "gis", # os.environ["DB_NAME"],
                 "DB_PORT" : 5432,

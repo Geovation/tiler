@@ -6,7 +6,7 @@ dependencies:
   override:
     - docker info
     - if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar; fi
-    - docker build --rm=false -t tiler 
+    - docker build --rm=false -t tiler .
     - mkdir -p ~/docker; docker save tiler > ~/docker/image.tar
 
 test:

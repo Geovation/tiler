@@ -4,20 +4,8 @@ machine:
 
 dependencies:
   override:
-    - pwd
-    - ls -la
-    - docker info
-    - if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar; fi
     - docker build --rm=false -t tiler .
-    - mkdir -p ~/docker; docker save tiler > ~/docker/image.tar
 
 test:
   override:
-    - docker run --name "tiler" -d -v /home/ubuntu/tiler/tiler/tiler-data:/tiler-data -v /home/ubuntu/tiler/tiler/tiler-scripts:/tiler-scripts -p 25432:5432 tiler:
-        background: true
-    - sleep 5
-    - sudo lxc-attach -n "$(docker inspect --format="{{.Id}}" tiler)" -- pwd
-    - sudo lxc-attach -n "$(docker inspect --format="{{.Id}}" tiler)" -- ls -la
-    - sudo lxc-attach -n "$(docker inspect --format="{{.Id}}" tiler)" -- ls -la ./tiler-scripts/
-    - sudo lxc-attach -n "$(docker inspect --format="{{.Id}}" tiler)" -- sudo nosetests /tiler-scripts/ -xs
-    - docker stop tiler
+    - docker run -v /home/ubuntu/tiler/tiler/tiler-data:/tiler-data -v /home/ubuntu/tiler/tiler/tiler-scripts:/tiler-scripts tiler /bin/bash -c "/postgis/start-postgis.sh & sleep 60 && nosetests /tiler-scripts/ -xs" 

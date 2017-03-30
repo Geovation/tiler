@@ -6,10 +6,10 @@ dependencies:
   cache_directories:
     - "~/docker"
   override:
+    - if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar; fi
     - docker build --rm=false -t tiler .
+    - mkdir -p ~/docker; docker save tiler > ~/docker/image.tar
 
 test:
   override:
-    - if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar; fi
     - docker run -v /home/ubuntu/tiler/tiler/tiler-data:/tiler-data -v /home/ubuntu/tiler/tiler/tiler-scripts:/tiler-scripts tiler /bin/bash -c "/postgis/start-postgis.sh & sleep 60 && nosetests /tiler-scripts/ -xs"
-    - mkdir -p ~/docker; docker save tiler > ~/docker/image.tar

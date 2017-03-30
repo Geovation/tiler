@@ -6,6 +6,8 @@ The purpose of Tiler is to create an easy to use, command line orientied pipelin
 
 Tiler exists as a Docker container that unifies several technologies to streamline the creation of vector tiles.
 
+![CircleCI Badge](https://circleci.com/gh/Geovation/tiler.png?circle-token=89b1ab9fc960f4b88f85668bdd20183015740243)
+
 #### Setup
 
 Setup requires installation of Docker and a few Docker commands to get started. We've provided a nice little set of instructions in the [SETUP](https://github.com/Geovation/tiler/blob/master/SETUP.md) file.

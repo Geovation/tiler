@@ -54,9 +54,15 @@ class TestTiler(unittest.TestCase):
     
     def test_tiler_postgis(self):
         config_path = "/tiler-data/test-data/configs/postgis.tiler.json"
-
+        DB_VARS = {
+            "DB_HOST" : "localhost", # os.environ["DB_HOST"],
+            "DB_NAME" : "gis", # os.environ["DB_NAME"],
+            "DB_PORT" : 5432,
+            "DB_USER" : "docker", # os.environ["DB_USER"],
+            "DB_PASSWORD" : "docker" # os.environ["DB_PASSWORD"]
+        }
         try:
-            shapefile2postgis("/tiler-data/test-data/states/states.shp", "states")
+            shapefile2postgis("/tiler-data/test-data/states/states.shp", "states", DB_VARS)
         except OSError:
             self.fail("Couldn't setup the PostGIS table necessary for test")
 

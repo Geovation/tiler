@@ -6,18 +6,18 @@ import subprocess
 import tiler_helpers
 
 
-def shapefile2postgis(FILE_NAME, TABLE_NAME):
+def shapefile2postgis(FILE_NAME, TABLE_NAME, DB_VARS):
     """ Convert a shapefile to a PostGIS table """
 
     tiler_helpers.check_file(FILE_NAME)
 
     try:
         connect_command = 'ogr2ogr -f "PostgreSQL" PG:"host={} port={} user={} dbname={} password={}" -nlt PROMOTE_TO_MULTI {} -nln {} -append --config OGR_TRUNCATE YES'.format(
-            os.environ['DB_HOST'],
-            os.environ['DB_PORT'],
-            os.environ['DB_USER'],
-            os.environ['DB_NAME'],
-            os.environ['DB_PASSWORD'],
+            DB_VARS['DB_HOST'],
+            DB_VARS['DB_PORT'],
+            DB_VARS['DB_USER'],
+            DB_VARS['DB_NAME'],
+            DB_VARS['DB_PASSWORD'],
             FILE_NAME,
             TABLE_NAME
         )
@@ -51,5 +51,5 @@ if __name__ == '__main__':
 
     ## Check all PostgreSQL environment variables are defined
     tiler_helpers.check_environ_vars()
-    shapefile2postgis(FILE_NAME, TABLE_NAME)
+    shapefile2postgis(FILE_NAME, TABLE_NAME, os.environ)
   

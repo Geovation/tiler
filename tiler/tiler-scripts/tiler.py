@@ -147,9 +147,9 @@ def handle_shapefile(shp_path, layer_name, layer_config, database_insert):
     geojson_layer_config = {"minzoom" : minzoom, "maxzoom" : maxzoom, "layer": layer_name}
 
     if database_insert:
-        shapefile2postgis(shp_path, layer_name)
-        DATABASE_VARS = os.environ
-        postgis2geojson(layer_name, DATABASE_VARS, LAYER_CONFIG=False, QUERY=False)
+        DB_VARS = os.environ
+        shapefile2postgis(shp_path, layer_name, DB_VARS)
+        postgis2geojson(layer_name, DB_VARS, LAYER_CONFIG=False, QUERY=False)
 
     else:
         shapefile2geojson(shp_path, layer_name, LAYER_CONFIG=geojson_layer_config)

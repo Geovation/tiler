@@ -12,4 +12,4 @@ dependencies:
 
 test:
   override:
-    - docker run -v /home/ubuntu/tiler/tiler/tiler-data:/tiler-data -v /home/ubuntu/tiler/tiler/tiler-scripts:/tiler-scripts tiler /bin/bash -c "/postgis/start-postgis.sh & sleep 60 && nosetests /tiler-scripts/ -xs"
+    - docker run -v /home/ubuntu/tiler/tiler/tiler-data:/tiler-data -v /home/ubuntu/tiler/tiler/tiler-scripts:/tiler-scripts tiler --test

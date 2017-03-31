@@ -42,8 +42,6 @@ RUN postgis/setup.sh
 ADD postgis/start-postgis.sh /postgis/start-postgis.sh
 RUN chmod 0755 /postgis/start-postgis.sh
 
-CMD /postgis/start-postgis.sh
-
 ### GDAL Specific Code
 RUN apt-get install gdal-bin
 
@@ -69,10 +67,6 @@ RUN cd / \
     && cd mbutil \
     && python setup.py install
 
-### Tiler 
-ADD tiler.sh /bin/tiler 
-RUN chmod 755 /bin/tiler
-
 ### Config
 ENV DB_HOST localhost
 ENV DB_PORT 5432
@@ -82,3 +76,11 @@ ENV DB_PASSWORD docker
 
 # Open port 5432 so linked containers can see them
 EXPOSE 5432
+
+# Run the database in the background
+RUN /postgis/start-postgis.sh &
+
+### Tiler 
+ADD tiler.sh /bin/tiler 
+RUN chmod 755 /bin/tiler
+ENTRYPOINT ["tiler"]

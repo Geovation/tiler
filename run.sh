@@ -8,4 +8,4 @@ echo $TILER_SCRIPTS_DIR
 docker run --name "tiler" \
             -v $TILER_DATA_DIR:/tiler-data \
             -v $TILER_SCRIPTS_DIR:/tiler-scripts \
-            -p 25432:5432 tiler 
+            tiler $1

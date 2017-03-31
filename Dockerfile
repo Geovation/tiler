@@ -77,8 +77,8 @@ ENV DB_PASSWORD docker
 # Open port 5432 so linked containers can see them
 EXPOSE 5432
 
-# Run the database in the background
-RUN /postgis/start-postgis.sh &
+# # Run the database in the background
+# RUN /postgis/start-postgis.sh
 
 ### Tiler 
 ADD tiler.sh /bin/tiler 

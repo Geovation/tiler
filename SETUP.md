@@ -45,7 +45,15 @@ Just replace the paths as appropriate for your scripts and data folders.
 
 ## Accessing and Using Tiler
 
-To get into the shell of the Tiler container:
+The easiest way is to use the run script:
+
+`./run.sh someconfig`
+
+Where someconfig is a config file with the path `tiler/tiler-data/configs/someconfig.tiler.json`.  You can also run tests using:
+
+`./run.sh --test`
+
+To get into the shell of the Tiler container interactively run:
 
 `docker exec -it tiler /bin/bash`
  

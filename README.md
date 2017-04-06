@@ -27,6 +27,7 @@ Tiler provides a selection of scripts for converting between various formats and
 
         "states" : {
             "type" : "shapefile",
+            "databaseInsert" : true,
             "paths" : ["/tiler-data/test-data/states/states.shp"],
             "minzoom" : 0,
             "maxzoom" : 5

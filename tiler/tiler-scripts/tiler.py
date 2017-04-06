@@ -8,6 +8,7 @@ from validate_geojson import validate_geojson
 from tiler_helpers import add_tippecanoe_config
 from postgis2geojson import postgis2geojson
 from shapefile2postgis import shapefile2postgis
+from gml2geojson import gml2geojson
 from remote_file import *
 
 def get_config(config_path):
@@ -75,6 +76,8 @@ def tiles_from_config(config_file):
 
                         shapefile = end_dir + "/" + base + ".shp"
                         path = shapefile
+                    else:
+                        raise TypeError("Downloaded shapefile is not a zipfile. Shapefile have 3 mandatory files so must be zipped!")
 
                 geojson_path = handle_shapefile(path, layer_name, layer_config, database_insert)
                 geojson_file_paths.append(geojson_path)
@@ -86,6 +89,24 @@ def tiles_from_config(config_file):
                     output_dir = "/tiler-data/input/"
                     path = download(path, output_dir)
                 geojson_path = handle_geojson(path, layer_name, layer_config)
+                geojson_file_paths.append(geojson_path)
+
+
+        # GML
+        if layer_config["type"] == "gml":
+
+            database_insert = False
+
+            if "databaseInsert" in layer_config and layer_config["databaseInsert"] == True:
+                database_insert = True
+
+            for path in layer_config["paths"]:
+                if is_url(path):
+                    # raise OSError(path)
+                    output_dir = "/tiler-data/input/"
+                    downloaded_path = download(path, output_dir)
+
+                geojson_path = handle_gml(path, layer_name, layer_config, database_insert)
                 geojson_file_paths.append(geojson_path)
 
         # POSTGIS
@@ -139,7 +160,25 @@ def handle_geojson(geojson_path, layer_name, layer_config):
     return geojson_path
 
 
-def handle_shapefile(shp_path, layer_name, layer_config, database_insert):
+def handle_shapefile(gml_path, layer_name, layer_config, database_insert):
+    """ Handle getting data from a shapefile """
+
+    minzoom = layer_config["minzoom"]
+    maxzoom = layer_config["maxzoom"]
+    geojson_layer_config = {"minzoom" : minzoom, "maxzoom" : maxzoom, "layer": layer_name}
+
+    if database_insert:
+        DB_VARS = os.environ
+        shapefile2postgis(gml_path, layer_name, DB_VARS)
+        postgis2geojson(layer_name, DB_VARS, LAYER_CONFIG=False, QUERY=False)
+
+    else:
+        gml2geojson(gml_path, layer_name, LAYER_CONFIG=geojson_layer_config)
+
+    return "/tiler-data/geojson/{}.geojson".format(layer_name)
+
+
+def handle_gml(shp_path, layer_name, layer_config, database_insert):
     """ Handle getting data from a shapefile """
 
     minzoom = layer_config["minzoom"]

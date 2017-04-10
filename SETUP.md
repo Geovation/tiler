@@ -53,11 +53,7 @@ Where someconfig is a config file with the path `tiler/tiler-data/configs/someco
 
 `./run.sh --test`
 
-To get into the shell of the Tiler container interactively run:
-
-`docker exec -it tiler /bin/bash`
- 
-Alternatively a convience script for Linux/MacOS users can be run:
+To access Tiler in an interactive mode you can run:
 
  `./shell.sh`
 
@@ -68,3 +64,5 @@ Alternatively a convience script for Linux/MacOS users can be run:
 If you want to connect via psql from the host you can use:
 
 `psql -h localhost -U docker -p 25432 -l`
+
+You must be running tiler in interactive mode for this be to running.

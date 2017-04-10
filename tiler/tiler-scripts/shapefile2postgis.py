@@ -23,11 +23,11 @@ def shapefile2postgis(FILE_NAME, TABLE_NAME, DB_VARS):
         )
         print "\n Executing: ", connect_command
         process = subprocess.Popen(connect_command, shell=True)
-        
+
         stdout, stderr = process.communicate()
         print stdout, stderr
-        "Exit code: ", process.wait()
-        
+        print "Exit code: ", process.wait()
+
         print "\n Data from ", FILE_NAME, " added to ", TABLE_NAME, " sucessfully"
 
     except Exception as err:

@@ -19,12 +19,12 @@ def create_mbtiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATI
     print "\n GeoJSON is valid!"
 
     # Create .mbtiles file
-    OUTPUT_PATH = "/tiler-data/tiles/{}.mbtiles".format(MBTILES_NAME)
+    OUTPUT_PATH = "/tiler-data/tiles/{}".format(MBTILES_NAME)
 
     # Remove the current mbtiles file if it's there
     try:
-        print "MBTiles file of that name already exists, removing it so it can be recreated"
-        os.remove(OUTPUT_PATH)
+        print "Tiles directory of that name already exists, removing it so it can be recreated"
+        shutil.rmtree(OUTPUT_PATH)
     except OSError:
         pass
 
@@ -38,119 +38,23 @@ def create_mbtiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATI
         GEOJSON_FILES_STR += geojson_file + " "
 
     if SPLIT == False and MIN_ZOOM != None and MAX_ZOOM != None:
-        command = "tippecanoe -o {} {} --minimum-zoom={}  --maximum-zoom={} --read-parallel --simplification={} --drop-smallest-as-needed --coalesce".format(OUTPUT_PATH, GEOJSON_FILES_STR, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION)
+        command = "tippecanoe --output-to-directory {} {} --no-tile-compression --read-parallel --minimum-zoom={} --maximum-zoom={} --simplification={} --drop-smallest-as-needed --coalesce".format(OUTPUT_PATH, GEOJSON_FILES_STR, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION)
 
     elif MIN_ZOOM != None and MAX_ZOOM != None:
         print "\n Min Zoom: ", MIN_ZOOM
         print "\n Max Zoom: ", MAX_ZOOM
-        command = "tippecanoe -o {} {} --minimum-zoom={}  --maximum-zoom={} --read-parallel --no-polygon-splitting --simplification={} --drop-smallest-as-needed --coalesce".format(OUTPUT_PATH, GEOJSON_FILES_STR, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION)
+        command = "tippecanoe --output-to-directory {} {} --no-tile-compression  --read-parallel --minimum-zoom={}  --maximum-zoom={} --no-polygon-splitting --simplification={} --drop-smallest-as-needed --coalesce".format(OUTPUT_PATH, GEOJSON_FILES_STR, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION)
     else:
-        command = "tippecanoe -o {} {} --read-parallel --no-polygon-splitting --simplification={} --drop-smallest-as-needed --coalesce".format(OUTPUT_PATH, GEOJSON_FILES_STR, SIMPLIFICATION)
+        command = "tippecanoe--output-to-directory {} {} --no-tile-compression --read-parallel --no-polygon-splitting --simplification={} --drop-smallest-as-needed --coalesce".format(OUTPUT_PATH, GEOJSON_FILES_STR, SIMPLIFICATION)
 
     print "\n Running: ", command
     FNULL = open(os.devnull, 'w')
     tippecanoe_exit_code = subprocess.call(command, shell=True)# stdout=FNULL, stderr=subprocess.STDOUT)
-    # stdout, stderr = tippecanoe_process.communicate()
-    # if stderr:
-    #     raise IOError(stderr)  
-    # exit_code = tippecanoe_process.wait()
     print "\n Tippecanoe exit code: ", tippecanoe_exit_code
     if tippecanoe_exit_code != 0:
         raise IOError("Exit code was not 0 for tippecanoe process")
 
-    print "\n Created mbtiles file from " + str(GEOJSON_FILES)
-
-
-def extract_pbf(MBTILES_NAME, UPDATE=False):
-    """Extract a set of protobufs from a .mbtiles file"""
-
-    MBTILES_DIR = "/tiler-data/tiles/" + MBTILES_NAME
-
-    if UPDATE:
-        MBTILES_DIR = "/tiler-data/updates/" + MBTILES_NAME
-
-    # Create unzipped .pbf
-    if os.path.isdir(MBTILES_DIR):
-        print "\n Vector Tiles folder (", MBTILES_DIR, ") already exists removing it..."
-        try:
-            shutil.rmtree(MBTILES_DIR)
-        except OSError as shutil_err:
-            print shutil_err
-            print "\n shutil.rmtree failed for one reason or another, trying rm -rf ..."
-            try:
-                os.system("rm -rf " + MBTILES_DIR)
-            except OSError as os_err:
-                print "\n That failed too... unable to remove the directory"
-                raise os_err
-
-        print "\n Vector Tiles folder removed!"
-
-    print "\n Commencing extraction from mbtiles to", MBTILES_DIR
-    command = "mb-util --image_format=pbf --silent /tiler-data/tiles/{}.mbtiles {}".format(
-        MBTILES_NAME,
-        MBTILES_DIR
-    )
-    print "\n Running: ", command
-    mbutil_process = subprocess.Popen(command, shell=True)
-    exit_code = mbutil_process.wait()
-    stdout, stderr = mbutil_process.communicate()
-    if stderr:
-        raise IOError(stderr)
-    if exit_code != 0:
-        raise IOError("Exit code was not 0 for mbutil process")
-
-    # print stdout, stderr
-    print "\n Decompress exit code: ", exit_code
-
-
-def decompress_pbf(MBTILES_NAME, UPDATE=False):
-    """Decompress a set of protobufs"""
-
-    # We need to rename everything and then unzip it
-    print "\n Decompressing gzipped Vector Tiles"
-    extension = ".pbf"
-    length = len(extension)
-    counter = 0
-    if UPDATE:
-        files = absolute_file_paths("/tiler-data/updates/" + MBTILES_NAME)
-    else:
-        files = absolute_file_paths("/tiler-data/tiles/" + MBTILES_NAME)
-
-    for filename in files:
-
-        if counter % 500 == 0:
-            print "\n 500 more tiles decompressed..."
-
-        if filename.endswith(".pbf"):
-
-            # Renaming
-            old_name = os.path.abspath(filename)
-            new_name = old_name[:-length] + '.pbf.gz'
-            os.rename(old_name, new_name)
-
-            file_to_unzip = new_name
-            if UPDATE:
-                path_list = filename.split(os.sep)
-                zxy = os.path.join(*path_list[-3:])
-                file_to_overwrite = "/tiler-data/tiles/" + MBTILES_NAME + "/" + zxy
-
-            else:
-                file_to_overwrite = old_name
-
-            # Loop through and unzip everything to actually be a real .pbf file
-            with gzip.open(file_to_unzip, 'rb') as infile:
-                with open(file_to_overwrite, 'wb') as outfile:
-                    #if UPDATE: print "\n Overwiting", file_to_overwrite
-                    for line in infile:
-                        outfile.write(line)
-
-            # Get rid of the renamed, unzipped file
-            os.remove(new_name)
-
-        counter += 1
-
-    print "\n Vector Tiles decompressed!"
-    print "\n Finished! See tiles/" + MBTILES_NAME, " for the resulting files \n"
+    print "\n Created tiles from " + str(GEOJSON_FILES)
 
 
 def create_demo_config(MBTILES_NAME):
@@ -176,8 +80,6 @@ def geojson2tiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATIO
         assert MAX_ZOOM > MIN_ZOOM
 
     create_mbtiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION, SPLIT=UPDATE)
-    extract_pbf(MBTILES_NAME, UPDATE)
-    decompress_pbf(MBTILES_NAME, UPDATE)
     create_demo_config(MBTILES_NAME)
 
 

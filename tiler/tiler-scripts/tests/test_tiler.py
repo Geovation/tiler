@@ -36,6 +36,7 @@ class TestTiler(unittest.TestCase):
         self.assertTrue(os.path.isfile(config_path))
 
         tiles_from_config(config_path)
+        self.assertTrue(os.path.isfile("/tiler-data/geojson/states.geojson"))
         self.assertTrue(os.path.isdir(MBTILES_DIR))
         self.assertTrue(os.path.isfile(MBTILES_DIR + "/0/0/0.pbf"))
         self.assertFalse(os.path.isfile(MBTILES_DIR + "/5/0/0.pbf"))
@@ -140,12 +141,13 @@ class TestTiler(unittest.TestCase):
     def tearDown(self):
         try:
             print "\n Tearing tests down..."
+            os.remove("/tiler-data/geojson/states.geojson")
             os.remove("/tiler-data/input/states.geojson")
             os.remove("/tiler-data/input/stations.zip")
             shutil.rmtree("/tiler-data/input/stations")
             shutil.rmtree(MBTILES_DIR)
         except OSError as shutil_err:
-            print shutil_err
+            print "Caught Error: ", shutil_err
 
 if __name__ == '__main__':
     unittest.main()

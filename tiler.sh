@@ -20,6 +20,9 @@ if [ "$1" == "--help" ] || [ -z "$1" ]; then
 elif [ "$1" == '--test' ] || [ "$1" == '--tests' ]; then
     echo "Excuting tests..."
     nosetests /tiler-scripts/ -xs "$2"
+elif [ "$1" == '--shell' ]; then
+    echo "Running shell..."
+    /bin/bash
 else
     echo "Running config : " + "$1"
     python /tiler-scripts/tiler.py "$1"

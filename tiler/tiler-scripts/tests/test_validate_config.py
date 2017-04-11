@@ -7,7 +7,7 @@ from validate_config import *
 
 class TestValidateConfig(unittest.TestCase):
 
-    def test_create_mbtiles(self):
+    def test_create_vector_tiles(self):
         CONFIG_NAME = "example"
         config_path = "/tiler-data/test-data/configs/" + CONFIG_NAME + ".tiler.json"
         is_valid = validate_config(config_path)

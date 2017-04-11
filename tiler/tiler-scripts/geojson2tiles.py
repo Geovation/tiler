@@ -7,18 +7,19 @@ import shutil
 from validate_geojson import validate_geojson
 from tiler_helpers import absolute_file_paths
 
-def create_mbtiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION, SPLIT=True):
+def create_vector_tiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION, SPLIT=True, VALIDATE=False):
     """Create an .mbtiles file for a set of GeoJSON files"""
 
-    # Validate GeoJSON
-    print "\n Validating GeoJSON"
     if type(GEOJSON_FILES) != list:
         raise TypeError("GEOJSON_FILES is not a list")
-    for geojson in GEOJSON_FILES:
-        validate_geojson(geojson)
-    print "\n GeoJSON is valid!"
 
-    # Create .mbtiles file
+     # Validate GeoJSON
+    if VALIDATE == True:
+        print "\n Validating GeoJSON"
+        for geojson in GEOJSON_FILES:
+            validate_geojson(geojson)
+        print "\n GeoJSON is valid!"
+
     OUTPUT_PATH = "/tiler-data/tiles/{}".format(MBTILES_NAME)
 
     # Remove the current mbtiles file if it's there
@@ -67,7 +68,7 @@ def create_demo_config(MBTILES_NAME):
         f.write(config)
         f.truncate()
 
-def geojson2tiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION=0, UPDATE=False):
+def geojson2tiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION=0, UPDATE=False, VALIDATE=False):
     """ From a set of GeoJSON files generate a set of raw protobuf vector tiles """
 
     print "\n Running geojson2tiles..."
@@ -79,7 +80,7 @@ def geojson2tiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATIO
         assert isinstance(MAX_ZOOM, int)
         assert MAX_ZOOM > MIN_ZOOM
 
-    create_mbtiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION, SPLIT=UPDATE)
+    create_vector_tiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION, UPDATE, VALIDATE)
     create_demo_config(MBTILES_NAME)
 
 

@@ -7,7 +7,7 @@ from validate_geojson import *
 
 class TestValidateGeojson(unittest.TestCase):
 
-    def test_create_mbtiles(self):
+    def test_create_vector_tiles(self):
         GEOJSON_FILE = "/tiler-data/test-data/states.geojson"
         is_valid = validate_geojson(GEOJSON_FILE)
 

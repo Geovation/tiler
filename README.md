@@ -23,6 +23,7 @@ Tiler provides a selection of scripts for converting between various formats and
     "outdir" : "/tiler-data/tiles/",
     "tileset" : "states",
     "simplification" : 5,
+    "validate" : false,
     "data" : {
 
         "states" : {
@@ -45,9 +46,9 @@ Tiler provides a selection of scripts for converting between various formats and
 }
 ```
 
-This would be saved as `tiler-data/configs/states.tiler.json`. The file provides the location of the files you wish to translate, along with the output directory and if you want any simplification to occur. "data" is an object full of layers you wish to be ingested into the tiles. In this case the layer has multiple files that they use to generate that layer ("paths"). You can also provide a minimum zoom ("minzoom") and a maximum zoom ("maxzoom") for each layer.
+This would be saved as `tiler-data/configs/states.tiler.json`. For full documentation of the tiler config, consult the [CONFIG](https://github.com/Geovation/tiler/blob/master/SETUP.md). file in this repo. The file provides the location of the files you wish to translate, along with the output directory and if you want any simplification to occur. "data" is an object full of layers you wish to be ingested into the tiles. In this case the layer has multiple files that they use to generate that layer ("paths"). You can also provide a minimum zoom ("minzoom") and a maximum zoom ("maxzoom") for each layer.
 
-At the moment "type" can be `shapefile` or `geojson` and `postgis`. Future intergrations will potentially include `gml` and other common standards.
+At the moment "type" can be `shapefile` or `geojson`, `postgis` and `gml`. 
 
 Once your config file is setup, and you have followed the setup instructions you can run:
 

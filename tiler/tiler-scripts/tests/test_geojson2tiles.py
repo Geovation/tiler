@@ -4,7 +4,7 @@ import shutil
 import time
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) # Insanity for getting parent folder in path
-from geojson2tiles import *
+from geojson2tiles import create_vector_tiles
 
 
 MBTILES_NAME = "states"
@@ -13,7 +13,7 @@ MBTILES_FILE = "/tiler-data/tiles/" + MBTILES_NAME + ".mbtiles"
 
 class TestGeojson2Tiles(unittest.TestCase):
 
-    def test_create_mbtiles(self):
+    def test_create_vector_tiles(self):
         GEOJSON_FILES = ["/tiler-data/test-data/"+ MBTILES_NAME +".geojson"]
         MIN_ZOOM = 0
         MAX_ZOOM = 4
@@ -21,27 +21,12 @@ class TestGeojson2Tiles(unittest.TestCase):
 
         self.assertTrue(os.path.isfile(GEOJSON_FILES[0]))
 
-        create_mbtiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION)
-        # self.assertTrue(os.path.isfile(MBTILES_FILE))
-
-    # def test_extract_pbf(self):
-
-    #     extract_pbf(MBTILES_NAME, False)
-    #     self.assertTrue(os.path.isdir(MBTILES_DIR))
-    #     self.assertTrue(os.path.isfile(MBTILES_DIR + "/0/0/0.pbf"))
-
-    # def test_decompress_pbf(self):
- 
-    #     extract_pbf(MBTILES_NAME, False)
-    #     self.assertTrue(os.path.isdir(MBTILES_DIR))
-    #     self.assertTrue(os.path.isfile(MBTILES_DIR + "/0/0/0.pbf"))
-
-    #     decompress_pbf(MBTILES_NAME, False)
-    #     gz_magic = "\x1f\x8b\x08"
-    #     with open(MBTILES_DIR + "/0/0/0.pbf") as f:
-    #         file_start = f.read(len(gz_magic))
-    #         is_gzipped = file_start.startswith(gz_magic)
-    #         self.assertFalse(is_gzipped)
+        create_vector_tiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION, VALIDATE=False)
+        gz_magic = "\x1f\x8b\x08"
+        with open(MBTILES_DIR + "/0/0/0.pbf") as vector_tile:
+            file_start = vector_tile.read(len(gz_magic))
+            is_gzipped = file_start.startswith(gz_magic)
+            self.assertFalse(is_gzipped)
 
     @classmethod
     def tearDown(cls):

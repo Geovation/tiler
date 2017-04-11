@@ -18,7 +18,11 @@ From the cloned directory you can do:
 
 #### Start Docker Container
 
-You need to specify the location of your data folder so tiler knows where to load data from. We do this using volumes (-v) as such:
+The simplest way to run Tiler interactively is to use the `run.sh` script which handles most things for you (volume mounting etc), which takes the arguments: 
+
+`./run.sh --shell`
+
+Alternatively you can use for a more explicit approach you could use individual commands. You need to specify the location of your data folder so tiler knows where to load data from. We do this using volumes (-v) as such:
 
 `export TILER_DATA_DIR=/Users/username/Documents/Code/tiler/tiler-data` <br>
 `export TILER_SCRIPTS_DIR=/Users/username/Documents/Code/tiler/tiler-scripts` <br>
@@ -26,14 +30,9 @@ You need to specify the location of your data folder so tiler knows where to loa
 `docker run --name "tiler" \` <br>
             `-v $TILER_DATA_DIR:/tiler-data \ ` <br>
             `-v $TILER_SCRIPTS_DIR:/tiler-scripts \ ` <br>
-            `-p 25432:5432 tiler`
+            `-p 25432:5432 tiler --shell`
 
-There is also a convience script for Linux/MacOS users called `run.sh` that assumes an `export` file (no extension) that lists the TILER_DATA_DIR and TILER_SCRIPTS_DIR in the following format:
-
-`export TILER_DATA_DIR=/Users/username/Documents/Code/tiler/tiler-data` <br>
-`export TILER_SCRIPTS_DIR=/Users/username/Documents/Code/tiler/tiler-scripts` <br>
-
-Just replace the paths as appropriate for your scripts and data folders.
+You need to replace the export paths with your tiler-data and tiler-scripts paths.
 
 #### End Container
 
@@ -64,5 +63,3 @@ To access Tiler in an interactive mode you can run:
 If you want to connect via psql from the host you can use:
 
 `psql -h localhost -U docker -p 25432 -l`
-
-You must be running tiler in interactive mode for this be to running.

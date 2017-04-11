@@ -2,7 +2,8 @@
 echo "Stopping tiler container if it's still running..."
 docker stop tiler
 docker rm tiler
-. export 
+export TILER_DATA_DIR=${PWD}/tiler/tiler-data
+export TILER_SCRIPTS_DIR=${PWD}/tiler/tiler-scripts
 echo "Using the following directories: "
 echo $TILER_DATA_DIR
 echo $TILER_SCRIPTS_DIR

@@ -33,6 +33,11 @@ def tiles_from_config(config_file):
     OUTDIR = config_dict["outdir"]
     DATA = config_dict["data"]
 
+    if "validate" not in config_dict:
+        VALIDATE = False
+    else:
+        VALIDATE = config_dict["validate"]
+
     if "update" not in config_dict:
         UPDATE = False
     else:
@@ -131,7 +136,8 @@ def tiles_from_config(config_file):
         MIN_ZOOM=MIN_ZOOM,
         MAX_ZOOM=MAX_ZOOM,
         SIMPLIFICATION=SIMPLIFICATION,
-        UPDATE=UPDATE
+        UPDATE=UPDATE,
+        VALIDATE=VALIDATE
     )
 
 

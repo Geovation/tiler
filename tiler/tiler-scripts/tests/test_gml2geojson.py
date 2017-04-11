@@ -6,7 +6,7 @@ import json
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) # Insanity for getting parent folder in path
 from gml2geojson import *
 
-INPUT_PATH = "/tiler-data/test-data/states.gml"
+INPUT_PATH = "/tiler-data/test-data/states.gmlx"
 OUTPUT_NAME = "states"
 OUTPUT_PATH = "/tiler-data/geojson/{}.geojson".format(OUTPUT_NAME)
 

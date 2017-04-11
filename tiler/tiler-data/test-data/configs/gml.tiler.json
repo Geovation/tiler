@@ -7,7 +7,7 @@
 
         "states" : {
             "type" : "gml",
-            "paths" : ["/tiler-data/test-data/states.gml"],
+            "paths" : ["/tiler-data/test-data/states.gmlx"],
             "minzoom" : 0,
             "maxzoom" : 4
         }

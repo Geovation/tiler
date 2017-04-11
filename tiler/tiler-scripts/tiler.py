@@ -107,9 +107,8 @@ def tiles_from_config(config_file):
 
             for path in layer_config["paths"]:
                 if is_url(path):
-                    # raise OSError(path)
                     output_dir = "/tiler-data/input/"
-                    downloaded_path = download(path, output_dir)
+                    path = download(path, output_dir)
 
                 geojson_path = handle_gml(path, layer_name, layer_config, database_insert)
                 geojson_file_paths.append(geojson_path)

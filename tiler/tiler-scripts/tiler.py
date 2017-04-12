@@ -146,36 +146,40 @@ def handle_remote_download(url):
     output_dir = "/tiler-data/output/"
     download(url, output_dir)
 
+def get_clean_config(layer_config, layer_name):
+    minzoom = layer_config["minzoom"]
+    maxzoom = layer_config["maxzoom"]
+    return {"minzoom" : minzoom, "maxzoom" : maxzoom, "layer": layer_name}
+
 
 def handle_postgis(query, layer_name, layer_config):
     """ Handle getting data from a PostGIS database """
 
     db_vars = os.environ
-    # Layer Config we do it ourself manaully
-    postgis2geojson(layer_name, db_vars, LAYER_CONFIG=layer_config, QUERY=query)
+    geojson_layer_config = get_clean_config(layer_config, layer_name)
+
+    postgis2geojson(layer_name, db_vars, LAYER_CONFIG=geojson_layer_config, QUERY=query)
     geojson_path = "/tiler-data/geojson/{}.geojson".format(layer_name)
-    add_config(geojson_path, layer_name, layer_config)
     return geojson_path
 
 
 def handle_geojson(geojson_path, layer_name, layer_config):
     """ Handle getting data from a GeoJSON file """
 
-    add_config(geojson_path, layer_config, layer_name)
+    geojson_layer_config = get_clean_config(layer_config, layer_name)
+    add_tippecanoe_config(geojson_path, geojson_layer_config)
     return geojson_path
 
 
 def handle_shapefile(gml_path, layer_name, layer_config, database_insert):
     """ Handle getting data from a shapefile """
 
-    minzoom = layer_config["minzoom"]
-    maxzoom = layer_config["maxzoom"]
-    geojson_layer_config = {"minzoom" : minzoom, "maxzoom" : maxzoom, "layer": layer_name}
+    geojson_layer_config = get_clean_config(layer_config, layer_name)
 
     if database_insert:
         DB_VARS = os.environ
         shapefile2postgis(gml_path, layer_name, DB_VARS)
-        postgis2geojson(layer_name, DB_VARS, LAYER_CONFIG=False, QUERY=False)
+        postgis2geojson(layer_name, DB_VARS, LAYER_CONFIG=geojson_layer_config, QUERY=False)
 
     else:
         gml2geojson(gml_path, layer_name, LAYER_CONFIG=geojson_layer_config)
@@ -186,33 +190,17 @@ def handle_shapefile(gml_path, layer_name, layer_config, database_insert):
 def handle_gml(shp_path, layer_name, layer_config, database_insert):
     """ Handle getting data from a shapefile """
 
-    minzoom = layer_config["minzoom"]
-    maxzoom = layer_config["maxzoom"]
-    geojson_layer_config = {"minzoom" : minzoom, "maxzoom" : maxzoom, "layer": layer_name}
+    geojson_layer_config = get_clean_config(layer_config, layer_name)
 
     if database_insert:
         DB_VARS = os.environ
         shapefile2postgis(shp_path, layer_name, DB_VARS)
-        postgis2geojson(layer_name, DB_VARS, LAYER_CONFIG=False, QUERY=False)
+        postgis2geojson(layer_name, DB_VARS, LAYER_CONFIG=geojson_layer_config, QUERY=False)
 
     else:
         shapefile2geojson(shp_path, layer_name, LAYER_CONFIG=geojson_layer_config)
 
     return "/tiler-data/geojson/{}.geojson".format(layer_name)
-
-
-def add_config(path, layer_name, layer_config):
-    """ Setup the tippecanoe config for use with tippecanoe """
-
-    if "minzoom" in layer_config or "maxzoom" in layer_config or layer_name:
-        tippecanoe_config = {}
-        if "minzoom" in layer_config:
-            tippecanoe_config["minzoom"] = layer_config["minzoom"]
-        if "maxzoom" in layer_config:
-            tippecanoe_config["maxzoom"] = layer_config["maxzoom"]
-        if layer_name:
-            tippecanoe_config["layer"] = layer_name
-        add_tippecanoe_config(path, tippecanoe_config)
 
 
 if __name__ == '__main__':

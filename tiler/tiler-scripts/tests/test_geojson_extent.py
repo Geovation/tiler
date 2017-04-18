@@ -1,5 +1,8 @@
 import unittest
-from geojson_extent import *
+import sys, os
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) # Insanity for getting parent folder in path
+from geojson_extent import geojson_extent
  
 class TestGeoJsonExtent(unittest.TestCase):
     """Tests geojson extent return correct extent for geojson file"""

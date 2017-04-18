@@ -175,23 +175,7 @@ def handle_geojson(geojson_path, layer_name, layer_config):
     return geojson_path
 
 
-def handle_shapefile(gml_path, layer_name, layer_config, database_insert):
-    """ Handle getting data from a shapefile """
-
-    geojson_layer_config = get_clean_config(layer_config, layer_name)
-
-    if database_insert:
-        DB_VARS = os.environ
-        shapefile2postgis(gml_path, layer_name, DB_VARS)
-        postgis2geojson(layer_name, DB_VARS, LAYER_CONFIG=geojson_layer_config, QUERY=False)
-
-    else:
-        gml2geojson(gml_path, layer_name, LAYER_CONFIG=geojson_layer_config)
-
-    return "/tiler-data/geojson/{}.geojson".format(layer_name)
-
-
-def handle_gml(shp_path, layer_name, layer_config, database_insert):
+def handle_shapefile(shp_path, layer_name, layer_config, database_insert):
     """ Handle getting data from a shapefile """
 
     geojson_layer_config = get_clean_config(layer_config, layer_name)
@@ -203,6 +187,22 @@ def handle_gml(shp_path, layer_name, layer_config, database_insert):
 
     else:
         shapefile2geojson(shp_path, layer_name, LAYER_CONFIG=geojson_layer_config)
+
+    return "/tiler-data/geojson/{}.geojson".format(layer_name)
+
+
+def handle_gml(gml_path, layer_name, layer_config, database_insert):
+    """ Handle getting data from a GML file """
+
+    geojson_layer_config = get_clean_config(layer_config, layer_name)
+
+    if database_insert:
+        DB_VARS = os.environ
+        shapefile2postgis(gml_path, layer_name, DB_VARS)
+        postgis2geojson(layer_name, DB_VARS, LAYER_CONFIG=geojson_layer_config, QUERY=False)
+
+    else:
+        gml2geojson(gml_path, layer_name, LAYER_CONFIG=geojson_layer_config)
 
     return "/tiler-data/geojson/{}.geojson".format(layer_name)
 

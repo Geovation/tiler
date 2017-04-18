@@ -1,0 +1,18 @@
+{
+
+    "outdir" : "/tiler-data/tiles/",
+    "tileset" : "states",
+    "simplification" : 5,
+    "data" : {
+
+         "states" : {
+            "type" : "shapefile",
+            "databaseInsert" : true,
+            "paths" : ["/tiler-data/test-data/states/states.shp"],
+            "minzoom" : 0,
+            "maxzoom" : 5
+        }
+
+    }
+
+}

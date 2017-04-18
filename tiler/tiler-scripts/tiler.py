@@ -30,6 +30,10 @@ def tiles_from_config(config_file):
     else:
         raise TypeError("Must be path to config file or loaded config file as dict")
 
+    # Insure GeoJSON path exists
+    if not os.path.exists("/tiler-data/geojson"):
+       os.makedirs("/tiler-data/geojson")
+
     OUTDIR = config_dict["outdir"]
     DATA = config_dict["data"]
 

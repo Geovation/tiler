@@ -1,11 +1,11 @@
 {
 
     "outdir" : "/tiler-data/tiles/",
-    "tileset" : "merge_2",
+    "tileset" : "test_merge_2",
     "simplification" : 5,
     "data" : {
 
-        "stations" : {
+        "test_cupcakes" : {
             "type" : "geojson",
             "paths" : ["/tiler-data/test-data/cupcakes.geojson"],
             "minzoom" : 12,

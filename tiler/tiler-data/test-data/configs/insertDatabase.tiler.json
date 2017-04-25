@@ -1,11 +1,11 @@
 {
 
     "outdir" : "/tiler-data/tiles/",
-    "tileset" : "states",
+    "tileset" : "test_states",
     "simplification" : 5,
     "data" : {
 
-         "states" : {
+         "test_states" : {
             "type" : "shapefile",
             "databaseInsert" : true,
             "paths" : ["/tiler-data/test-data/states/states.shp"],

@@ -1,18 +1,18 @@
 {
 
     "outdir" : "/tiler-data/tiles/",
-    "tileset" : "states",
+    "tileset" : "test_states",
     "simplification" : 5,
     "data" : {
 
-        "stations" : {
+        "test_stations" : {
             "type" : "shapefile",
             "paths" : ["http://localhost:8080/tiler-data/test-data/stations.zip"],
             "minzoom" : 0,
             "maxzoom" : 5
         },
 
-         "states" : {
+         "test_states" : {
             "type" : "geojson",
             "paths" : ["http://localhost:8080/tiler-data/test-data/states.geojson"],
             "minzoom" : 0,

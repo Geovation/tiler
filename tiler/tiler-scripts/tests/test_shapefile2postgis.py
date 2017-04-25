@@ -1,6 +1,5 @@
 import unittest
 import sys, os
-import shutil
 import json
 import psycopg2
 
@@ -15,14 +14,16 @@ class TestPostgis2Geojson(unittest.TestCase):
 
     def test_shapefile2postgis(self):
         try:
-            table = "states"
-
-            shapefile2postgis("/tiler-data/test-data/states/states.shp", "states", self.DB_VARS)
-            cursor = self.get_cursor()
-            cursor.execute("SELECT * FROM states")
+            table = "test_states"
+            shapefile2postgis("/tiler-data/test-data/states/states.shp", table, self.DB_VARS)
+            conn = self.get_connection()
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM test_states")
             records = cursor.fetchall()
-            # print records  # See the records if you want to do a sanity check
-            self.assertTrue(len(records) > 0)
+            conn.close()
+            self.assertTrue(len(records) == 51)
+            self.assertEqual(records[0][2], "Hawaii")
+            self.assertEqual(records[50][2], "Alaska")
         except:
             self.fail("Shapefile not successfully added to table")
 
@@ -36,17 +37,18 @@ class TestPostgis2Geojson(unittest.TestCase):
         }
 
     def tearDown(self):
-
         try:
             print "\n Tearing down database..."
-            cursor = self.get_cursor()
-            cursor.execute("DROP TABLE states")
-            cursor = None
-        except OSError:
-            self.fail("Couldn't tear down PostGIS table states")
+            conn = self.get_connection()
+            cursor = conn.cursor()
+            cursor.execute("DROP TABLE test_states")
+            conn.commit()
+            conn.close()
+        except psycopg2.Error as e:
+            print "\n Couldn't tear down PostGIS table test_states"
+            print e.pgerror
 
-    
-    def get_cursor(self):
+    def get_connection(self):
         conn_string = "host='{}' dbname='{}' user='{}' password='{}'".format(
                 "localhost", # os.environ["DB_HOST"],
                 "gis", # os.environ["DB_NAME"],
@@ -54,9 +56,7 @@ class TestPostgis2Geojson(unittest.TestCase):
                 "docker", # os.environ["DB_PASSWORD"]
             )
         conn = psycopg2.connect(conn_string)
-        cursor = conn.cursor()
-        return cursor
-
+        return conn
 
 if __name__ == '__main__':
     unittest.main()

@@ -32,8 +32,7 @@ class TestGeojson2Tiles(unittest.TestCase):
     def tearDown(cls):
         try:
             print "\n Tearing tests down..."
-            shutil.rmtree(MBTILES_DIR)
-            #shutil.rmtree(UPDATE_MBTILES_DIR)
+            shutil.rmtree(MBTILES_DIR)            
         except OSError as shutil_err:
             print shutil_err
 

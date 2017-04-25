@@ -7,7 +7,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) # I
 from gml2geojson import *
 
 INPUT_PATH = "/tiler-data/test-data/states.gmlx"
-OUTPUT_NAME = "states"
+OUTPUT_NAME = "test_states"
 OUTPUT_PATH = "/tiler-data/geojson/{}.geojson".format(OUTPUT_NAME)
 
 class TestGML2Geojson(unittest.TestCase):
@@ -28,7 +28,7 @@ class TestGML2Geojson(unittest.TestCase):
     def test_gml2geojson_with_config(self):
         
         LAYER_CONFIG = {
-            "layer" : "states",
+            "layer" : "test_states",
             "maxzoom" : 4,
             "minzoom" : 0
         }
@@ -43,7 +43,7 @@ class TestGML2Geojson(unittest.TestCase):
             for feature in geojson["features"]:
                 print feature
                 self.assertIsInstance(feature["tippecanoe"], dict)
-                self.assertEqual(feature["tippecanoe"]["layer"], "states")
+                self.assertEqual(feature["tippecanoe"]["layer"], "test_states")
                 self.assertEqual(feature["tippecanoe"]["maxzoom"], 4)
                 self.assertEqual(feature["tippecanoe"]["minzoom"], 0)
 

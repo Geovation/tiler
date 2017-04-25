@@ -7,7 +7,7 @@ import psycopg2
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) # Insanity for getting parent folder in path
 from postgis2geojson import postgis2geojson
 from shapefile2postgis import shapefile2postgis
-OUTPUT_PATH = "/tiler-data/geojson/states.geojson"
+OUTPUT_PATH = "/tiler-data/geojson/test_states.geojson"
 
 class TestPostgis2Geojson(unittest.TestCase):
 
@@ -16,7 +16,6 @@ class TestPostgis2Geojson(unittest.TestCase):
             postgis2geojson("non_existant_table", self.DB_VARS , LAYER_CONFIG=False)
 
     def setUp(self):
-
         try:
             os.remove(OUTPUT_PATH)
         except OSError:
@@ -30,14 +29,14 @@ class TestPostgis2Geojson(unittest.TestCase):
                 "DB_USER" : "docker", # os.environ["DB_USER"],
                 "DB_PASSWORD" : "docker" # os.environ["DB_PASSWORD"]
             }
-            shapefile2postgis("/tiler-data/test-data/states/states.shp", "states", self.DB_VARS)
-        except OSError:
+            shapefile2postgis("/tiler-data/test-data/states/states.shp", "test_states", self.DB_VARS)
+        except StandardError:
             self.fail("Couldn't setup the PostGIS table for conversion")
 
     def tearDown(self):
-
         try:
-            print "\n Tearing tests down..."
+            print "\n Tearing tests down..."            
+            os.remove("/tiler-data/geojson/non_existant_table.geojson")
             os.remove(OUTPUT_PATH)
         except OSError:
             pass
@@ -51,12 +50,12 @@ class TestPostgis2Geojson(unittest.TestCase):
             )
             conn = psycopg2.connect(conn_string)
             cursor = conn.cursor()
-            cursor.execute("DROP TABLE states")
-            conn = None
-            cursor = None
-        except OSError:
-            self.fail("Couldn't tear down PostGIS table states")
-
+            cursor.execute("DROP TABLE test_states")
+            conn.commit()
+            conn.close()
+        except psycopg2.Error as e:
+            print "\n Couldn't tear down PostGIS table test_states"
+            print e.pgerror
 
 if __name__ == '__main__':
     unittest.main()

@@ -11,9 +11,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) # I
 from tiler import get_config, tiles_from_config
 from shapefile2postgis import shapefile2postgis
 
-MBTILES_NAME = "states"
+MBTILES_NAME = "test_states"
 MBTILES_DIR = "/tiler-data/tiles/" + MBTILES_NAME
-MBTILES_FILE = "/tiler-data/tiles/" + MBTILES_NAME + ".mbtiles"
 
 class TestTiler(unittest.TestCase):
 
@@ -24,11 +23,11 @@ class TestTiler(unittest.TestCase):
         config = get_config(config_path)
         self.assertTrue(type(config) == dict)
         self.assertTrue(type(config["data"]) == dict)
-        self.assertTrue(type(config["data"]["states"]) == dict)
-        self.assertTrue(config["data"]["states"]["type"] == "shapefile")
-        self.assertTrue(config["data"]["states"]["minzoom"] == 0)
-        self.assertTrue(config["data"]["states"]["maxzoom"] == 4)
-        self.assertTrue(config["data"]["states"]["maxzoom"] > config["data"]["states"]["minzoom"])
+        self.assertTrue(type(config["data"]["test_states"]) == dict)
+        self.assertTrue(config["data"]["test_states"]["type"] == "shapefile")
+        self.assertTrue(config["data"]["test_states"]["minzoom"] == 0)
+        self.assertTrue(config["data"]["test_states"]["maxzoom"] == 4)
+        self.assertTrue(config["data"]["test_states"]["maxzoom"] > config["data"]["test_states"]["minzoom"])
 
 
     def test_tiler(self):
@@ -36,12 +35,11 @@ class TestTiler(unittest.TestCase):
         self.assertTrue(os.path.isfile(config_path))
 
         tiles_from_config(config_path)
-        self.assertTrue(os.path.isfile("/tiler-data/geojson/states.geojson"))
+        self.assertTrue(os.path.isfile("/tiler-data/geojson/test_states.geojson"))
         self.assertTrue(os.path.isdir(MBTILES_DIR))
         self.assertTrue(os.path.isfile(MBTILES_DIR + "/0/0/0.pbf"))
         self.assertFalse(os.path.isfile(MBTILES_DIR + "/5/0/0.pbf"))
         self.assertFalse(os.path.isfile(MBTILES_DIR + "/8/0/0.pbf"))
-
 
     def test_tiler_geojson(self):
         config_path = "/tiler-data/test-data/configs/example2.tiler.json"
@@ -70,7 +68,7 @@ class TestTiler(unittest.TestCase):
             "DB_PASSWORD" : "docker" # os.environ["DB_PASSWORD"]
         }
         try:
-            shapefile2postgis("/tiler-data/test-data/states/states.shp", "states", DB_VARS)
+            shapefile2postgis("/tiler-data/test-data/states/states.shp", "test_states", DB_VARS)
         except OSError:
             self.fail("Couldn't setup the PostGIS table necessary for test")
 
@@ -87,12 +85,12 @@ class TestTiler(unittest.TestCase):
             )
             conn = psycopg2.connect(conn_string)
             cursor = conn.cursor()
-            cursor.execute("DROP TABLE states")
-            conn = None
-            cursor = None
-        except OSError:
-            self.fail("Couldn't tear down PostGIS table states")
-
+            cursor.execute("DROP TABLE test_states")
+            conn.commit()
+            conn.close()
+        except psycopg2.Error as e:
+            print "\n Couldn't tear down PostGIS table test_states"
+            print e.pgerror
 
     def test_tiler_shapefile_database(self):
         config_path = "/tiler-data/test-data/configs/example3.tiler.json"
@@ -113,12 +111,12 @@ class TestTiler(unittest.TestCase):
             )
             conn = psycopg2.connect(conn_string)
             cursor = conn.cursor()
-            cursor.execute("DROP TABLE states")
-            conn = None
-            cursor = None
-        except OSError:
-            self.fail("Couldn't tear down PostGIS table states")
-
+            cursor.execute("DROP TABLE test_states")
+            conn.commit()
+            conn.close()
+        except psycopg2.Error as e:
+            print "\n Couldn't tear down PostGIS table test_states"
+            print e.pgerror
 
     def test_tiler_url(self):
         config_path = "/tiler-data/test-data/configs/url.tiler.json"
@@ -141,13 +139,19 @@ class TestTiler(unittest.TestCase):
     def tearDown(self):
         try:
             print "\n Tearing tests down..."
-            os.remove("/tiler-data/geojson/states.geojson")
+            shutil.rmtree(MBTILES_DIR)
+            os.remove("/tiler-data/geojson/test_states.geojson")    
+        except OSError:
+            pass
+
+        try:
+            print "\n Tearing test_tiler_url down..."
+            os.remove("/tiler-data/geojson/test_stations.geojson")
             os.remove("/tiler-data/input/states.geojson")
             os.remove("/tiler-data/input/stations.zip")
             shutil.rmtree("/tiler-data/input/stations")
-            shutil.rmtree(MBTILES_DIR)
-        except OSError as shutil_err:
-            print "Caught Error: ", shutil_err
+        except OSError as os_err:
+            pass
 
 if __name__ == '__main__':
     unittest.main()

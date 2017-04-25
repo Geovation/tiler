@@ -1,12 +1,12 @@
 import unittest
-import sys
-import os
+import sys, os
+import shutil
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) # Insanity for getting parent folder in path
 from remote_file import *
 import SocketServer
 import threading
 from handler import TestHandler
-
 
 class TestShapefile2Geojson(unittest.TestCase):
 
@@ -27,7 +27,7 @@ class TestShapefile2Geojson(unittest.TestCase):
         thread.daemon = True
         thread.start()
         download("http://localhost:" + str(PORT) + "/tiler-data/test-data/test.zip", "/tiler-data/input")
-        self.assertTrue(os.path.isfile("/tiler-data/test-data/test.zip"))
+        self.assertTrue(os.path.isfile("/tiler-data/input/test.zip"))
         server.shutdown()
         server.socket.close()
 
@@ -36,15 +36,17 @@ class TestShapefile2Geojson(unittest.TestCase):
         unzip("/tiler-data/test-data/test.zip", "/tiler-data/test-data/zip-output/")
         self.assertTrue(os.path.isfile("/tiler-data/test-data/zip-output/testzip/test"))
 
-    def tearDown(self):
-        pass
+    def tearDown(self):        
         try:
-            print "\n Tearing tests down..."
-            os.remove("/tiler-data/input/test.zip")
-        except OSError as os_err:
+            print "\n Tearing test_download down..."
+            os.remove("/tiler-data/input/test.zip")            
+        except OSError:
             pass
-
-
+        try:
+            print "\n Tearing test_unzip down..."            
+            shutil.rmtree("/tiler-data/test-data/zip-output/")
+        except OSError:
+            pass
 
 if __name__ == '__main__':
     unittest.main()

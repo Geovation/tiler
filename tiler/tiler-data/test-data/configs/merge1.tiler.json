@@ -1,11 +1,11 @@
 {
 
     "outdir" : "/tiler-data/tiles/",
-    "tileset" : "merge_1",
+    "tileset" : "test_merge_1",
     "simplification" : 5,
     "data" : {
 
-        "stations" : {
+        "test_stations" : {
             "type" : "shapefile",
             "paths" : ["/tiler-data/test-data/us_stations/us_stations.shp"],
             "minzoom" : 12,

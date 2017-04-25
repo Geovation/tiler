@@ -6,10 +6,8 @@ import time
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) # Insanity for getting parent folder in path
 from geojson2tiles import create_vector_tiles
 
-
 MBTILES_NAME = "states"
 MBTILES_DIR = "/tiler-data/tiles/" + MBTILES_NAME
-MBTILES_FILE = "/tiler-data/tiles/" + MBTILES_NAME + ".mbtiles"
 
 class TestGeojson2Tiles(unittest.TestCase):
 
@@ -32,8 +30,7 @@ class TestGeojson2Tiles(unittest.TestCase):
     def tearDown(cls):
         try:
             print "\n Tearing tests down..."
-            shutil.rmtree(MBTILES_DIR)
-            #shutil.rmtree(UPDATE_MBTILES_DIR)
+            shutil.rmtree(MBTILES_DIR)            
         except OSError as shutil_err:
             print shutil_err
 

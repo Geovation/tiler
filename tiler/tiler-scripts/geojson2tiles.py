@@ -46,7 +46,7 @@ def create_vector_tiles(GEOJSON_FILES, MBTILES_NAME, MIN_ZOOM, MAX_ZOOM, SIMPLIF
         print "\n Max Zoom: ", MAX_ZOOM
         command = "tippecanoe --output-to-directory {} {} --no-tile-compression  --read-parallel --minimum-zoom={}  --maximum-zoom={} --no-polygon-splitting --simplification={} --drop-smallest-as-needed --coalesce".format(OUTPUT_PATH, GEOJSON_FILES_STR, MIN_ZOOM, MAX_ZOOM, SIMPLIFICATION)
     else:
-        command = "tippecanoe--output-to-directory {} {} --no-tile-compression --read-parallel --no-polygon-splitting --simplification={} --drop-smallest-as-needed --coalesce".format(OUTPUT_PATH, GEOJSON_FILES_STR, SIMPLIFICATION)
+        command = "tippecanoe --output-to-directory {} {} --no-tile-compression --read-parallel --no-polygon-splitting --simplification={} --drop-smallest-as-needed --coalesce".format(OUTPUT_PATH, GEOJSON_FILES_STR, SIMPLIFICATION)
 
     print "\n Running: ", command
     FNULL = open(os.devnull, 'w')

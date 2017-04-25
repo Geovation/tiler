@@ -13,7 +13,6 @@ from shapefile2postgis import shapefile2postgis
 
 MBTILES_NAME = "test_states"
 MBTILES_DIR = "/tiler-data/tiles/" + MBTILES_NAME
-MBTILES_FILE = "/tiler-data/tiles/" + MBTILES_NAME + ".mbtiles"
 
 class TestTiler(unittest.TestCase):
 

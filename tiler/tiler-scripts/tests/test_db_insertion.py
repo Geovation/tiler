@@ -11,7 +11,6 @@ from tiler import tiles_from_config
 
 MBTILES_NAME = "test_states"
 MBTILES_DIR = "/tiler-data/tiles/" + MBTILES_NAME
-MBTILES_FILE = "/tiler-data/tiles/" + MBTILES_NAME + ".mbtiles"
 OUTPUT_PATH = "/tiler-data/geojson/test_states.geojson"
 
 class TestdbInsertion(unittest.TestCase):

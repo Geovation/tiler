@@ -10,7 +10,7 @@ Tiler exists as a Docker container that unifies several technologies to streamli
 
 #### Setup
 
-Setup requires installation of Docker and a few Docker commands to get started. We've provided a nice little set of instructions in the [SETUP](https://github.com/Geovation/tiler/blob/master/SETUP.md) file.
+Setup requires installation of Docker and a few Docker commands to get started. We've provided a nice little set of instructions in the [SETUP](https://github.com/Geovation/tiler/blob/master/docs/SETUP.md) file.
 
 #### Using Tiler
 
@@ -46,7 +46,7 @@ Tiler provides a selection of scripts for converting between various formats and
 }
 ```
 
-This would be saved as `tiler-data/configs/states.tiler.json`. For full documentation of the tiler config, consult the [CONFIG](https://github.com/Geovation/tiler/blob/master/SETUP.md). file in this repo. The file provides the location of the files you wish to translate, along with the output directory and if you want any simplification to occur. "data" is an object full of layers you wish to be ingested into the tiles. In this case the layer has multiple files that they use to generate that layer ("paths"). You can also provide a minimum zoom ("minzoom") and a maximum zoom ("maxzoom") for each layer.
+This would be saved as `tiler-data/configs/states.tiler.json`. For full documentation of the tiler config, consult the [CONFIG](https://github.com/Geovation/tiler/blob/master/docs/CONFIG.md). file in this repo. The file provides the location of the files you wish to translate, along with the output directory and if you want any simplification to occur. "data" is an object full of layers you wish to be ingested into the tiles. In this case the layer has multiple files that they use to generate that layer ("paths"). You can also provide a minimum zoom ("minzoom") and a maximum zoom ("maxzoom") for each layer.
 
 At the moment "type" can be `shapefile` or `geojson`, `postgis` and `gml`. 
 
@@ -76,17 +76,17 @@ Demos are provided using [Leaflet.VectorGrid](http://leaflet.github.io/Leaflet.V
 
 ## Roadmap
 
+See our contribution guide [here](https://github.com/Geovation/tiler/blob/master/docs/CONFIG.md)
 Check out the roadmap [here](https://github.com/Geovation/tiler/projects/1)
 
 ## Credits
 
 This project was made possible thanks to building on a fantastic set of previous previous software:
 
-* [mbutil](https://github.com/mapbox/mbutil) - Mapbox 
 * [tippecanoe](https://github.com/mapbox/tippecanoe) - Mapbox 
 * [ogr2ogr](http://www.gdal.org/ogr2ogr.html) - OSGeo 
 * [PostGIS Docker Container](https://github.com/kartoza/docker-postgis) - Tim Sutton
 
 ## License
 
-MIT License
+[MIT License](https://github.com/Geovation/tiler/blob/master/LICENSE.txt)

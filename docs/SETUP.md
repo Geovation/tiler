@@ -56,7 +56,7 @@ To access Tiler in an interactive mode you can run:
 
  `./shell.sh`
 
-**From here you can begin to run commands given in the usage of the main README**
+**From here you can begin to run commands given in the usage of the main [README](https://github.com/Geovation/tiler/blob/master/README.md)**
 
 ## Accessing the Postgres Database
 

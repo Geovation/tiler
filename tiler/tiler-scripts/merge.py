@@ -9,19 +9,31 @@ def get_num_pbfs(src_dir):
 
     return len([f for f in absolute_file_paths(src_dir) if f.endswith("pbf")])
 
-def merge_tile_directories(root_src_dir, root_dst_dir, overwrite=False):
+def merge_tile_directories(src_dir1, src_dir2, root_dst_dir, overwrite=False):
     """ Merge to vector tile directories, source into a destination directory. Optionally overwrite from the source """
+
+    copy_dir(src_dir1, root_dst_dir, overwrite)
+    copy_dir(src_dir2, root_dst_dir, overwrite)
+
+
+def copy_dir(root_src_dir, root_dst_dir, overwrite=False):
 
     for src_dir, dirs, files in os.walk(root_src_dir):
         dst_dir = src_dir.replace(root_src_dir, root_dst_dir, 1)
+
         if not os.path.exists(dst_dir):
             os.makedirs(dst_dir)
         for file_ in files:
             src_file = os.path.join(src_dir, file_)
             dst_file = os.path.join(dst_dir, file_)
             if os.path.exists(dst_file):
-                if overwrite or file_ == "metadata.json":
-                    os.remove(dst_file)
-                elif file_ != "metadata.json":
-                    raise OSError("File already exists but overwrite was set to false: " + file_)
-            shutil.move(src_file, dst_dir)
+                pass
+                ## Joy's code goes here. If we have .pbf's that clash, we want to merge them 
+                ## together and write them to the new directory as dst_dir
+
+                # if overwrite or file_ == "metadata.json":
+                #     os.remove(dst_file)
+                # elif file_ != "metadata.json":
+                #     raise OSError("File already exists but overwrite was set to false: " + file_)
+            else:
+                shutil.copy(src_file, dst_dir)

@@ -47,7 +47,7 @@ RUN apt-get install gdal-bin
 
 ### Python
 RUN apt-get install -y python-pip libpq-dev python-dev
-RUN pip install psycopg2 geojson nose coverage
+RUN pip install psycopg2 geojson nose coverage shapely mapbox-vector-tile
 
 ### Tippecanoe! 
 RUN apt-get -y install sudo git build-essential libsqlite3-dev zlib1g-dev \

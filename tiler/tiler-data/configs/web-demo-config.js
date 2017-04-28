@@ -1,1 +1,1 @@
-var vectortiles = 'states';
+var vectortiles = 'test_merge_2';

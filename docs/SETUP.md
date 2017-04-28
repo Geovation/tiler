@@ -27,10 +27,12 @@ Alternatively you can use for a more explicit approach you could use individual 
 `export TILER_DATA_DIR=/Users/username/Documents/Code/tiler/tiler-data` <br>
 `export TILER_SCRIPTS_DIR=/Users/username/Documents/Code/tiler/tiler-scripts` <br>
 
-`docker run --name "tiler" \` <br>
-            `-v $TILER_DATA_DIR:/tiler-data \ ` <br>
-            `-v $TILER_SCRIPTS_DIR:/tiler-scripts \ ` <br>
-            `-p 25432:5432 tiler --shell`
+```
+docker run --name "tiler" \
+-v $TILER_DATA_DIR:/tiler-data \
+-v $TILER_SCRIPTS_DIR:/tiler-scripts \
+-p 25432:5432 tiler --shell
+```       
 
 You need to replace the export paths with your tiler-data and tiler-scripts paths.
 

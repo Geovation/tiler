@@ -14,7 +14,7 @@ Setup requires installation of Docker and a few Docker commands to get started. 
 
 #### Using Tiler
 
-Tiler provides a selection of scripts for converting between various formats and validating them (see the tiler-scripts folder). The primary and simplest way to use Tiler however is to use a config file placed in `tiler/tiler-data/configs`:
+Tiler provides a selection of scripts for converting between various formats and validating them (see the tiler-scripts folder). The primary and simplest way to use Tiler however is to use a config file placed in `tiler/tiler-data/configs`. Here is an example config file which references a shapefile and a table in a PostGIS database:
 
 
 ```javascript
@@ -46,7 +46,7 @@ Tiler provides a selection of scripts for converting between various formats and
 }
 ```
 
-This would be saved as `tiler-data/configs/states.tiler.json`. For full documentation of the tiler config, consult the [CONFIG](https://github.com/Geovation/tiler/blob/master/docs/CONFIG.md). file in this repo. The file provides the location of the files you wish to translate, along with the output directory and if you want any simplification to occur. "data" is an object full of layers you wish to be ingested into the tiles. In this case the layer has multiple files that they use to generate that layer ("paths"). You can also provide a minimum zoom ("minzoom") and a maximum zoom ("maxzoom") for each layer.
+This would be saved as `tiler-data/configs/states.tiler.json`. For full documentation of the tiler config, consult the [CONFIG](https://github.com/Geovation/tiler/blob/master/docs/CONFIG.md) file in this repo. The file provides the location of the files you wish to translate, along with the output directory and if you want any simplification to occur. "data" is an object full of layers you wish to be ingested into the tiles. In this case the layer has multiple files that they use to generate that layer ("paths"). You can also provide a minimum zoom ("minzoom") and a maximum zoom ("maxzoom") for each layer.
 
 At the moment "type" can be `shapefile` or `geojson`, `postgis` and `gml`. 
 

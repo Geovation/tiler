@@ -23,6 +23,32 @@ The simplest way to run Tiler interactively is to use the `run.sh` script which 
 
 `./run.sh --shell`
 
+At this point you will be in the container. You could run:
+
+`tiler someconfig`
+
+From the root folder to creat tiles for the `someconfig` config file.
+
+## Accessing and Using Tiler
+
+All the above assumes you are on the host machine, in the tiler root directory.
+
+You can run a config that you have described using the following command from the host machine:
+
+`./run.sh someconfig`
+
+Where someconfig is a config file with the path `tiler/tiler-data/configs/someconfig.tiler.json`.  
+
+You can also run tests from the host machine using:
+
+`./run.sh --test`
+
+As previously mentioned to access Tiler in an interactive mode you can run:
+
+ `/run.sh --shell`
+
+This will allow you to run scripts that you want individually.
+
 Alternatively you can use for a more explicit approach you could use individual commands. You need to specify the location of your data folder so tiler knows where to load data from. We do this using volumes (-v) as such:
 
 ```
@@ -46,20 +72,6 @@ You need to replace the export paths with your tiler-data and tiler-scripts path
 #### Remove Container 
 
  `docker rm tiler`
-
-## Accessing and Using Tiler
-
-The easiest way is to use the run script:
-
-`./run.sh someconfig`
-
-Where someconfig is a config file with the path `tiler/tiler-data/configs/someconfig.tiler.json`.  You can also run tests using:
-
-`./run.sh --test`
-
-To access Tiler in an interactive mode you can run:
-
- `./shell.sh`
 
 **From here you can begin to run commands given in the usage of the main [README](https://github.com/Geovation/tiler/blob/master/README.md)**
 

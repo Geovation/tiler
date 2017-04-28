@@ -27,8 +27,8 @@ For `shapefile`, `gml`, `geojson`:
 
 For both
 
-* `minzoom` - Number - Minimum zoom level to generate for the tileset
-* `maxzoom` - Number - Maximum zomm level to generate for he tileset
+* `minzoom` - Integer - Minimum zoom level to generate for the tileset
+* `maxzoom` - Integer - Maximum zomm level to generate for he tileset
 
 
 ## Example:

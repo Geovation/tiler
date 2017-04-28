@@ -8,9 +8,14 @@ echo "Using the following directories for volume mounting: "
 echo "tiler-data : " $TILER_DATA_DIR
 echo "tiler-scripts : " $TILER_SCRIPTS_DIR
 
-docker run --name "tiler" \
+if [ $1 = "--shell" ] 
+then
+    docker run -ti -v $TILER_DATA_DIR:/tiler-data -v $TILER_SCRIPTS_DIR:/tiler-scripts -p 25432:5432 tiler --shell
+else 
+    docker run --name "tiler" \
             -v $TILER_DATA_DIR:/tiler-data \
             -v $TILER_SCRIPTS_DIR:/tiler-scripts \
             -p 25432:5432 \
             tiler $1
-            
+fi
+

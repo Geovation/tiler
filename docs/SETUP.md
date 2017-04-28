@@ -12,9 +12,10 @@ You can use git clone to get the tiler code on your local machine:
 
 #### Build Docker Image
 
-From the cloned directory you can do:
-
-`docker build -t tiler .`
+```
+cd tiler
+docker build -t tiler .
+```
 
 #### Start Docker Container
 
@@ -24,13 +25,17 @@ The simplest way to run Tiler interactively is to use the `run.sh` script which 
 
 Alternatively you can use for a more explicit approach you could use individual commands. You need to specify the location of your data folder so tiler knows where to load data from. We do this using volumes (-v) as such:
 
-`export TILER_DATA_DIR=/Users/username/Documents/Code/tiler/tiler-data` <br>
-`export TILER_SCRIPTS_DIR=/Users/username/Documents/Code/tiler/tiler-scripts` <br>
+```
+export TILER_DATA_DIR=/Users/username/Documents/Code/tiler/tiler-data
+export TILER_SCRIPTS_DIR=/Users/username/Documents/Code/tiler/tiler-scripts
+```
 
-`docker run --name "tiler" \` <br>
-            `-v $TILER_DATA_DIR:/tiler-data \ ` <br>
-            `-v $TILER_SCRIPTS_DIR:/tiler-scripts \ ` <br>
-            `-p 25432:5432 tiler --shell`
+```
+docker run --name "tiler" \
+-v $TILER_DATA_DIR:/tiler-data \
+-v $TILER_SCRIPTS_DIR:/tiler-scripts \
+-p 25432:5432 tiler --shell
+```       
 
 You need to replace the export paths with your tiler-data and tiler-scripts paths.
 
@@ -56,7 +61,7 @@ To access Tiler in an interactive mode you can run:
 
  `./shell.sh`
 
-**From here you can begin to run commands given in the usage of the main README**
+**From here you can begin to run commands given in the usage of the main [README](https://github.com/Geovation/tiler/blob/master/README.md)**
 
 ## Accessing the Postgres Database
 

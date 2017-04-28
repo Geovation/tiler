@@ -12,9 +12,10 @@ You can use git clone to get the tiler code on your local machine:
 
 #### Build Docker Image
 
-From the cloned directory you can do:
-
-`docker build -t tiler .`
+```
+cd tiler
+docker build -t tiler .
+```
 
 #### Start Docker Container
 

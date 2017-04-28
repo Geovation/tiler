@@ -14,7 +14,7 @@ Setup requires installation of Docker and a few Docker commands to get started. 
 
 #### Using Tiler
 
-Tiler provides a selection of scripts for converting between various formats and validating them (see the tiler-scripts folder). The primary and simplest way to use Tiler however is to use a config file placed in `tiler-data/configs`:
+Tiler provides a selection of scripts for converting between various formats and validating them (see the tiler-scripts folder). The primary and simplest way to use Tiler however is to use a config file placed in `tiler/tiler-data/configs`:
 
 
 ```javascript

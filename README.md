@@ -70,7 +70,7 @@ A worked example; we could run the states config file as such:
 
 `./run.sh states`
 
-After having ran this, there would be a set of states tiles in the `tiler-data/tiles/states` directory. You can then run a web server (i.e. python -m SimpleHTTPServer or [live-server](https://www.npmjs.com/package/live-server)) **from the host, with the tiler directory as the root**. You can then navigate to the demos folder to try out those demo pages.
+After having ran this, there would be a set of states tiles in the `tiler/tiler-data/tiles/states` directory. You can then run a web server (i.e. python -m SimpleHTTPServer or [live-server](https://www.npmjs.com/package/live-server)) **from the host, with the tiler directory as the root**. You can then navigate to the demos folder to try out those demo pages.
 
 Demos are provided using [Leaflet.VectorGrid](http://leaflet.github.io/Leaflet.VectorGrid/vectorgrid-api-docs.html) and also [Mapbox GL](https://www.mapbox.com/mapbox-gl-js/api/) for you to display your tiles when you're done. You will need to specify your own styling in these examples.
 

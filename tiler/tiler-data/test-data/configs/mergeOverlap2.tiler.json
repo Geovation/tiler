@@ -1,0 +1,17 @@
+{
+
+    "outdir" : "/tiler-data/tiles/",
+    "tileset" : "test_merge_overlap_2",
+    "simplification" : 1,
+    "data" : {
+
+        "overlap_2" : {
+            "type" : "geojson",
+            "paths" : ["/tiler-data/test-data/overlap2.geojson"],
+            "minzoom" : 2,
+            "maxzoom" : 6
+        }
+
+    }
+
+}

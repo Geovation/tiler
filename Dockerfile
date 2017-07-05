@@ -16,8 +16,6 @@ RUN  dpkg-divert --local --rename --add /sbin/initctl
 #RUN echo "deb http://archive.ubuntu.com/ubuntu trusty main universe" > /etc/apt/sources.list
 # Add the PostgreSQL PGP key to verify their Debian packages.
 # It should be the same key as https://www.postgresql.org/media/keys/ACCC4CF8.asc
-RUN apt-get update
-RUN apt-get install gnupg2 -y  
 
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
 # Add PostgreSQL's repository. It contains the most recent stable release

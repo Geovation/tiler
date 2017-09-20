@@ -1,4 +1,3 @@
-Update: See [this blog post](https://geovation.github.io/build-your-own-static-vector-tile-pipeline) which describes the approach Geovation now takes to generate vector tiles.
 
 <img src="tiler.png"><br>
 <br>
@@ -9,6 +8,13 @@ The purpose of Tiler is to create an easy to use, command line orientied pipelin
 Tiler exists as a Docker container that unifies several technologies to streamline the creation of vector tiles.
 
 ![CircleCI Badge](https://circleci.com/gh/Geovation/tiler.png?circle-token=89b1ab9fc960f4b88f85668bdd20183015740243)
+
+** Blog Posts **
+
+[Introducing Tiler](https://geovation.github.io/tiler)
+[Building Your Own Vector Tile Pipeline](https://geovation.github.io/build-your-own-static-vector-tile-pipeline)
+[Introducing Tippecanoe Directory Support](https://geovation.github.io/tippecanoe-directory-support)
+
 
 #### Setup
 

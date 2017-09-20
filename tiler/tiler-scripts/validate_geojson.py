@@ -8,13 +8,13 @@ def validate_geojson(geojson_path):
     with open(geojson_path, 'r') as geojson_file:
         geojson_dump = geojson_file.read()
         features = geojson.loads(geojson_dump)
-        validation = geojson.is_valid(features)
+        validation = features.is_valid
+        
+        print "Is the geojson file valid? ", str(validation)
+        # if validation["message"]:
+        #     print "Info: ", validation["message"]
 
-        print "Is the geojson file valid? ", validation["valid"]
-        if validation["message"]:
-            print "Info: ", validation["message"]
-
-        return validation["valid"]
+        return validation
 
 if __name__ == '__main__':
 

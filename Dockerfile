@@ -62,12 +62,6 @@ RUN apt-get -y install sudo git build-essential libsqlite3-dev zlib1g-dev \
     && cd / \
  #   && rm -rf tippecanoe \
 
-## MBUtil
-RUN cd / \
-    && git clone git://github.com/mapbox/mbutil.git \
-    && cd mbutil \
-    && python setup.py install
-
 ### Config
 ENV DB_HOST localhost
 ENV DB_PORT 5432

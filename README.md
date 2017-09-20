@@ -1,4 +1,4 @@
-Update: See [this blog post](https://geovation.github.io/2017/05/19/build-your-own-static-vector-tile-pipeline/) which describes the approach Geovation now takes to generate vector tiles.
+Update: See [this blog post](https://geovation.github.io/build-your-own-static-vector-tile-pipeline) which describes the approach Geovation now takes to generate vector tiles.
 
 <img src="tiler.png"><br>
 <br>

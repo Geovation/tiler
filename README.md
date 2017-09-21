@@ -9,11 +9,11 @@ Tiler exists as a Docker container that unifies several technologies to streamli
 
 ![CircleCI Badge](https://circleci.com/gh/Geovation/tiler.png?circle-token=89b1ab9fc960f4b88f85668bdd20183015740243)
 
-** Blog Posts **
+**Blog Posts**
 
-[Introducing Tiler](https://geovation.github.io/tiler)
-[Building Your Own Vector Tile Pipeline](https://geovation.github.io/build-your-own-static-vector-tile-pipeline)
-[Introducing Tippecanoe Directory Support](https://geovation.github.io/tippecanoe-directory-support)
+* [Introducing Tiler](https://geovation.github.io/tiler)
+* [Building Your Own Vector Tile Pipeline](https://geovation.github.io/build-your-own-static-vector-tile-pipeline)
+* [Introducing Tippecanoe Directory Support](https://geovation.github.io/tippecanoe-directory-support)
 
 
 #### Setup
